@@ -5,21 +5,33 @@
  */
 package Views;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
  *
  * @author Z
  */
-public class LoginMenuController implements Initializable {
+public class LoginMenuController implements Initializable 
+{
+    String username = "zhendrix";
+    String password = "password";
+    
+    Stage stage;
+    Parent scene;
 
     @FXML
     private Label passwordLabel;
@@ -42,8 +54,23 @@ public class LoginMenuController implements Initializable {
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb) 
+    {
         // TODO
-    }    
+    }   
+     @FXML
+    void loginButtonClicked(ActionEvent event) throws IOException 
+    {
+        if(userIdTextField.equals(username) && passwordTextField.equals(password))
+        {
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("ScheduleMenu.fxml"));
+            stage.setScene(new Scene(scene));
+            stage.show();
+        }
+
+
+    }
+    
     
 }
