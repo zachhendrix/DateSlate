@@ -11,18 +11,18 @@ import java.util.logging.SimpleFormatter;
  */
 public class Logging 
 {
-    
+    Logger logger = Logger.getLogger("log.txt");
     public static void main(String[] args) 
     {
         
-        Logger log = Logger.getLogger("log.txt");
+        Logger logger = Logger.getLogger("log.txt");
         
         try {
             //The following four lines write the log text to a file. Otherwise it will print only to the console. 
             FileHandler fileHandler = new FileHandler("log.txt", true);
             SimpleFormatter simpleFormatter = new SimpleFormatter();
             fileHandler.setFormatter(simpleFormatter);
-            log.addHandler(fileHandler);
+            logger.addHandler(fileHandler);
             //change the following line to change what gets logged.
             // Here is the descending list:
 //        SEVERE (highest)
@@ -46,17 +46,16 @@ public class Logging
         {
             Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        log.setLevel(Level.CONFIG); //change this line to see how the output changes!
-     
-        log.severe("Oh no! Bad Things are happening!");
-        log.log(Level.SEVERE, "More Severe things are happening!");
-        
-        log.warning("This is just a warning");
-        log.log(Level.WARNING, "Here is another warning");
-        
-        log.info("This message is informational");
-        log.log(Level.INFO, "So is this one");
-   
     }
+    
+    public static void SevereWarning()
+    {
+        Logger logger = Logger.getLogger("log.txt");
+        logger.setLevel(Level.CONFIG); //change this line to see how the output changes!
+     
+        logger.severe("Username or Password is incorrect");
+        logger.log(Level.SEVERE,"Incorrect Username or Password submitted");
+    }
+        
+   
 }

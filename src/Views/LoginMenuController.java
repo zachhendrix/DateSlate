@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package Views;
-
+import Model.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -56,17 +56,22 @@ public class LoginMenuController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
-        // TODO
+       
     }   
      @FXML
     void loginButtonClicked(ActionEvent event) throws IOException 
     {
-        if(userIdTextField.equals(username) && passwordTextField.equals(password))
+        if(userIdTextField.getText().equals(username) && passwordTextField.getText().equals(password))
         {
             stage = (Stage)((Button)event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("ScheduleMenu.fxml"));
             stage.setScene(new Scene(scene));
             stage.show();
+        }
+        
+        else
+        {
+            Logging.SevereWarning();
         }
 
 
