@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -72,6 +73,13 @@ public class LoginMenuController implements Initializable
         else
         {
             Logging.SevereWarning();
+            
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Login Warning");
+            alert.setHeaderText("Incorrect Username or Password");
+            alert.setContentText("Try Again");
+
+            alert.showAndWait();
         }
 
 

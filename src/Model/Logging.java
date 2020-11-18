@@ -18,23 +18,10 @@ public class Logging
         Logger logger = Logger.getLogger("log.txt");
         
         try {
-            //The following four lines write the log text to a file. Otherwise it will print only to the console. 
             FileHandler fileHandler = new FileHandler("log.txt", true);
             SimpleFormatter simpleFormatter = new SimpleFormatter();
             fileHandler.setFormatter(simpleFormatter);
             logger.addHandler(fileHandler);
-            //change the following line to change what gets logged.
-            // Here is the descending list:
-//        SEVERE (highest)
-//        WARNING
-//        INFO
-//        CONFIG
-//        FINE
-//        FINER
-//        FINEST
-//      So if you set the following line to log.setLevel(Level.INFO), only logs that have levels SEVERE, WARNING, or INFO will actually get logged.
-//      Great for debugging! You could set it to FINEST, and then when you put the code into production, set it to INFO or WARNING, for instance, so that you
-//      don't get the debugging log info in your text file
         } 
         
         catch (IOException ex) 
