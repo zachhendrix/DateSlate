@@ -33,31 +33,38 @@ public class Customer
         return customerID;
     }
 
-    public void setCustomerID(int customerID) {
+    public void setCustomerID(int customerID) 
+    {
         this.customerID = customerID;
     }
 
-    public String getFirstName() {
+    public String getFirstName() 
+    {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(String firstName) 
+    {
         this.firstName = firstName;
     }
     
-    public String getLastName() {
+    public String getLastName() 
+    {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(String lastName) 
+    {
         this.lastName = lastName;
     }
     
-    public String getAddress() {
+    public String getAddress() 
+    {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(String address) 
+    {
         this.address = address;
     }
 
@@ -66,23 +73,28 @@ public class Customer
         return postalCode;
     }
 
-    public void setPostalCode(int postalCode) {
+    public void setPostalCode(int postalCode) 
+    {
         this.postalCode = postalCode;
     }
     
-    public String getCountry() {
+    public String getCountry() 
+    {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(String country) 
+    {
         this.country = country;
     }
     
-    public String getState() {
+    public String getState() 
+    {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(String state) 
+    {
         this.state = state;
     }
     
@@ -91,7 +103,8 @@ public class Customer
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(int phone) 
+    {
         this.phone = phone;
     }
 

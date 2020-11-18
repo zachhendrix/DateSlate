@@ -5,24 +5,34 @@
  */
 package Views;
 
+import Model.Clientele;
+import Model.Customer;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
  *
  * @author Z
  */
-public class CustomerDataController implements Initializable {
+public class CustomerDataController implements Initializable 
+{
+    Stage stage;
+    Parent scene;
 
     @FXML
     private TableView<?> customerTableView;
@@ -69,24 +79,45 @@ public class CustomerDataController implements Initializable {
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb) 
+    {
         // TODO
     }    
 
     @FXML
-    private void addButtonClicked(ActionEvent event) {
+    private void addButtonClicked(ActionEvent event) 
+    {
+        int customerID = Integer.parseInt(customerIDText.getText());
+        String firstName = firstNameText.getText();
+        String lastName = lastNameText.getText();
+        String address = addressText.getText();
+        int postalCode = Integer.parseInt(postalText.getText());
+        String country = countryComboBox.getText();
+        String state = regionComboBox.getText();
+        int phone = Integer.parseInt(phoneText.getText());
+        Clientele.addCustomer(new Customer(customerID, firstName,lastName,address,postalCode,country, state, phone));
+        
     }
 
     @FXML
-    private void deleteButtonClicked(ActionEvent event) {
+    private void deleteButtonClicked(ActionEvent event) 
+    {
+        
     }
 
     @FXML
-    private void cancelButtonClicked(ActionEvent event) {
+    private void cancelButtonClicked(ActionEvent event) 
+    {
+        
     }
 
     @FXML
-    private void backButtonClicked(ActionEvent event) {
+    private void backButtonClicked(ActionEvent event) throws IOException 
+    {
+        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("ScheduleMenu.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
     }
     
 }
