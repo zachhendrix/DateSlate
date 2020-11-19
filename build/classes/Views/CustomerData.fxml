@@ -34,7 +34,7 @@
       </AnchorPane>
       <AnchorPane layoutY="75.0" prefHeight="476.0" prefWidth="900.0" style="-fx-background-color: dimgrey;" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="75.0">
          <children>
-            <SplitPane dividerPositions="0.5" prefHeight="422.0" prefWidth="900.0" AnchorPane.bottomAnchor="44.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <SplitPane dividerPositions="0.5044543429844098" prefHeight="422.0" prefWidth="900.0" AnchorPane.bottomAnchor="44.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="447.0">
                      <children>
@@ -103,7 +103,6 @@
                                                 <Font name="System Bold" size="15.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="customerIDText" prefWidth="315.0" GridPane.columnIndex="1" />
                                           <TextField fx:id="firstNameText" prefWidth="315.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                           <TextField fx:id="lastNameText" prefWidth="315.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                           <TextField fx:id="addressText" prefWidth="315.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
@@ -121,6 +120,11 @@
                                           </Label>
                                           <ComboBox fx:id="countryComboBox" prefHeight="25.0" prefWidth="293.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                           <ComboBox fx:id="regionComboBox" prefHeight="25.0" prefWidth="313.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                          <Label fx:id="customerIDLabel" prefHeight="21.0" prefWidth="120.0" textFill="WHITE" GridPane.columnIndex="1">
+                                             <font>
+                                                <Font name="System Bold" size="15.0" />
+                                             </font>
+                                          </Label>
                                        </children>
                                     </GridPane>
                                  </children>
@@ -135,8 +139,9 @@
               </items>
             </SplitPane>
             <Button fx:id="addButton" layoutX="458.0" layoutY="442.0" mnemonicParsing="false" onAction="#addButtonClicked" prefHeight="28.0" prefWidth="63.0" style="-fx-background-color: turquoise, linear-gradient(hotpink, turquoise); -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.5) , 0, 0.0 , 0 , 2); -fx-background-radius: 3,2,2,2; -fx-text-fill: black;" text="Add" AnchorPane.bottomAnchor="5.0" />
-            <Button fx:id="deleteButton" layoutX="529.0" layoutY="442.0" mnemonicParsing="false" onAction="#deleteButtonClicked" prefHeight="28.0" prefWidth="63.0" style="-fx-background-color: turquoise, linear-gradient(hotpink, turquoise); -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.5) , 0, 0.0 , 0 , 2); -fx-background-radius: 3,2,2,2; -fx-text-fill: black;" text="Delete" AnchorPane.bottomAnchor="5.0" />
-            <Button fx:id="cancelButton" layoutX="600.0" layoutY="442.0" mnemonicParsing="false" onAction="#cancelButtonClicked" prefHeight="28.0" prefWidth="63.0" style="-fx-background-color: turquoise, linear-gradient(hotpink, turquoise); -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.5) , 0, 0.0 , 0 , 2); -fx-background-radius: 3,2,2,2; -fx-text-fill: black;" text="Cancel" AnchorPane.bottomAnchor="5.0" />
+            <Button fx:id="deleteButton" layoutX="601.0" layoutY="443.0" mnemonicParsing="false" onAction="#deleteButtonClicked" prefHeight="28.0" prefWidth="63.0" style="-fx-background-color: turquoise, linear-gradient(hotpink, turquoise); -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.5) , 0, 0.0 , 0 , 2); -fx-background-radius: 3,2,2,2; -fx-text-fill: black;" text="Delete" AnchorPane.bottomAnchor="5.0" />
+            <Button fx:id="cancelButton" layoutX="672.0" layoutY="443.0" mnemonicParsing="false" onAction="#cancelButtonClicked" prefHeight="28.0" prefWidth="63.0" style="-fx-background-color: turquoise, linear-gradient(hotpink, turquoise); -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.5) , 0, 0.0 , 0 , 2); -fx-background-radius: 3,2,2,2; -fx-text-fill: black;" text="Cancel" AnchorPane.bottomAnchor="5.0" />
+            <Button fx:id="modifyButton" layoutX="529.0" layoutY="443.0" mnemonicParsing="false" onAction="#modifyButtonClicked" prefHeight="28.0" prefWidth="63.0" style="-fx-background-color: turquoise, linear-gradient(hotpink, turquoise); -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.5) , 0, 0.0 , 0 , 2); -fx-background-radius: 3,2,2,2; -fx-text-fill: black;" text="Modify" />
          </children>
       </AnchorPane>
       <Button fx:id="backButton" layoutX="823.0" layoutY="562.0" mnemonicParsing="false" onAction="#backButtonClicked" prefHeight="28.0" prefWidth="63.0" style="-fx-background-color: turquoise, linear-gradient(hotpink, turquoise); -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.5) , 0, 0.0 , 0 , 2); -fx-background-radius: 3,2,2,2; -fx-text-fill: black;" text="Back" AnchorPane.bottomAnchor="10.0" />
