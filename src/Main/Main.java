@@ -2,6 +2,8 @@
 package Main;
 
 
+import Utils.DBConnection;
+import java.sql.SQLException;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
@@ -28,9 +30,11 @@ public class Main extends Application
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) 
+    public static void main(String[] args) throws SQLException 
     {
+        DBConnection.startConnection();
         launch(args);
+        DBConnection.closeConnection();
     }
 
 }
