@@ -7,6 +7,7 @@ package Views;
 import Model.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,6 +19,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
@@ -34,32 +36,67 @@ public class LoginMenuController implements Initializable
     Stage stage;
     Parent scene;
 
-    @FXML
+     @FXML
     private Label passwordLabel;
+
     @FXML
     private Label userIdLabel;
+
     @FXML
     private TextField passwordTextField;
+
     @FXML
     private TextField userIdTextField;
+
     @FXML
     private Button loginButton;
+
     @FXML
     private Label locationLabel;
+
     @FXML
-    private ImageView flagIcon;
+    private ImageView flagIconFrance;
+
+    @FXML
+    private ImageView flagIconUK;
+    
     @FXML
     private Label languageLabel;
 
+    @FXML
+    private Label languageTextLabel;
+    
+    private ResourceBundle rb;
+
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
-       
+        Locale locale = rb.getLocale();
+        System.out.println(locale);
+        passwordLabel.setText(rb.getString("password")+ ":");
+        userIdLabel.setText(rb.getString("username")+ ":");
+        locationLabel.setText(rb.getString("france"));
+        languageTextLabel.setText(rb.getString("language") + ":");
+        languageLabel.setText(rb.getString("french"));
+        loginButton.setText(rb.getString("login"));
+        
+        if(rb.getLocale().toString().equals("fr"))
+        {
+           System.out.println("FRENCH");
+           flagIconUK.setImage(null);
+                   
+        }
+        
+        
     }   
-     @FXML
+    
+    
+    @FXML
     void loginButtonClicked(ActionEvent event) throws IOException 
     {
         if(userIdTextField.getText().equals(username) && passwordTextField.getText().equals(password))
@@ -72,17 +109,14 @@ public class LoginMenuController implements Initializable
         
         else
         {
-            Logging.SevereWarning();
-            
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Login Warning");
-            alert.setHeaderText("Incorrect Username or Password");
-            alert.setContentText("Try Again");
-
-            alert.showAndWait();
+            //TODO: DIFFERENT LANGUAGE ALERTS
+               Logging.SevereWarning();
+               Alert alert = new Alert(Alert.AlertType.WARNING);
+               alert.setTitle("Login Warning");
+               alert.setHeaderText("Incorrect Username or Password");
+               alert.setContentText("Try Again");
+               alert.showAndWait();  
         }
-
-
     }
     
     

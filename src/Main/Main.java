@@ -4,6 +4,9 @@ package Main;
 
 import Utils.DBConnection;
 import java.sql.SQLException;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.Scanner;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
@@ -16,8 +19,11 @@ public class Main extends Application
 
     @Override
     public void start(Stage primaryStage) throws Exception
-    {
-        Parent root = FXMLLoader.load(getClass().getResource("/Views/LoginMenu.fxml"));
+    {        
+        Locale locale = Locale.getDefault();
+        ResourceBundle bundle = ResourceBundle.getBundle("Main/Lang", locale);
+
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Views/LoginMenu.fxml"),bundle);
 
 
         Scene scene = new Scene(root);
@@ -32,6 +38,7 @@ public class Main extends Application
      */
     public static void main(String[] args) throws SQLException 
     {
+
         DBConnection.startConnection();
         launch(args);
         DBConnection.closeConnection();

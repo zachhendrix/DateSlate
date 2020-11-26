@@ -100,7 +100,7 @@ public class CustomerDataController implements Initializable
     @FXML
     private void addButtonClicked(ActionEvent event) 
     {
-        int customerID = Clientele.getCustomerIDCount() + 1 ;
+        int customerID = Clientele.getCustomerIDCount();
         customerIDLabel.setText(String.valueOf(customerID + 1));
         
         String firstName = firstNameText.getText();
@@ -143,6 +143,9 @@ public class CustomerDataController implements Initializable
         {
             Customer customer = customerTableView.getSelectionModel().getSelectedItem();
             Clientele.deleteCustomer(customer);
+            
+            int customerID = Clientele.getCustomerIDCount() ;
+            customerIDLabel.setText(String.valueOf(customerID));
         } 
         
     }
