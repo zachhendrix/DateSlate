@@ -67,6 +67,7 @@ public class LoginMenuController implements Initializable
     private Label languageTextLabel;
     
     private ResourceBundle rb;
+    private ResourceBundle rbRef;   
 
     /**
      * Initializes the controller class.
@@ -77,17 +78,18 @@ public class LoginMenuController implements Initializable
     public void initialize(URL url, ResourceBundle rb) 
     {
         Locale locale = rb.getLocale();
+        rbRef = rb;
         System.out.println(locale);
-        passwordLabel.setText(rb.getString("password")+ ":");
-        userIdLabel.setText(rb.getString("username")+ ":");
-        locationLabel.setText(rb.getString("france"));
-        languageTextLabel.setText(rb.getString("language") + ":");
-        languageLabel.setText(rb.getString("french"));
-        loginButton.setText(rb.getString("login"));
         
         if(rb.getLocale().toString().equals("fr"))
         {
            System.out.println("FRENCH");
+           passwordLabel.setText(rb.getString("password")+ ":");
+           userIdLabel.setText(rb.getString("username")+ ":");
+           locationLabel.setText(rb.getString("france"));
+           languageTextLabel.setText(rb.getString("language") + ":");
+           languageLabel.setText(rb.getString("french"));
+           loginButton.setText(rb.getString("login"));
            flagIconUK.setImage(null);
                    
         }
@@ -109,6 +111,8 @@ public class LoginMenuController implements Initializable
         
         else
         {
+          
+            
             //TODO: DIFFERENT LANGUAGE ALERTS
                Logging.SevereWarning();
                Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -116,6 +120,8 @@ public class LoginMenuController implements Initializable
                alert.setHeaderText("Incorrect Username or Password");
                alert.setContentText("Try Again");
                alert.showAndWait();  
+               
+               
         }
     }
     

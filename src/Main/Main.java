@@ -20,8 +20,8 @@ public class Main extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {        
-        Locale locale = Locale.getDefault();
-        ResourceBundle bundle = ResourceBundle.getBundle("Main/Lang", locale);
+        System.out.println(Locale.getDefault());
+        ResourceBundle bundle = ResourceBundle.getBundle("Main/Lang_fr", Locale.getDefault());
 
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Views/LoginMenu.fxml"),bundle);
 
