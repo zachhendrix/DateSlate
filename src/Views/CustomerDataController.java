@@ -37,6 +37,7 @@ public class CustomerDataController implements Initializable
 {
     Stage stage;
     Parent scene;
+    private Customer customerRef;
 
     @FXML
     private TableView<Customer> customerTableView;
@@ -115,17 +116,42 @@ public class CustomerDataController implements Initializable
         
     }
     
+    
+    @FXML
+    void saveButtonClicked(ActionEvent event) 
+    {
+        Clientele.deleteCustomer(customerRef);
+        int customerID = Integer.parseInt(customerIDLabel.getText());
+        
+        String firstName = firstNameText.getText();
+        String lastName = lastNameText.getText();
+        String address = addressText.getText();
+        int postalCode = Integer.parseInt(postalText.getText());
+        String country = countryComboBox.getSelectionModel().toString();
+        String state = regionComboBox.getSelectionModel().toString();
+        int phone = Integer.parseInt(phoneText.getText());
+        
+        Clientele.addCustomer(new Customer(customerID, firstName,lastName,address,postalCode,country, state, phone));
+        
+        addButton.setVisible(true);
+        deleteButton.setVisible(true);
+    }
+    
     @FXML
     void modifyButtonClicked(ActionEvent event) 
     {
-        Customer customerRef = customerTableView.getSelectionModel().getSelectedItem();
-        customerIDLabel.setText(String.valueOf(customerRef.getCustomerID()));
-        firstNameText.setText(String.valueOf((customerRef).getFirstName()));
-        lastNameText.setText(String.valueOf((customerRef).getLastName()));
-        addressText.setText(String.valueOf((customerRef).getAddress()));
-        postalText.setText(String.valueOf((customerRef).getPostalCode()));
+        Customer customerSelect = customerTableView.getSelectionModel().getSelectedItem();
+        customerIDLabel.setText(String.valueOf(customerSelect.getCustomerID()));
+        firstNameText.setText(String.valueOf((customerSelect).getFirstName()));
+        lastNameText.setText(String.valueOf((customerSelect).getLastName()));
+        addressText.setText(String.valueOf((customerSelect).getAddress()));
+        postalText.setText(String.valueOf((customerSelect).getPostalCode()));
 
-        phoneText.setText(String.valueOf((customerRef).getPhone()));
+        phoneText.setText(String.valueOf((customerSelect).getPhone()));
+        customerRef = customerSelect;
+        
+        addButton.setVisible(false);
+        deleteButton.setVisible(false);
     }
 
 
