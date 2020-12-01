@@ -90,6 +90,7 @@ public class CustomerDataController implements Initializable
     {
         customerIDLabel.setText(String.valueOf(Clientele.getCustomerIDCount() + 1));
         customerTableView.setItems(Clientele.getAllCustomers());
+        
         customerIDCol.setCellValueFactory(new PropertyValueFactory<>("customerID"));
         firstNameCol.setCellValueFactory(new PropertyValueFactory<>("firstName"));  
         lastNameCol.setCellValueFactory(new PropertyValueFactory<>("lastName")); 
@@ -114,6 +115,11 @@ public class CustomerDataController implements Initializable
         
         Clientele.addCustomer(new Customer(customerID, firstName,lastName,address,postalCode,country, state, phone));
         
+        firstNameText.clear();
+        lastNameText.clear();
+        addressText.clear();
+        postalText.clear();
+        phoneText.clear();
     }
     
     
@@ -133,6 +139,12 @@ public class CustomerDataController implements Initializable
         
         Clientele.addCustomer(new Customer(customerID, firstName,lastName,address,postalCode,country, state, phone));
         
+        firstNameText.clear();
+        lastNameText.clear();
+        addressText.clear();
+        postalText.clear();
+        phoneText.clear();
+        
         addButton.setVisible(true);
         deleteButton.setVisible(true);
     }
@@ -149,6 +161,7 @@ public class CustomerDataController implements Initializable
 
         phoneText.setText(String.valueOf((customerSelect).getPhone()));
         customerRef = customerSelect;
+        
         
         addButton.setVisible(false);
         deleteButton.setVisible(false);
@@ -171,7 +184,7 @@ public class CustomerDataController implements Initializable
             Clientele.deleteCustomer(customer);
             
             int customerID = Clientele.getCustomerIDCount() ;
-            customerIDLabel.setText(String.valueOf(customerID));
+            customerIDLabel.setText(String.valueOf(customer.getCustomerID()));
         } 
         
     }
@@ -179,7 +192,11 @@ public class CustomerDataController implements Initializable
     @FXML
     private void cancelButtonClicked(ActionEvent event) 
     {
-        
+        firstNameText.clear();
+        lastNameText.clear();
+        addressText.clear();
+        postalText.clear();
+        phoneText.clear();
     }
 
     @FXML

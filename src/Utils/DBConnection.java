@@ -5,9 +5,13 @@
  */
 package Utils;
 
+import Model.Customer;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import javafx.collections.ObservableList;
 
 /**
  *
@@ -26,6 +30,9 @@ public class DBConnection
     
     private static final String username = "U06u79";
     private static String password = "53688873417";
+    private static ObservableList<Customer> countries;
+    private static ObservableList<Customer> firstLevelDivision;
+    
     
     public static Connection startConnection()
     {
