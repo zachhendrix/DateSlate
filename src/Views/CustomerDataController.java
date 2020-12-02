@@ -38,6 +38,7 @@ public class CustomerDataController implements Initializable
     Stage stage;
     Parent scene;
     private Customer customerRef;
+    private static int generateIDNum;
 
     @FXML
     private TableView<Customer> customerTableView;
@@ -88,7 +89,8 @@ public class CustomerDataController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
-        customerIDLabel.setText(String.valueOf(Clientele.getCustomerIDCount() + 1));
+        
+        customerIDLabel.setText(String.valueOf(generateIDNum));
         customerTableView.setItems(Clientele.getAllCustomers());
         
         customerIDCol.setCellValueFactory(new PropertyValueFactory<>("customerID"));
@@ -97,56 +99,44 @@ public class CustomerDataController implements Initializable
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));   
         postalCol.setCellValueFactory(new PropertyValueFactory<>("postalCode")); 
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone")); 
+        
+        
+       
     }    
 
     @FXML
     private void addButtonClicked(ActionEvent event) 
     {
-        int customerID = Clientele.getCustomerIDCount();
-        customerIDLabel.setText(String.valueOf(customerID + 1));
+       
+        if(firstNameText.getText().length() >= 1 && lastNameText.getText().length() >= 1 && addressText.getText().length() >= 1 && Integer.parseInt(postalText.getText()) >= 1 && Integer.parseInt(phoneText.getText()) >= 1)
+        {
+            int customerID = generateIDNum++;
+            String firstName = firstNameText.getText();
+            String lastName = lastNameText.getText();
+            String address = addressText.getText();
+            int postalCode = Integer.parseInt(postalText.getText());
+            String country = countryComboBox.getSelectionModel().toString();
+            String state = regionComboBox.getSelectionModel().toString();
+            int phone = Integer.parseInt(phoneText.getText());
         
-        String firstName = firstNameText.getText();
-        String lastName = lastNameText.getText();
-        String address = addressText.getText();
-        int postalCode = Integer.parseInt(postalText.getText());
-        String country = countryComboBox.getSelectionModel().toString();
-        String state = regionComboBox.getSelectionModel().toString();
-        int phone = Integer.parseInt(phoneText.getText());
+            Clientele.addCustomer(new Customer(customerID, firstName,lastName,address,postalCode,country, state, phone));
         
-        Clientele.addCustomer(new Customer(customerID, firstName,lastName,address,postalCode,country, state, phone));
+            customerIDLabel.setText(String.valueOf(generateIDNum));
+            firstNameText.clear();
+            lastNameText.clear();
+            addressText.clear();
+            postalText.clear();
+            phoneText.clear();
+        }
         
-        firstNameText.clear();
-        lastNameText.clear();
-        addressText.clear();
-        postalText.clear();
-        phoneText.clear();
-    }
-    
-    
-    @FXML
-    void saveButtonClicked(ActionEvent event) 
-    {
-        Clientele.deleteCustomer(customerRef);
-        int customerID = Integer.parseInt(customerIDLabel.getText());
-        
-        String firstName = firstNameText.getText();
-        String lastName = lastNameText.getText();
-        String address = addressText.getText();
-        int postalCode = Integer.parseInt(postalText.getText());
-        String country = countryComboBox.getSelectionModel().toString();
-        String state = regionComboBox.getSelectionModel().toString();
-        int phone = Integer.parseInt(phoneText.getText());
-        
-        Clientele.addCustomer(new Customer(customerID, firstName,lastName,address,postalCode,country, state, phone));
-        
-        firstNameText.clear();
-        lastNameText.clear();
-        addressText.clear();
-        postalText.clear();
-        phoneText.clear();
-        
-        addButton.setVisible(true);
-        deleteButton.setVisible(true);
+        else
+        {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Information Left Blank");
+            alert.setHeaderText("Please Make Sure All Fields are Filled Out");
+            alert.setContentText("Try Again");
+            alert.showAndWait();
+        }
     }
     
     @FXML
@@ -166,6 +156,35 @@ public class CustomerDataController implements Initializable
         addButton.setVisible(false);
         deleteButton.setVisible(false);
     }
+    
+    
+     @FXML
+    void saveButtonClicked(ActionEvent event) 
+    {
+        Clientele.deleteCustomer(customerRef);
+        
+        int customerID = Integer.parseInt(customerIDLabel.getText());
+        String firstName = firstNameText.getText();
+        String lastName = lastNameText.getText();
+        String address = addressText.getText();
+        int postalCode = Integer.parseInt(postalText.getText());
+        String country = countryComboBox.getSelectionModel().toString();
+        String state = regionComboBox.getSelectionModel().toString();
+        int phone = Integer.parseInt(phoneText.getText());
+        
+        Clientele.addCustomer(new Customer(customerID, firstName,lastName,address,postalCode,country, state, phone));
+        
+        
+        customerIDLabel.setText(String.valueOf(generateIDNum));
+        firstNameText.clear();
+        lastNameText.clear();
+        addressText.clear();
+        postalText.clear();
+        phoneText.clear();
+        
+        addButton.setVisible(true);
+        deleteButton.setVisible(true);
+    }
 
 
     @FXML
@@ -183,8 +202,7 @@ public class CustomerDataController implements Initializable
             Customer customer = customerTableView.getSelectionModel().getSelectedItem();
             Clientele.deleteCustomer(customer);
             
-            int customerID = Clientele.getCustomerIDCount() ;
-            customerIDLabel.setText(String.valueOf(customer.getCustomerID()));
+            customerIDLabel.setText(String.valueOf(generateIDNum));
         } 
         
     }
