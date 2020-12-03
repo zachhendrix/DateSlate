@@ -24,20 +24,20 @@ public class Clientele
     
     
     //Adds a new part or Product to their respective Observable List
-    public static void addCustomer(Customer newPart)
+    public static void addCustomer(Customer newCustomer)
     {
-        allCustomers.add(newPart);
+        allCustomers.add(newCustomer);
     }
 
-    public static void updateCustomer(int index, Customer selectedPart)
+    public static void updateCustomer(int index, Customer selectedCustomer)
     {
-        allCustomers.set(index, selectedPart);
+        allCustomers.set(index, selectedCustomer);
     }
     
     //Deletes a Part or Product to their respective Observable List
-    public static boolean deleteCustomer(Customer selectedPart)
+    public static boolean deleteCustomer(Customer selectedCustomer)
     {
-        return getAllCustomers().remove(selectedPart);
+        return getAllCustomers().remove(selectedCustomer);
     }
 
     //Returns all Parts or Products from their respective lists

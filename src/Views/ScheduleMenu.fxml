@@ -31,7 +31,7 @@
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="387.0" prefWidth="778.0">
                                  <children>
-                                    <TableView fx:id="customerTableView" prefHeight="452.0" prefWidth="900.0" style="-fx-background-color: dimgrey;">
+                                    <TableView fx:id="appointmentTableView" prefHeight="452.0" prefWidth="900.0" style="-fx-background-color: dimgrey;">
                                        <columns>
                                           <TableColumn fx:id="appointmentIDCol" prefWidth="55.0" text="AppID" />
                                           <TableColumn fx:id="titleCol" prefWidth="137.0" text="Title" />
@@ -96,6 +96,6 @@
       <Button fx:id="customerButton" layoutX="762.0" layoutY="14.0" mnemonicParsing="false" onAction="#customerButtonClicked" prefHeight="42.0" prefWidth="124.0" style="-fx-background-color: turquoise, linear-gradient(hotpink, turquoise); -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.5) , 0, 0.0 , 0 , 2); -fx-background-radius: 3,2,2,2; -fx-text-fill: black;" text="Customers" AnchorPane.topAnchor="15.0" />
       <Button fx:id="addButton" layoutX="14.0" layoutY="562.0" mnemonicParsing="false" onAction="#addButtonClicked" prefHeight="28.0" prefWidth="63.0" style="-fx-background-color: turquoise, linear-gradient(hotpink, turquoise); -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.5) , 0, 0.0 , 0 , 2); -fx-background-radius: 3,2,2,2; -fx-text-fill: black;" text="Add" AnchorPane.bottomAnchor="10.0" />
       <Button fx:id="deleteButton" layoutX="160.0" layoutY="562.0" mnemonicParsing="false" onAction="#deleteButtonClicked" prefHeight="28.0" prefWidth="63.0" style="-fx-background-color: turquoise, linear-gradient(hotpink, turquoise); -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.5) , 0, 0.0 , 0 , 2); -fx-background-radius: 3,2,2,2; -fx-text-fill: black;" text="Delete" AnchorPane.bottomAnchor="10.0" />
-      <Button fx:id="cancelButton" layoutX="87.0" layoutY="562.0" mnemonicParsing="false" onAction="#cancelButtonClicked" prefHeight="28.0" prefWidth="63.0" style="-fx-background-color: turquoise, linear-gradient(hotpink, turquoise); -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.5) , 0, 0.0 , 0 , 2); -fx-background-radius: 3,2,2,2; -fx-text-fill: black;" text="Update" AnchorPane.bottomAnchor="10.0" />
+      <Button fx:id="updateButton" layoutX="87.0" layoutY="562.0" mnemonicParsing="false" onAction="#updateButtonClicked" prefHeight="28.0" prefWidth="63.0" style="-fx-background-color: turquoise, linear-gradient(hotpink, turquoise); -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.5) , 0, 0.0 , 0 , 2); -fx-background-radius: 3,2,2,2; -fx-text-fill: black;" text="Update" AnchorPane.bottomAnchor="10.0" />
    </children>
 </AnchorPane>

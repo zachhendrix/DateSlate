@@ -9,7 +9,6 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.ScheduleMenuController">
    <children>
       <ImageView fitHeight="600.0" fitWidth="900.0" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -32,7 +31,7 @@
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="387.0" prefWidth="778.0">
                                  <children>
-                                    <TableView fx:id="customerTableView" prefHeight="452.0" prefWidth="900.0" style="-fx-background-color: dimgrey;">
+                                    <TableView fx:id="appointmentTableView" prefHeight="452.0" prefWidth="900.0" style="-fx-background-color: dimgrey;">
                                        <columns>
                                           <TableColumn fx:id="appointmentIDCol" prefWidth="55.0" text="AppID" />
                                           <TableColumn fx:id="titleCol" prefWidth="137.0" text="Title" />
@@ -50,12 +49,42 @@
                       </Tab>
                       <Tab fx:id="monthTab" onSelectionChanged="#monthTabClicked" text="Month">
                         <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <TableView fx:id="customerTableView1" prefHeight="452.0" prefWidth="900.0" style="-fx-background-color: dimgrey;">
+                                       <columns>
+                                          <TableColumn fx:id="monthAppointmentIDCol" prefWidth="55.0" text="AppID" />
+                                          <TableColumn fx:id="monthTitleCol" prefWidth="109.0" text="Title" />
+                                          <TableColumn fx:id="monthDescriptionCol" minWidth="0.0" prefWidth="120.0" text="Description" />
+                                          <TableColumn fx:id="monthLocationCol" prefWidth="119.0" text="Location" />
+                                          <TableColumn fx:id="monthContactCol" prefWidth="86.0" text="Contact" />
+                                          <TableColumn fx:id="monthTypeCol" prefWidth="99.0" text="Type" />
+                                          <TableColumn fx:id="monthStartDateCol" prefWidth="115.0" text="Start Date/Time" />
+                                          <TableColumn fx:id="monthEndDateCol" prefWidth="115.0" text="End Date/Time" />
+                                          <TableColumn fx:id="monthCustomerIDCol" prefWidth="81.0" text="Customer ID" />
+                                       </columns>
+                                    </TableView>
+                                 </children></AnchorPane>
                         </content>
                       </Tab>
                         <Tab fx:id="weekTab" onSelectionChanged="#weekTabClicked" text="Week">
                           <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <TableView fx:id="customerTableView11" prefHeight="452.0" prefWidth="900.0" style="-fx-background-color: dimgrey;">
+                                       <columns>
+                                          <TableColumn fx:id="weekAppointmentIDCol" prefWidth="55.0" text="AppID" />
+                                          <TableColumn fx:id="weekTitleCol" prefWidth="109.0" text="Title" />
+                                          <TableColumn fx:id="weekDescriptionCol" minWidth="0.0" prefWidth="120.0" text="Description" />
+                                          <TableColumn fx:id="weekLocationCol" prefWidth="119.0" text="Location" />
+                                          <TableColumn fx:id="weekContactCol" prefWidth="86.0" text="Contact" />
+                                          <TableColumn fx:id="weekTypeCol" prefWidth="99.0" text="Type" />
+                                          <TableColumn fx:id="weekStartDateCol" prefWidth="120.0" text="Start Date/Time" />
+                                          <TableColumn fx:id="weekEndDateCol" prefWidth="110.0" text="End Date/Time" />
+                                          <TableColumn fx:id="weekCustomerIDCol" prefWidth="81.0" text="Customer ID" />
+                                       </columns>
+                                    </TableView>
+                                 </children></AnchorPane>
                           </content>
                         </Tab>
                     </tabs>
@@ -67,6 +96,6 @@
       <Button fx:id="customerButton" layoutX="762.0" layoutY="14.0" mnemonicParsing="false" onAction="#customerButtonClicked" prefHeight="42.0" prefWidth="124.0" style="-fx-background-color: turquoise, linear-gradient(hotpink, turquoise); -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.5) , 0, 0.0 , 0 , 2); -fx-background-radius: 3,2,2,2; -fx-text-fill: black;" text="Customers" AnchorPane.topAnchor="15.0" />
       <Button fx:id="addButton" layoutX="14.0" layoutY="562.0" mnemonicParsing="false" onAction="#addButtonClicked" prefHeight="28.0" prefWidth="63.0" style="-fx-background-color: turquoise, linear-gradient(hotpink, turquoise); -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.5) , 0, 0.0 , 0 , 2); -fx-background-radius: 3,2,2,2; -fx-text-fill: black;" text="Add" AnchorPane.bottomAnchor="10.0" />
       <Button fx:id="deleteButton" layoutX="160.0" layoutY="562.0" mnemonicParsing="false" onAction="#deleteButtonClicked" prefHeight="28.0" prefWidth="63.0" style="-fx-background-color: turquoise, linear-gradient(hotpink, turquoise); -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.5) , 0, 0.0 , 0 , 2); -fx-background-radius: 3,2,2,2; -fx-text-fill: black;" text="Delete" AnchorPane.bottomAnchor="10.0" />
-      <Button fx:id="cancelButton" layoutX="87.0" layoutY="562.0" mnemonicParsing="false" onAction="#cancelButtonClicked" prefHeight="28.0" prefWidth="63.0" style="-fx-background-color: turquoise, linear-gradient(hotpink, turquoise); -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.5) , 0, 0.0 , 0 , 2); -fx-background-radius: 3,2,2,2; -fx-text-fill: black;" text="Update" AnchorPane.bottomAnchor="10.0" />
+      <Button fx:id="updateButton" layoutX="87.0" layoutY="562.0" mnemonicParsing="false" onAction="#updateButtonClicked" prefHeight="28.0" prefWidth="63.0" style="-fx-background-color: turquoise, linear-gradient(hotpink, turquoise); -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.5) , 0, 0.0 , 0 , 2); -fx-background-radius: 3,2,2,2; -fx-text-fill: black;" text="Update" AnchorPane.bottomAnchor="10.0" />
    </children>
 </AnchorPane>

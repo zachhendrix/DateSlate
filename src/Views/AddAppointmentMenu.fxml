@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -12,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="450.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.AddAppointmentMenuController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="450.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.AddAppointmentMenuController">
    <children>
       <ImageView fitHeight="500.0" fitWidth="693.0" pickOnBounds="true" AnchorPane.topAnchor="0.0">
          <image>
@@ -41,6 +42,7 @@
                   <RowConstraints maxHeight="136.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="148.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="150.0" minHeight="10.0" prefHeight="54.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="147.0" minHeight="10.0" prefHeight="52.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="147.0" minHeight="10.0" prefHeight="52.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
@@ -77,7 +79,6 @@
                   <TextField fx:id="titleText" prefWidth="315.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <TextField fx:id="descriptionText" prefWidth="315.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <TextField fx:id="locationText" prefWidth="315.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <TextField fx:id="endDateText" prefWidth="315.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                   <Label text="Type" textFill="WHITE" GridPane.rowIndex="5">
                      <font>
                         <Font name="System Bold" size="15.0" />
@@ -88,7 +89,6 @@
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="startDateText" prefWidth="315.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                   <TextField fx:id="typeText" prefWidth="315.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                   <ComboBox fx:id="contactComboBox" prefHeight="25.0" prefWidth="317.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <Label fx:id="appointmentIDLabel" prefHeight="21.0" prefWidth="88.0" textFill="WHITE" GridPane.columnIndex="1">
@@ -96,6 +96,14 @@
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
+                  <DatePicker fx:id="startDatePicker" onAction="#startDatePicked" prefHeight="25.0" prefWidth="304.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                  <DatePicker fx:id="endDatePicker" onAction="#endDatePicked" prefHeight="25.0" prefWidth="364.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                  <Label prefHeight="53.0" prefWidth="94.0" text="Customer" textFill="WHITE" wrapText="true" GridPane.rowIndex="8">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="customerComboBox" prefHeight="25.0" prefWidth="317.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                </children>
             </GridPane>
          </children>

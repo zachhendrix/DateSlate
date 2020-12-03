@@ -77,6 +77,8 @@ public class CustomerDataController implements Initializable
     @FXML
     private Button modifyButton;
     @FXML
+    private Button saveButton;
+    @FXML
     private Button deleteButton;
     @FXML
     private Button cancelButton;
@@ -101,7 +103,7 @@ public class CustomerDataController implements Initializable
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone")); 
         
         
-       
+       saveButton.setVisible(false);
     }    
 
     @FXML
@@ -155,6 +157,7 @@ public class CustomerDataController implements Initializable
         
         addButton.setVisible(false);
         deleteButton.setVisible(false);
+        saveButton.setVisible(true);
     }
     
     
@@ -184,6 +187,7 @@ public class CustomerDataController implements Initializable
         
         addButton.setVisible(true);
         deleteButton.setVisible(true);
+        saveButton.setVisible(false);
     }
 
 
