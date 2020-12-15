@@ -120,7 +120,7 @@
                                           </Label>
                                           <ComboBox fx:id="countryComboBox" prefHeight="25.0" prefWidth="293.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                           <ComboBox fx:id="regionComboBox" prefHeight="25.0" prefWidth="313.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                                          <Label fx:id="customerIDLabel" prefHeight="21.0" prefWidth="120.0" textFill="WHITE" GridPane.columnIndex="1">
+                                          <Label fx:id="customerIDLabel" prefHeight="21.0" prefWidth="282.0" textFill="WHITE" GridPane.columnIndex="1">
                                              <font>
                                                 <Font name="System Bold" size="15.0" />
                                              </font>

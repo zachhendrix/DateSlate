@@ -7,10 +7,17 @@ package Views;
 
 import Model.Clientele;
 import Model.Customer;
+import Utils.DBConnection;
+import Utils.DBQuery;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -89,7 +96,7 @@ public class CustomerDataController implements Initializable
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) 
+    public void initialize(URL url, ResourceBundle rb)
     {
         
         customerIDLabel.setText(String.valueOf(generateIDNum));
@@ -102,7 +109,7 @@ public class CustomerDataController implements Initializable
         postalCol.setCellValueFactory(new PropertyValueFactory<>("postalCode")); 
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone")); 
         
-        
+  
        saveButton.setVisible(false);
     }    
 
@@ -188,6 +195,7 @@ public class CustomerDataController implements Initializable
         addButton.setVisible(true);
         deleteButton.setVisible(true);
         saveButton.setVisible(false);
+        
     }
 
 

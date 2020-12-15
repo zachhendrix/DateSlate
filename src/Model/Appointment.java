@@ -5,6 +5,7 @@
  */
 package Model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -19,11 +20,11 @@ public class Appointment
     private String appDescription;
     private Customer appContact ;
     private String appType;
-    private Date startDate;
-    private Date endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private int customerID;
 
-    public Appointment (int appointmentID, String appTitle, String appLocation, String appDescription, String appType, Date startDate, Date endDate, int customerID) 
+    public Appointment (int appointmentID, String appTitle, String appLocation, String appDescription, Customer appContact, String appType, LocalDate startDate, LocalDate endDate, int customerID) 
     {
         this.appointmentID = appointmentID;
         this.appTitle = appTitle ;   
@@ -98,22 +99,22 @@ public class Appointment
         this.appType = appType;
     }
     
-    public Date getStartDate() 
+    public LocalDate getStartDate() 
     {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) 
+    public void setStartDate(LocalDate startDate) 
     {
         this.startDate = startDate;
     }
     
-    public Date getEndDate() 
+    public LocalDate getEndDate() 
     {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) 
+    public void setEndDate(LocalDate endDate) 
     {
         this.endDate = endDate;
     }

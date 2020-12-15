@@ -1,6 +1,8 @@
 package Views;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -51,6 +53,13 @@ public class UpdateAppointmentMenuController
     @FXML
     private ComboBox<?> customerComboBox;
 
+    
+    
+    public void initialize(URL url, ResourceBundle rb) 
+    {
+    
+    }
+    
     @FXML
     void addButtonClicked(ActionEvent event) 
     {

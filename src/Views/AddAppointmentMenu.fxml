@@ -90,8 +90,8 @@
                      </font>
                   </Label>
                   <TextField fx:id="typeText" prefWidth="315.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                  <ComboBox fx:id="contactComboBox" prefHeight="25.0" prefWidth="317.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <Label fx:id="appointmentIDLabel" prefHeight="21.0" prefWidth="88.0" textFill="WHITE" GridPane.columnIndex="1">
+                  <ComboBox fx:id="contactComboBox" prefHeight="25.0" prefWidth="317.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="4" />
+                  <Label fx:id="appointmentIDLabel" prefHeight="18.0" prefWidth="88.0" textFill="WHITE" GridPane.columnIndex="1">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>
@@ -103,7 +103,7 @@
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="customerComboBox" prefHeight="25.0" prefWidth="317.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                  <ComboBox fx:id="customerComboBox" prefHeight="25.0" prefWidth="317.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="8" />
                </children>
             </GridPane>
          </children>

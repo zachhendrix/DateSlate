@@ -40,7 +40,7 @@ public class ScheduleMenuController implements Initializable
 
     Stage stage;
     Parent scene;
-    private static int generateAppIDNum;
+
     
     @FXML
     private Tab overviewTab;
@@ -151,6 +151,7 @@ public class ScheduleMenuController implements Initializable
     @FXML
     private void updateButtonClicked(ActionEvent event) throws IOException 
     {
+
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("UpdateAppointmentMenu.fxml"));
         stage.setScene(new Scene(scene));

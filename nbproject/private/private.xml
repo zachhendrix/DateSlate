@@ -3,11 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Z/Desktop/DateSlate/src/Views/CustomerDataController.java</file>
-            <file>file:/C:/Users/Z/Desktop/DateSlate/src/Utils/DBConnection.java</file>
-            <file>file:/C:/Users/Z/Desktop/DateSlate/src/Views/LoginMenuController.java</file>
-            <file>file:/C:/Users/Z/Desktop/DateSlate/src/Main/Lang_fr.properties</file>
-            <file>file:/C:/Users/Z/Desktop/DateSlate/src/Main/Main.java</file>
+            <file>file:/C:/Users/zach.hendrix.AD/Desktop/DateSlate/src/Model/Clientele.java</file>
+            <file>file:/C:/Users/zach.hendrix.AD/Desktop/DateSlate/src/Model/Appointment.java</file>
+            <file>file:/C:/Users/zach.hendrix.AD/Desktop/DateSlate/src/Utils/DBQuery.java</file>
+            <file>file:/C:/Users/zach.hendrix.AD/Desktop/DateSlate/src/Views/CustomerDataController.java</file>
+            <file>file:/C:/Users/zach.hendrix.AD/Desktop/DateSlate/src/Views/AddAppointmentMenuController.java</file>
+            <file>file:/C:/Users/zach.hendrix.AD/Desktop/DateSlate/src/Main/Main.java</file>
+            <file>file:/C:/Users/zach.hendrix.AD/Desktop/DateSlate/src/Model/Schedule.java</file>
+            <file>file:/C:/Users/zach.hendrix.AD/Desktop/DateSlate/src/Model/Customer.java</file>
         </group>
     </open-files>
 </project-private>
