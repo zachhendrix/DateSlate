@@ -1,21 +1,24 @@
 package Views;
 
+import Model.Customer;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class UpdateAppointmentMenuController 
+public class UpdateAppointmentMenuController implements Initializable
 {
     Stage stage;
     Parent scene;
@@ -39,8 +42,11 @@ public class UpdateAppointmentMenuController
     private TextField typeText;
 
     @FXML
-    private ComboBox<?> contactComboBox;
+    private ComboBox<Customer> contactComboBox;
 
+    @FXML
+    private ComboBox<Customer> customerComboBox;
+        
     @FXML
     private Label appointmentIDLabel;
 
@@ -48,13 +54,27 @@ public class UpdateAppointmentMenuController
     private DatePicker startDatePicker;
 
     @FXML
+    private ChoiceBox<?> startDateMeridiem;
+
+    @FXML
+    private TextField startDateHour;
+
+    @FXML
+    private TextField startDateMinute;
+
+    @FXML
     private DatePicker endDatePicker;
 
     @FXML
-    private ComboBox<?> customerComboBox;
+    private ChoiceBox<?> endDateMeridiem;
 
+    @FXML
+    private TextField endDateHour;
+
+    @FXML
+    private TextField endDateMinute;
     
-    
+    @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
     

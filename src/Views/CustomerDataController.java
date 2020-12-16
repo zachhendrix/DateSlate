@@ -203,7 +203,7 @@ public class CustomerDataController implements Initializable
     private void deleteButtonClicked(ActionEvent event) 
     {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Dialog");
+        alert.setTitle("onfirmation Dialog");
         alert.setHeaderText("Selected Part Will Be Deleted");
         alert.setContentText("Are you ok with this?");
 

@@ -9,14 +9,18 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.Date;
+import java.util.Optional;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -24,7 +28,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-public class AddAppointmentMenuController 
+public class AddAppointmentMenuController implements Initializable
 {
     Stage stage;
     Parent scene;
@@ -50,24 +54,41 @@ public class AddAppointmentMenuController
 
     @FXML
     private ComboBox<Customer> contactComboBox;
-
+    
+    @FXML
+    private ComboBox<Customer> customerComboBox;
+    
     @FXML
     private Label appointmentIDLabel;
-
+    
     @FXML
     private DatePicker startDatePicker;
+
+    @FXML
+    private ChoiceBox<?> startDateMeridiem;
+
+    @FXML
+    private TextField startDateHour;
+
+    @FXML
+    private TextField startDateMinute;
 
     @FXML
     private DatePicker endDatePicker;
 
     @FXML
-    private ComboBox<Customer> customerComboBox;
+    private ChoiceBox<?> endDateMeridiem;
+
+    @FXML
+    private TextField endDateHour;
+
+    @FXML
+    private TextField endDateMinute;
 
 
-    
+    @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
-        generateAppIDNum = 500;
         appointmentIDLabel.setText(String.valueOf(generateAppIDNum));
         customerComboBox.setItems(Clientele.getAllCustomers());
         
@@ -101,23 +122,24 @@ public class AddAppointmentMenuController
     @FXML
     void cancelButtonClicked(ActionEvent event) throws IOException 
     {
-        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("ScheduleMenu.fxml"));
-        stage.setScene(new Scene(scene));
-        stage.show();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("You will be sent back to the Schedule Screen");
+        alert.setContentText("Are you ok with this?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        
+        if (result.get() == ButtonType.OK)
+        {
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("ScheduleMenu.fxml"));
+            stage.setScene(new Scene(scene));
+            stage.show();
+        }
 
     }
 
-    @FXML
-    void startDatePicked(ActionEvent event) 
-    {
-
-    }
-    @FXML
-    void endDatePicked(ActionEvent event) 
-    {
-
-    }
+    
 
 
 }
