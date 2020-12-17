@@ -24,7 +24,7 @@ public class UpdateAppointmentMenuController implements Initializable
     Parent scene;
 
     @FXML
-    private Button addButton;
+    private Button saveButton;
 
     @FXML
     private Button cancelButton;
@@ -54,9 +54,6 @@ public class UpdateAppointmentMenuController implements Initializable
     private DatePicker startDatePicker;
 
     @FXML
-    private ChoiceBox<?> startDateMeridiem;
-
-    @FXML
     private TextField startDateHour;
 
     @FXML
@@ -64,9 +61,6 @@ public class UpdateAppointmentMenuController implements Initializable
 
     @FXML
     private DatePicker endDatePicker;
-
-    @FXML
-    private ChoiceBox<?> endDateMeridiem;
 
     @FXML
     private TextField endDateHour;
@@ -81,8 +75,9 @@ public class UpdateAppointmentMenuController implements Initializable
     }
     
     @FXML
-    void addButtonClicked(ActionEvent event) 
+    void saveButtonClicked(ActionEvent event) 
     {
+        
 
     }
 
@@ -96,16 +91,5 @@ public class UpdateAppointmentMenuController implements Initializable
 
     }
 
-    @FXML
-    void startDatePicked(ActionEvent event) 
-    {
-
-    }
-    
-    @FXML
-    void endDatePicked(ActionEvent event) 
-    {
-
-    }
 
 }

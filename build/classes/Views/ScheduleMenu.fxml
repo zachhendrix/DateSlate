@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -8,6 +9,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.ScheduleMenuController">
    <children>
@@ -97,5 +99,25 @@
       <Button fx:id="addButton" layoutX="14.0" layoutY="562.0" mnemonicParsing="false" onAction="#addButtonClicked" prefHeight="28.0" prefWidth="63.0" style="-fx-background-color: turquoise, linear-gradient(hotpink, turquoise); -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.5) , 0, 0.0 , 0 , 2); -fx-background-radius: 3,2,2,2; -fx-text-fill: black;" text="Add" AnchorPane.bottomAnchor="10.0" />
       <Button fx:id="deleteButton" layoutX="160.0" layoutY="562.0" mnemonicParsing="false" onAction="#deleteButtonClicked" prefHeight="28.0" prefWidth="63.0" style="-fx-background-color: turquoise, linear-gradient(hotpink, turquoise); -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.5) , 0, 0.0 , 0 , 2); -fx-background-radius: 3,2,2,2; -fx-text-fill: black;" text="Delete" AnchorPane.bottomAnchor="10.0" />
       <Button fx:id="updateButton" layoutX="87.0" layoutY="562.0" mnemonicParsing="false" onAction="#updateButtonClicked" prefHeight="28.0" prefWidth="63.0" style="-fx-background-color: turquoise, linear-gradient(hotpink, turquoise); -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.5) , 0, 0.0 , 0 , 2); -fx-background-radius: 3,2,2,2; -fx-text-fill: black;" text="Update" AnchorPane.bottomAnchor="10.0" />
+      <Label fx:id="currentTimeLabel" layoutX="629.0" layoutY="18.0" prefHeight="36.0" prefWidth="116.0" style="-fx-text-fill: hotpink;" textFill="WHITE" AnchorPane.leftAnchor="625.0" AnchorPane.topAnchor="5.0">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="502.0" layoutY="5.0" prefHeight="36.0" prefWidth="116.0" style="-fx-text-fill: White;" text="Current Time:" textFill="WHITE" AnchorPane.leftAnchor="502.0" AnchorPane.topAnchor="5.0">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="502.0" layoutY="35.0" prefHeight="36.0" prefWidth="116.0" style="-fx-text-fill: White;" text="Current Date:" textFill="WHITE" AnchorPane.topAnchor="35.0">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="currentDateLabel" layoutX="626.0" layoutY="35.0" prefHeight="36.0" prefWidth="116.0" style="-fx-text-fill: turquoise, linear-gradient(hotpink, turquoise);" textFill="WHITE" AnchorPane.leftAnchor="625.0" AnchorPane.topAnchor="35.0">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

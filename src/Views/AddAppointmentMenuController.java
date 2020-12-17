@@ -65,9 +65,6 @@ public class AddAppointmentMenuController implements Initializable
     private DatePicker startDatePicker;
 
     @FXML
-    private ChoiceBox<?> startDateMeridiem;
-
-    @FXML
     private TextField startDateHour;
 
     @FXML
@@ -75,9 +72,6 @@ public class AddAppointmentMenuController implements Initializable
 
     @FXML
     private DatePicker endDatePicker;
-
-    @FXML
-    private ChoiceBox<?> endDateMeridiem;
 
     @FXML
     private TextField endDateHour;

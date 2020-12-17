@@ -11,9 +11,20 @@ import Model.Customer;
 import Model.Schedule;
 import java.net.URL;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -24,6 +35,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -75,6 +87,12 @@ public class ScheduleMenuController implements Initializable
     @FXML
     private Button updateButton;
 
+    @FXML
+    private Label currentTimeLabel;
+
+    @FXML
+    private Label currentDateLabel;
+
     /**
      * Initializes the controller class.
      */
@@ -91,8 +109,28 @@ public class ScheduleMenuController implements Initializable
         typeCol.setCellValueFactory(new PropertyValueFactory<>("appType")); 
         startDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate")); 
         endDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+
+
+
+   }   
+    
+    public void dateAndTime() throws InterruptedException
+    {
+       
+        int hour = localDateTime.getHour();
+        int minute = localDateTime.getMinute();
+            
+        String currentTime = String.format("%02d:%02d", hour, minute);
+        currentTimeLabel.setText(currentTime);
+            
+        DateTimeFormatter dateFormatted = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH);
+        String dateFormatStr = dateFormatted.format(localDateTime);
+        currentDateLabel.setText(dateFormatStr);
+
         
-    }    
+    }
+        
+
 
     @FXML
     private void overviewTabClicked(Event event) 
