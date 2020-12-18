@@ -11,19 +11,13 @@ import Model.Customer;
 import Model.Schedule;
 import java.net.URL;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.logging.Level;
+
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -164,12 +158,12 @@ public class ScheduleMenuController implements Initializable
         
         
         
-        dateAndTime();
+        dateAndTimeDisplay();
 
 
    }   
     
-    public void dateAndTime() 
+    public void dateAndTimeDisplay() 
     {
         Timeline timeline = new Timeline();
         timeline.getKeyFrames().add(new KeyFrame(Duration.ZERO, event ->
@@ -261,16 +255,16 @@ public class ScheduleMenuController implements Initializable
     @FXML
     private void deleteButtonClicked(ActionEvent event)
     {
+        Appointment appointment = appointmentTableview.getSelectionModel().getSelectedItem();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText("Selected Part Will Be Deleted");
+        alert.setHeaderText(" You are about to delete appointment " + appointment.getAppointmentID() + " of type" + appointment.getAppType());
         alert.setContentText("Are you ok with this?");
 
         Optional<ButtonType> result = alert.showAndWait();
         
         if (result.get() == ButtonType.OK)
         {
-            Appointment appointment = appointmentTableview.getSelectionModel().getSelectedItem();
             Schedule.deleteAppointment(appointment);
 
         } 
@@ -280,7 +274,7 @@ public class ScheduleMenuController implements Initializable
     private void updateButtonClicked(ActionEvent event) throws IOException 
     {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("ModifyProduct.fxml"));
+        loader.setLocation(getClass().getResource("UpdateAppointmentMenu.fxml"));
         loader.load();
         
         UpdateAppointmentMenuController UAMController = loader.getController();
@@ -288,7 +282,7 @@ public class ScheduleMenuController implements Initializable
 
 
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("UpdateAppointmentMenu.fxml"));
+        Parent scene = loader.getRoot();
         stage.setScene(new Scene(scene));
         stage.show();
     }
