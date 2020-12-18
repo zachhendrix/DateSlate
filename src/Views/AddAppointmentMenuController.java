@@ -7,6 +7,7 @@ import Model.Schedule;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import java.util.Date;
 import java.util.Optional;
@@ -93,17 +94,18 @@ public class AddAppointmentMenuController implements Initializable
     void addButtonClicked(ActionEvent event) throws IOException 
     {
         
+        
         int appointmentID = generateAppIDNum++;  
         String appTitle = titleText.getText();  
         String appLocation = locationText.getText(); 
         String appDescription = descriptionText.getText();  
         Customer appContact = contactComboBox.getValue();  
         String appType = typeText.getText();
-        LocalDate startDate = startDatePicker.getValue();
-        LocalDate endDate = endDatePicker.getValue();
-        int customerID = customerComboBox.getValue().getCustomerID();
+        LocalDateTime startDate = startDatePicker.getValue().atTime(Integer.parseInt(startDateHour.getText()), Integer.parseInt(startDateMinute.getText()));
+        LocalDateTime endDate = endDatePicker.getValue().atTime(Integer.parseInt(endDateHour.getText()), Integer.parseInt(endDateMinute.getText()));
+        Customer appCustomer = customerComboBox.getValue();
         
-        Schedule.addAppointment(new Appointment(appointmentID, appTitle,appLocation,appDescription,appContact,appType, startDate, endDate, customerID ));
+        Schedule.addAppointment(new Appointment(appointmentID, appTitle,appLocation,appDescription,appContact,appType, startDate, endDate, appCustomer ));
  
         
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();

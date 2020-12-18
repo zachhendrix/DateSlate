@@ -5,8 +5,7 @@
  */
 package Model;
 
-import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -20,20 +19,21 @@ public class Appointment
     private String appDescription;
     private Customer appContact ;
     private String appType;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private int customerID;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    private Customer appCustomer;
 
-    public Appointment (int appointmentID, String appTitle, String appLocation, String appDescription, Customer appContact, String appType, LocalDate startDate, LocalDate endDate, int customerID) 
+    public Appointment (int appointmentID, String appTitle, String appLocation, String appDescription, Customer appContact, String appType, LocalDateTime startDate, LocalDateTime endDate, Customer appCustomer) 
     {
         this.appointmentID = appointmentID;
         this.appTitle = appTitle ;   
         this.appLocation = appLocation;
         this.appDescription = appDescription;
+        this.appContact = appContact;
         this.appType = appType;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.customerID = customerID;
+        this.appCustomer = appCustomer;
     }
     
     
@@ -99,24 +99,34 @@ public class Appointment
         this.appType = appType;
     }
     
-    public LocalDate getStartDate() 
+    public LocalDateTime getStartDate() 
     {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) 
+    public void setStartDate(LocalDateTime startDate) 
     {
         this.startDate = startDate;
     }
     
-    public LocalDate getEndDate() 
+    public LocalDateTime getEndDate() 
     {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) 
+    public void setEndDate(LocalDateTime endDate) 
     {
         this.endDate = endDate;
+    }
+    
+    public Customer getAppCustomer() 
+    {
+        return appCustomer;
+    }
+
+    public void setAppCustomer(Customer appCustomer) 
+    {
+        this.appCustomer = appCustomer;
     }
 
     

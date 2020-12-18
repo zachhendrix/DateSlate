@@ -25,6 +25,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -41,6 +43,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -57,7 +60,7 @@ public class ScheduleMenuController implements Initializable
     @FXML
     private Tab overviewTab;
     @FXML
-    private TableView<Appointment> appointmentTableView;
+    private TableView<Appointment> appointmentTableview;
     @FXML
     private TableColumn<Appointment, Integer> appointmentIDCol;
     @FXML
@@ -75,15 +78,63 @@ public class ScheduleMenuController implements Initializable
     @FXML
     private TableColumn<Appointment, Date> endDateCol;
     @FXML
+    private TableColumn<Appointment, Customer> customerIDCol;
+    
+    @FXML
     private Tab monthTab;
+    @FXML
+    private TableView<Appointment> appointmentMonthTableview;
+    @FXML
+    private TableColumn<Appointment, Integer> monthAppointmentIDCol;
+    @FXML
+    private TableColumn<Appointment, String> monthTitleCol;
+    @FXML
+    private TableColumn<Appointment, String> monthDescriptionCol;
+    @FXML
+    private TableColumn<Appointment, String> monthLocationCol;
+    @FXML
+    private TableColumn<Appointment, Customer> monthContactCol;
+    @FXML
+    private TableColumn<Appointment, String> monthTypeCol;
+    @FXML
+    private TableColumn<Appointment, Date> monthStartDateCol;
+    @FXML
+    private TableColumn<Appointment, Date> monthEndDateCol;
+    @FXML
+    private TableColumn<Appointment, Customer> monthCustomerIDCol;
+   
     @FXML
     private Tab weekTab;
     @FXML
+    private TableView<Appointment> appointmentWeekTableview;
+    @FXML
+    private TableColumn<Appointment, Integer> weekAppointmentIDCol;
+    @FXML
+    private TableColumn<Appointment, String> weekTitleCol;
+    @FXML
+    private TableColumn<Appointment, String> weekDescriptionCol;
+    @FXML
+    private TableColumn<Appointment, String> weekLocationCol;
+    @FXML
+    private TableColumn<Appointment, Customer> weekContactCol;
+    @FXML
+    private TableColumn<Appointment, String> weekTypeCol;
+    @FXML
+    private TableColumn<Appointment, Date> weekStartDateCol;
+    @FXML
+    private TableColumn<Appointment, Date> weekEndDateCol;
+    @FXML
+    private TableColumn<Appointment, Customer> weekCustomerIDCol;
+
+    @FXML
     private Button customerButton;
+    
     @FXML
     private Button addButton;
+    
     @FXML
     private Button deleteButton;
+    
     @FXML
     private Button updateButton;
 
@@ -99,7 +150,7 @@ public class ScheduleMenuController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
-        appointmentTableView.setItems(Schedule.getAllAppointments());
+        appointmentTableview.setItems(Schedule.getAllAppointments());
         
         appointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
         titleCol.setCellValueFactory(new PropertyValueFactory<>("appTitle"));  
@@ -109,25 +160,36 @@ public class ScheduleMenuController implements Initializable
         typeCol.setCellValueFactory(new PropertyValueFactory<>("appType")); 
         startDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate")); 
         endDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
-
+        customerIDCol.setCellValueFactory(new PropertyValueFactory<>("appCustomer"));
+        
+        
+        
+        dateAndTime();
 
 
    }   
     
-    public void dateAndTime() throws InterruptedException
+    public void dateAndTime() 
     {
+        Timeline timeline = new Timeline();
+        timeline.getKeyFrames().add(new KeyFrame(Duration.ZERO, event ->
+                {
+                      LocalDateTime localDateTime = LocalDateTime.now();
        
-        int hour = localDateTime.getHour();
-        int minute = localDateTime.getMinute();
+                      int hour = localDateTime.getHour();
+                      int minute = localDateTime.getMinute();
             
-        String currentTime = String.format("%02d:%02d", hour, minute);
-        currentTimeLabel.setText(currentTime);
+                      String currentTime = String.format("%02d:%02d", hour, minute);
+                      currentTimeLabel.setText(currentTime);
             
-        DateTimeFormatter dateFormatted = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH);
-        String dateFormatStr = dateFormatted.format(localDateTime);
-        currentDateLabel.setText(dateFormatStr);
-
-        
+                      DateTimeFormatter dateFormatted = DateTimeFormatter.ofPattern("MM-dd-yyyy", Locale.ENGLISH);
+                      String dateFormatStr = dateFormatted.format(localDateTime);
+                      currentDateLabel.setText(dateFormatStr);
+                }));
+        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1)));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+     
     }
         
 
@@ -135,19 +197,47 @@ public class ScheduleMenuController implements Initializable
     @FXML
     private void overviewTabClicked(Event event) 
     {
+        appointmentTableview.setItems(Schedule.getAllAppointments());
         
+        appointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("appTitle"));  
+        descriptionCol.setCellValueFactory(new PropertyValueFactory<>("appLocation")); 
+        locationCol.setCellValueFactory(new PropertyValueFactory<>("appDescription"));   
+        contactCol.setCellValueFactory(new PropertyValueFactory<>("appContact")); 
+        typeCol.setCellValueFactory(new PropertyValueFactory<>("appType")); 
+        startDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate")); 
+        endDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        customerIDCol.setCellValueFactory(new PropertyValueFactory<>("appCustomer"));
     }
 
     @FXML
     private void monthTabClicked(Event event) 
     {
-        
+        appointmentMonthTableview.setItems(Schedule.getAllAppointments());
+        monthAppointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+        monthTitleCol.setCellValueFactory(new PropertyValueFactory<>("appTitle"));  
+        monthDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("appLocation")); 
+        monthLocationCol.setCellValueFactory(new PropertyValueFactory<>("appDescription"));   
+        monthContactCol.setCellValueFactory(new PropertyValueFactory<>("appContact")); 
+        monthTypeCol.setCellValueFactory(new PropertyValueFactory<>("appType")); 
+        monthStartDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate")); 
+        monthEndDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        monthCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("appCustomer"));
     }
 
     @FXML
     private void weekTabClicked(Event event) 
     {
-        
+        appointmentWeekTableview.setItems(Schedule.getAllAppointments());
+        weekAppointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+        weekTitleCol.setCellValueFactory(new PropertyValueFactory<>("appTitle"));  
+        weekDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("appLocation")); 
+        weekLocationCol.setCellValueFactory(new PropertyValueFactory<>("appDescription"));   
+        weekContactCol.setCellValueFactory(new PropertyValueFactory<>("appContact")); 
+        weekTypeCol.setCellValueFactory(new PropertyValueFactory<>("appType")); 
+        weekStartDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate")); 
+        weekEndDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        weekCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("appCustomer"));
     }
 
     @FXML
@@ -180,7 +270,7 @@ public class ScheduleMenuController implements Initializable
         
         if (result.get() == ButtonType.OK)
         {
-            Appointment appointment = appointmentTableView.getSelectionModel().getSelectedItem();
+            Appointment appointment = appointmentTableview.getSelectionModel().getSelectedItem();
             Schedule.deleteAppointment(appointment);
 
         } 
@@ -189,6 +279,13 @@ public class ScheduleMenuController implements Initializable
     @FXML
     private void updateButtonClicked(ActionEvent event) throws IOException 
     {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("ModifyProduct.fxml"));
+        loader.load();
+        
+        UpdateAppointmentMenuController UAMController = loader.getController();
+        UAMController.sendModData(appointmentTableview.getSelectionModel().getSelectedItem());
+
 
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("UpdateAppointmentMenu.fxml"));

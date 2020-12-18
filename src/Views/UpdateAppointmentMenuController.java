@@ -1,5 +1,6 @@
 package Views;
 
+import Model.Appointment;
 import Model.Customer;
 import java.io.IOException;
 import java.net.URL;
@@ -22,6 +23,7 @@ public class UpdateAppointmentMenuController implements Initializable
 {
     Stage stage;
     Parent scene;
+    private Appointment appointmentRef;
 
     @FXML
     private Button saveButton;
@@ -89,6 +91,26 @@ public class UpdateAppointmentMenuController implements Initializable
         stage.setScene(new Scene(scene));
         stage.show();
 
+    }
+
+    void sendModData(Appointment appointment) 
+    {
+        appointmentRef = appointment;
+        appointmentIDLabel.setText(String.valueOf((appointment).getAppointmentID()));
+        titleText.setText(String.valueOf(appointment.getAppTitle()));
+        locationText.setText(String.valueOf((appointment).getAppLocation()));
+        descriptionText.setText(String.valueOf((appointment).getAppDescription()));
+        typeText.setText(String.valueOf((appointment).getAppType()));
+        customerComboBox.setValue(appointment.getAppContact());
+        startDatePicker.setValue((appointment).getStartDate().toLocalDate());
+        startDateHour.setText(String.valueOf((appointment).getStartDate().getHour()));
+        startDateMinute.setText(String.valueOf((appointment).getStartDate().getMinute()));
+        endDatePicker.setValue((appointment).getEndDate().toLocalDate());
+        endDateHour.setText(String.valueOf((appointment).getEndDate().getHour()));
+        endDateMinute.setText(String.valueOf((appointment).getEndDate().getMinute()));
+        customerComboBox.setValue(appointment.getAppCustomer());
+        
+        
     }
 
 
