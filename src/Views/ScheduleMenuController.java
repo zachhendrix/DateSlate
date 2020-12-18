@@ -258,7 +258,7 @@ public class ScheduleMenuController implements Initializable
         Appointment appointment = appointmentTableview.getSelectionModel().getSelectedItem();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText(" You are about to delete appointment " + appointment.getAppointmentID() + " of type" + appointment.getAppType());
+        alert.setHeaderText(" You are about to delete appointment " + appointment.getAppointmentID() + " of type " + appointment.getAppType());
         alert.setContentText("Are you ok with this?");
 
         Optional<ButtonType> result = alert.showAndWait();
