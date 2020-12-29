@@ -5,11 +5,17 @@
  */
 package Utils;
 
+import Model.Countries;
+import Model.Country;
 import Model.Customer;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javafx.collections.ObservableList;
 
@@ -26,7 +32,7 @@ public class DBConnection
     private static final String databaseURL = protocol + vendorName + serverName;
     
     private static final String MYSQLJDBCDriver = "com.mysql.cj.jdbc.Driver";
-    private static Connection conn = null;
+    public static Connection conn = null;
     
     private static final String username = "U06u79";
     private static String password = "53688873417";
@@ -55,6 +61,26 @@ public class DBConnection
         
         return conn;
     }
+    
+    public static void loadCountryData() throws SQLException
+    {
+        DBQuery.setStatement(conn);
+        Statement statement = DBQuery.getStatement();
+        String selectStatement = "SELECT * From countries";
+        statement.execute(selectStatement);
+        ResultSet rs = statement.getResultSet();
+        
+        while(rs.next())
+        {
+            int countryID = rs.getInt("Country_ID");
+            String countryName = rs.getString("Country");
+            Countries.addCountry(new Country(countryID, countryName));
+            
+            
+            
+        }
+    }
+  
     
     public static void closeConnection()throws SQLException
     {

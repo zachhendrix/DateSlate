@@ -5,10 +5,12 @@
  */
 package Views;
 import Model.*;
+import static com.mysql.cj.conf.PropertyKey.logger;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -103,6 +105,7 @@ public class LoginMenuController implements Initializable
     {
         if(userIdTextField.getText().equals(username) && passwordTextField.getText().equals(password))
         {
+            Logging.goodLogin();
             stage = (Stage)((Button)event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("ScheduleMenu.fxml"));
             stage.setScene(new Scene(scene));
@@ -111,16 +114,14 @@ public class LoginMenuController implements Initializable
         
         else
         {
-          
             
-            //TODO: DIFFERENT LANGUAGE ALERTS
-               Logging.SevereWarning();
-               Alert alert = new Alert(Alert.AlertType.WARNING);
-               alert.setTitle("Login Warning");
-               alert.setHeaderText("Incorrect Username or Password");
-               alert.setContentText("Try Again");
-               alert.showAndWait();  
-               
+            //TODO: DIFFERENT ALERT LANGUAGE
+            Logging.badLogin();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Login Warning");
+            alert.setHeaderText("Incorrect Username or Password");
+            alert.setContentText("Try Again");
+            alert.showAndWait();  
                
         }
     }

@@ -6,6 +6,8 @@
 package Views;
 
 import Model.Clientele;
+import Model.Countries;
+import Model.Country;
 import Model.Customer;
 import Utils.DBConnection;
 import Utils.DBQuery;
@@ -76,7 +78,7 @@ public class CustomerDataController implements Initializable
     @FXML
     private Label regionLabel;
     @FXML
-    private ComboBox<?> countryComboBox;
+    private ComboBox<Country> countryComboBox;
     @FXML
     private ComboBox<?> regionComboBox;
     @FXML
@@ -101,7 +103,7 @@ public class CustomerDataController implements Initializable
         
         customerIDLabel.setText(String.valueOf(generateIDNum));
         customerTableView.setItems(Clientele.getAllCustomers());
-        
+        countryComboBox.setItems(Countries.getAllCountries() );
         customerIDCol.setCellValueFactory(new PropertyValueFactory<>("customerID"));
         firstNameCol.setCellValueFactory(new PropertyValueFactory<>("firstName"));  
         lastNameCol.setCellValueFactory(new PropertyValueFactory<>("lastName")); 
@@ -120,15 +122,14 @@ public class CustomerDataController implements Initializable
         if(firstNameText.getText().length() >= 1 && lastNameText.getText().length() >= 1 && addressText.getText().length() >= 1 && Integer.parseInt(postalText.getText()) >= 1 && Integer.parseInt(phoneText.getText()) >= 1)
         {
             int customerID = generateIDNum++;
-            String firstName = firstNameText.getText();
-            String lastName = lastNameText.getText();
+            String customerName = firstNameText.getText()+ " " + lastNameText.getText();
             String address = addressText.getText();
             int postalCode = Integer.parseInt(postalText.getText());
             String country = countryComboBox.getSelectionModel().toString();
             String state = regionComboBox.getSelectionModel().toString();
-            int phone = Integer.parseInt(phoneText.getText());
+            long phone = Integer.parseInt(phoneText.getText());
         
-            Clientele.addCustomer(new Customer(customerID, firstName,lastName,address,postalCode,country, state, phone));
+            Clientele.addCustomer(new Customer(customerID, customerName,address,postalCode,country, state, phone));
         
             customerIDLabel.setText(String.valueOf(generateIDNum));
             firstNameText.clear();
@@ -174,15 +175,14 @@ public class CustomerDataController implements Initializable
         Clientele.deleteCustomer(customerRef);
         
         int customerID = Integer.parseInt(customerIDLabel.getText());
-        String firstName = firstNameText.getText();
-        String lastName = lastNameText.getText();
+        String customerName = firstNameText.getText()+ " " + lastNameText.getText();
         String address = addressText.getText();
         int postalCode = Integer.parseInt(postalText.getText());
         String country = countryComboBox.getSelectionModel().toString();
         String state = regionComboBox.getSelectionModel().toString();
-        int phone = Integer.parseInt(phoneText.getText());
+        long phone = Integer.parseInt(phoneText.getText());
         
-        Clientele.addCustomer(new Customer(customerID, firstName,lastName,address,postalCode,country, state, phone));
+        Clientele.addCustomer(new Customer(customerID, customerName,address,postalCode,country, state, phone));
         
         
         customerIDLabel.setText(String.valueOf(generateIDNum));

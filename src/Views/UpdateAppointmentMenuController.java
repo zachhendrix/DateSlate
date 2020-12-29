@@ -6,6 +6,8 @@ import Model.Customer;
 import Model.Schedule;
 import java.io.IOException;
 import java.net.URL;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -19,6 +21,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -81,7 +84,43 @@ public class UpdateAppointmentMenuController implements Initializable
         contactComboBox.setItems(Clientele.getAllCustomers());
         customerComboBox.setItems(Clientele.getAllCustomers());
         
+        restrictDates();
     }
+    
+    public void restrictDates()
+    {
+        startDatePicker.setDayCellFactory(picker -> new DateCell()
+        {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) 
+            {
+                super.updateItem(date,empty);
+                if(date.getDayOfWeek() == DayOfWeek.SATURDAY ||date.getDayOfWeek() == DayOfWeek.SUNDAY)
+                {
+                    setDisable(true);
+                    setStyle("-fx-background-color: #ffc0cb;");
+                }
+            }
+        });
+        startDatePicker.setEditable(false);
+        
+        endDatePicker.setDayCellFactory(picker -> new DateCell()
+        {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) 
+            {
+                super.updateItem(date,empty);
+                if(date.getDayOfWeek() == DayOfWeek.SATURDAY ||date.getDayOfWeek() == DayOfWeek.SUNDAY)
+                {
+                    setDisable(true);
+                    setStyle("-fx-background-color: #ffc0cb;");
+                }
+            }
+        });
+        endDatePicker.setEditable(false);
+    }
+    
+    
     
     @FXML
     void saveButtonClicked(ActionEvent event) throws IOException 
@@ -99,16 +138,28 @@ public class UpdateAppointmentMenuController implements Initializable
         LocalDateTime endDate = endDatePicker.getValue().atTime(Integer.parseInt(endDateHour.getText()), Integer.parseInt(endDateMinute.getText()));
         Customer appCustomer = customerComboBox.getValue();
         
-        Schedule.addAppointment(new Appointment(appointmentID, appTitle,appLocation,appDescription,appContact,appType, startDate, endDate, appCustomer ));
-
         
+        if(appTitle.length() >= 1 && appLocation.length() >= 1 && appType.length() >= 1 && (startDate.getHour()>= 8 && startDate.getHour() <= 22) && endDate.isAfter(startDate))
+        {
+            Schedule.addAppointment(new Appointment(appointmentID, appTitle,appLocation,appDescription,appContact,appType, startDate, endDate, appCustomer ));
 
+            //Loads the Main Menu screen.
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("ScheduleMenu.fxml"));
+            stage.setScene(new Scene(scene));
+            stage.show();
+        }
         
-        //Loads the Main Menu screen.
-        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("ScheduleMenu.fxml"));
-        stage.setScene(new Scene(scene));
-        stage.show();
+        else
+        {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Data Is Invalid");
+            alert.setHeaderText("Please Check Data is Accurate and Possible");
+            alert.setContentText("Every text should be filled, Times should be scheduled between 8am and 10pm (0800 hours - 2200 hours) and end date and time should fall after start date and time");
+
+            Optional<ButtonType> result = alert.showAndWait();
+        
+        }
 
     }
 

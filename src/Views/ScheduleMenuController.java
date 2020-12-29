@@ -9,8 +9,13 @@ import Model.Appointment;
 import Model.Clientele;
 import Model.Customer;
 import Model.Schedule;
+import static Utils.DBConnection.conn;
 import java.net.URL;
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -157,7 +162,6 @@ public class ScheduleMenuController implements Initializable
         customerIDCol.setCellValueFactory(new PropertyValueFactory<>("appCustomer"));
         
         
-        
         dateAndTimeDisplay();
 
 
@@ -185,7 +189,8 @@ public class ScheduleMenuController implements Initializable
         timeline.play();
      
     }
-        
+
+
 
 
     @FXML

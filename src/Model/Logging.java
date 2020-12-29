@@ -1,5 +1,10 @@
 package Model;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.time.Instant;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,37 +16,43 @@ import java.util.logging.SimpleFormatter;
  */
 public class Logging 
 {
-    Logger logger = Logger.getLogger("log.txt");
     public static void main(String[] args) 
     {
         
-        Logger logger = Logger.getLogger("log.txt");
-        
-        try {
-            FileHandler fileHandler = new FileHandler("log.txt", true);
-            SimpleFormatter simpleFormatter = new SimpleFormatter();
-            fileHandler.setFormatter(simpleFormatter);
-            logger.addHandler(fileHandler);
-        } 
-        
-        catch (IOException ex) 
+    }
+    
+    public static void badLogin()
+    {
+         try 
         {
-            Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
+            PrintWriter printwriter = new PrintWriter(new FileOutputStream(new File("login_activity.txt"),true));
+            printwriter.append("Unsuccessful Login Detected on " + Instant.now() +"\n");
+            System.out.println("Bad Login Detected");
+            printwriter.close();
         } 
         
-        catch (SecurityException ex) 
+        catch (FileNotFoundException ex) 
         {
             Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
     
-    public static void SevereWarning()
+    public static void goodLogin()
     {
-        Logger logger = Logger.getLogger("log.txt");
-        logger.setLevel(Level.CONFIG); //change this line to see how the output changes!
-     
-        logger.severe("Username or Password is incorrect");
-        logger.log(Level.SEVERE,"Incorrect Username or Password submitted");
+         try 
+        {
+            PrintWriter printwriter = new PrintWriter(new FileOutputStream(new File("login_activity.txt"),true));
+            
+            printwriter.append("Successful Login Detected on "+ Instant.now() +"\n");
+            System.out.println("Approved Login Detected");
+            printwriter.close();
+        } 
+        
+        catch (FileNotFoundException ex) 
+        {
+            Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
         
    

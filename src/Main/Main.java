@@ -3,7 +3,11 @@ package Main;
 
 
 import Utils.DBConnection;
+import static Utils.DBConnection.conn;
+import Utils.DBQuery;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Scanner;
@@ -40,8 +44,15 @@ public class Main extends Application
     {
 
         DBConnection.startConnection();
+        DBConnection.loadCountryData();
+
+
+        
+        
         launch(args);
         DBConnection.closeConnection();
     }
 
+    
+    
 }

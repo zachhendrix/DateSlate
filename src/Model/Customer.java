@@ -5,19 +5,17 @@ public class Customer
 {
     
     private int customerID;  
-    private String firstName;
-    private String lastName;
+    private String customerName;
     private String address;
     private int postalCode;
     private String country;
     private String state;
-    private int phone;
+    private long phone;
 
-    public Customer(int customerID, String firstName, String lastName, String address,int postalCode, String country, String state, int phone) 
+    public Customer(int customerID, String customerName, String address,int postalCode, String country, String state, long phone) 
     {
         this.customerID = customerID ;   
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.customerName = customerName;
         this.address = address;
         this.postalCode = postalCode;
         this.country = country;
@@ -38,24 +36,14 @@ public class Customer
         this.customerID = customerID;
     }
 
-    public String getFirstName() 
+    public String getCustomerName() 
     {
-        return firstName;
+        return customerName;
     }
 
-    public void setFirstName(String firstName) 
+    public void setCustomerName(String customerName) 
     {
-        this.firstName = firstName;
-    }
-    
-    public String getLastName() 
-    {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) 
-    {
-        this.lastName = lastName;
+        this.customerName = customerName;
     }
     
     public String getAddress() 
@@ -98,20 +86,36 @@ public class Customer
         this.state = state;
     }
     
-    public int getPhone() 
+    public long getPhone() 
     {
         return phone;
     }
 
-    public void setPhone(int phone) 
+    public void setPhone(long phone) 
     {
         this.phone = phone;
     }
 
+    
+    public String getFirstName()
+    {
+        int firstSpace = customerName.indexOf(" ");
+        String firstName = customerName.substring(0, firstSpace);
+        return firstName;
+    }
+    
+    public String getLastName()
+    {
+        int firstSpace = customerName.indexOf(" ");
+        String lastName = customerName.substring(firstSpace).trim();
+        return lastName;
+    }
+   
+
     @Override
     public String toString()
     {
-        return(firstName + " " +  lastName);
+        return(customerName);
     }
     
 }

@@ -34,19 +34,18 @@ public class Clientele
         allCustomers.set(index, selectedCustomer);
     }
     
-    //Deletes a Part or Product to their respective Observable List
+
     public static boolean deleteCustomer(Customer selectedCustomer)
     {
         return getAllCustomers().remove(selectedCustomer);
     }
 
-    //Returns all Parts or Products from their respective lists
+
     public static ObservableList<Customer> getAllCustomers()
     {
         return allCustomers;
     }
 
-    //Methods used to set the Part or Product ID number when creating new parts or products
     public static int getCustomerIDCount()
     {
         customerIDCount = allCustomers.size();
