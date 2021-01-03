@@ -2,6 +2,7 @@
 package Main;
 
 
+import Model.Clientele;
 import Utils.DBConnection;
 import static Utils.DBConnection.conn;
 import Utils.DBQuery;
@@ -45,6 +46,11 @@ public class Main extends Application
 
         DBConnection.startConnection();
         DBConnection.loadCountryData();
+        DBConnection.loadFirstLevelData();
+        DBConnection.loadCustomerData();
+        DBConnection.loadContactData();
+        DBConnection.loadUserData();
+        DBConnection.loadAppointmentData();
 
 
         

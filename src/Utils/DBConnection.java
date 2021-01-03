@@ -5,18 +5,16 @@
  */
 package Utils;
 
-import Model.Countries;
-import Model.Country;
-import Model.Customer;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
+import Model.*;
+
+import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Date;
+
+import Views.AddAppointmentMenuController;
+import Views.CustomerDataController;
+import Views.LoginMenuController;
 import javafx.collections.ObservableList;
 
 /**
@@ -62,6 +60,23 @@ public class DBConnection
         return conn;
     }
     
+    public static Boolean checkUserData(String username, String password) throws SQLException
+    {
+
+
+        Statement statement = DBQuery.getStatement();
+        String query = "SELECT * FROM users WHERE User_Name='" + username + "' AND Password='" + password + "'";
+        ResultSet rs = statement.executeQuery(query);
+        if(rs.next())
+        {
+            if(rs.getString("User_Name").equals(username) && rs.getString("password").equals(password))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public static void loadCountryData() throws SQLException
     {
         DBQuery.setStatement(conn);
@@ -76,12 +91,144 @@ public class DBConnection
             String countryName = rs.getString("Country");
             Countries.addCountry(new Country(countryID, countryName));
             
-            
-            
         }
     }
-  
     
+    public static void loadFirstLevelData() throws SQLException
+    {
+        DBQuery.setStatement(conn);
+        Statement statement = DBQuery.getStatement();
+        String selectStatement = "SELECT * From first_level_divisions";
+        statement.execute(selectStatement);
+        ResultSet rs = statement.getResultSet();
+        
+        while(rs.next())
+        {
+            int divisionID = rs.getInt("Division_ID");
+            String flDivisionName = rs.getString("Division");
+            int countryID = rs.getInt("COUNTRY_ID");
+            FLDivisionList.addFLDivision(new FLDivision(divisionID, flDivisionName,countryID));
+
+        }
+    }
+
+    public static void loadCustomerData() throws SQLException
+    {
+        DBQuery.setStatement(conn);
+        Statement statement = DBQuery.getStatement();
+
+        String selectStatement = "SELECT * From customers, first_level_divisions WHERE customers.Division_ID = first_level_divisions.Division_ID";
+        statement.execute(selectStatement);
+        ResultSet rs = statement.getResultSet();
+
+
+
+        while(rs.next())
+        {
+
+            int customerID = rs.getInt("Customer_ID");
+            String customerName = rs.getString("Customer_Name");
+            String address = rs.getString("Address");
+            String postalCode = rs.getString("Postal_Code");
+            int countryID = rs.getInt("COUNTRY_ID");
+            Country country = Countries.getByID(countryID);
+            int stateInt = rs.getInt("Division_ID");
+            FLDivision state = FLDivisionList.lookupDivision(stateInt);
+            String phone = rs.getString("Phone");
+
+            Clientele.addCustomer(new Customer(customerID, customerName, address, postalCode, country, state, phone));
+
+            CustomerDataController.generateIDNum = ++customerID ;
+        }
+    }
+
+
+    public static void loadContactData() throws SQLException
+    {
+        DBQuery.setStatement(conn);
+        Statement statement = DBQuery.getStatement();
+
+        String selectStatement = "SELECT * From contacts";
+        statement.execute(selectStatement);
+        ResultSet rs = statement.getResultSet();
+
+        while(rs.next())
+        {
+
+            int contactID = rs.getInt("Contact_ID");
+            String contactName = rs.getString("Contact_Name");
+            String email = rs.getString("Email");
+
+
+            ContactList.addContact(new Contact(contactID, contactName, email));
+        }
+    }
+
+    public static void loadUserData() throws SQLException
+    {
+        DBQuery.setStatement(conn);
+        Statement statement = DBQuery.getStatement();
+
+        String selectStatement = "SELECT * From users";
+        statement.execute(selectStatement);
+        ResultSet rs = statement.getResultSet();
+
+
+
+        while(rs.next())
+        {
+
+            int userID = rs.getInt("User_ID");
+            String userName = rs.getString("User_Name");
+            String userPass = rs.getString("Password");
+
+            UserList.addUser(new User(userID, userName,userPass));
+        }
+    }
+
+
+    public static void loadAppointmentData() throws SQLException
+    {
+        DBQuery.setStatement(conn);
+        Statement statement = DBQuery.getStatement();
+        String selectStatement = "SELECT * From appointments";
+        statement.execute(selectStatement);
+        ResultSet rs = statement.getResultSet();
+
+        while(rs.next())
+        {
+            int appointmentID = rs.getInt("Appointment_ID");
+            String appTitle = rs.getString("Title");
+            String appLocation = rs.getString("Description");
+            String appDescription = rs.getString("Location");
+            String appType = rs.getString("Type");
+
+            //TODO: startDate and endDate get loaded in totally empty. Gotta fix
+            Date startDateOnly = rs.getDate("Start");
+            Timestamp startTimestamp = new Timestamp(startDateOnly.getTime());
+            LocalDateTime startDate = startTimestamp.toLocalDateTime();
+
+
+            Date endDateOnly = rs.getDate("End");
+            Timestamp endTimestamp = new Timestamp(endDateOnly.getTime());
+            LocalDateTime endDate = endTimestamp.toLocalDateTime();
+
+            int appContactInt = rs.getInt("Contact_ID");
+            Contact appContact = ContactList.getByID(appContactInt);
+
+            int appCustomerInt = rs.getInt("Customer_ID");
+            Customer appCustomer = Clientele.getByID(appCustomerInt);
+
+            int appUserInt = rs.getInt("User_ID");
+            User appUser = UserList.getByID(appUserInt);
+
+
+
+            Schedule.addAppointment(new Appointment(appointmentID, appTitle,appLocation, appDescription, appContact, appType, startDate,endDate,appCustomer,appUser));
+            AddAppointmentMenuController.generateAppIDNum = ++appointmentID;
+        }
+    }
+
     public static void closeConnection()throws SQLException
     {
         try

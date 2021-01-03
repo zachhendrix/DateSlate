@@ -1,16 +1,20 @@
 package Views;
 
-import Model.Appointment;
-import Model.Clientele;
-import Model.Customer;
-import Model.Schedule;
+import Model.*;
+
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+import Utils.DBConnection;
+import Utils.DBQuery;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -52,10 +56,13 @@ public class UpdateAppointmentMenuController implements Initializable
     private TextField typeText;
 
     @FXML
-    private ComboBox<Customer> contactComboBox;
+    private ComboBox<Contact> contactComboBox;
 
     @FXML
     private ComboBox<Customer> customerComboBox;
+
+    @FXML
+    private ComboBox<User> userComboBox;
         
     @FXML
     private Label appointmentIDLabel;
@@ -70,9 +77,6 @@ public class UpdateAppointmentMenuController implements Initializable
     private TextField startDateMinute;
 
     @FXML
-    private DatePicker endDatePicker;
-
-    @FXML
     private TextField endDateHour;
 
     @FXML
@@ -81,49 +85,15 @@ public class UpdateAppointmentMenuController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
-        contactComboBox.setItems(Clientele.getAllCustomers());
+        contactComboBox.setItems(ContactList.getAllContacts());
         customerComboBox.setItems(Clientele.getAllCustomers());
-        
-        restrictDates();
+        userComboBox.setItems(UserList.getAllUsers());
+
     }
-    
-    public void restrictDates()
-    {
-        startDatePicker.setDayCellFactory(picker -> new DateCell()
-        {
-            @Override
-            public void updateItem(LocalDate date, boolean empty) 
-            {
-                super.updateItem(date,empty);
-                if(date.getDayOfWeek() == DayOfWeek.SATURDAY ||date.getDayOfWeek() == DayOfWeek.SUNDAY)
-                {
-                    setDisable(true);
-                    setStyle("-fx-background-color: #ffc0cb;");
-                }
-            }
-        });
-        startDatePicker.setEditable(false);
-        
-        endDatePicker.setDayCellFactory(picker -> new DateCell()
-        {
-            @Override
-            public void updateItem(LocalDate date, boolean empty) 
-            {
-                super.updateItem(date,empty);
-                if(date.getDayOfWeek() == DayOfWeek.SATURDAY ||date.getDayOfWeek() == DayOfWeek.SUNDAY)
-                {
-                    setDisable(true);
-                    setStyle("-fx-background-color: #ffc0cb;");
-                }
-            }
-        });
-        endDatePicker.setEditable(false);
-    }
-    
     
     
     @FXML
-    void saveButtonClicked(ActionEvent event) throws IOException 
+    void saveButtonClicked(ActionEvent event) throws IOException, SQLException
     {
 
         Schedule.deleteAppointment(appointmentRef);
@@ -132,16 +102,39 @@ public class UpdateAppointmentMenuController implements Initializable
         String appTitle = titleText.getText();  
         String appLocation = locationText.getText(); 
         String appDescription = descriptionText.getText();  
-        Customer appContact = contactComboBox.getValue();  
+        Contact appContact = contactComboBox.getValue();
         String appType = typeText.getText();
         LocalDateTime startDate = startDatePicker.getValue().atTime(Integer.parseInt(startDateHour.getText()), Integer.parseInt(startDateMinute.getText()));
-        LocalDateTime endDate = endDatePicker.getValue().atTime(Integer.parseInt(endDateHour.getText()), Integer.parseInt(endDateMinute.getText()));
+        LocalDateTime endDate = startDatePicker.getValue().atTime(Integer.parseInt(endDateHour.getText()), Integer.parseInt(endDateMinute.getText()));
         Customer appCustomer = customerComboBox.getValue();
+        User appUser = userComboBox.getValue();
+        LocalDateTime updateDate = LocalDateTime.now();
         
         
         if(appTitle.length() >= 1 && appLocation.length() >= 1 && appType.length() >= 1 && (startDate.getHour()>= 8 && startDate.getHour() <= 22) && endDate.isAfter(startDate))
         {
-            Schedule.addAppointment(new Appointment(appointmentID, appTitle,appLocation,appDescription,appContact,appType, startDate, endDate, appCustomer ));
+            Connection conn = DBConnection.startConnection();
+            DBQuery.setStatement(conn);
+            Statement statement = DBQuery.getStatement();
+            String insertStatement = "INSERT INTO appointments (Appointment_ID,Title,Description,Location,Type,Start,End,Create_Date,Created_By,Last_Update,Last_Updated_By,Customer_ID,User_ID,Contact_ID)"+ "VALUES(" +
+                    "'" + appointmentID + "'," +
+                    "'" + appTitle + "'," +
+                    "'" + appDescription + "'," +
+                    "'" + appLocation + "'," +
+                    "'" + appType + "'," +
+                    "'" + startDate + "'," +
+                    "'" + endDate + "'," +
+                    "'" + null + "'," +
+                    "'" + null + "'," +
+                    "'" + updateDate + "'," +
+                    "'" + LoginMenuController.loggedIn + "'," +
+                    "'" + appCustomer.getCustomerID() + "'," +
+                    "'" + appUser.getUserID() + "'," +
+                    "'" + appContact.getContactID() +"'" +
+                    ")";
+
+            statement.execute(insertStatement);
+            Schedule.addAppointment(new Appointment(appointmentID, appTitle,appLocation,appDescription,appContact,appType, startDate, endDate, appCustomer,appUser));
 
             //Loads the Main Menu screen.
             stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -196,10 +189,10 @@ public class UpdateAppointmentMenuController implements Initializable
         startDatePicker.setValue((appointment).getStartDate().toLocalDate());
         startDateHour.setText(String.valueOf((appointment).getStartDate().getHour()));
         startDateMinute.setText(String.valueOf((appointment).getStartDate().getMinute()));
-        endDatePicker.setValue((appointment).getEndDate().toLocalDate());
         endDateHour.setText(String.valueOf((appointment).getEndDate().getHour()));
         endDateMinute.setText(String.valueOf((appointment).getEndDate().getMinute()));
         customerComboBox.setValue(appointment.getAppCustomer());
+        userComboBox.setValue(appointment.getAppUser());
         
         
     }

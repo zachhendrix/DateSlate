@@ -16,10 +16,7 @@ public class Clientele
 {
     
     private static ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
-    
-    
-    //Declares variables that are used in the setting of the Part or Product ID number when creating new parts or products
-    private static int customerIDCount = 0;
+
     
     
     
@@ -46,11 +43,19 @@ public class Clientele
         return allCustomers;
     }
 
-    public static int getCustomerIDCount()
+    public static Customer getByID(int customerID)
     {
-        customerIDCount = allCustomers.size();
-        return customerIDCount;
+        for(Customer c : allCustomers)
+        {
+            if(c.getCustomerID() == customerID)
+            {
+                return c;
+            }
+        }
+
+        return null;
     }
+
     
     
     

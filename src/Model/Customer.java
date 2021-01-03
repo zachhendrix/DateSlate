@@ -7,12 +7,12 @@ public class Customer
     private int customerID;  
     private String customerName;
     private String address;
-    private int postalCode;
-    private String country;
-    private String state;
-    private long phone;
+    private String postalCode;
+    private Country country;
+    private FLDivision state;
+    private String phone;
 
-    public Customer(int customerID, String customerName, String address,int postalCode, String country, String state, long phone) 
+    public Customer(int customerID, String customerName, String address,String postalCode, Country country, FLDivision state, String phone)
     {
         this.customerID = customerID ;   
         this.customerName = customerName;
@@ -56,42 +56,42 @@ public class Customer
         this.address = address;
     }
 
-    public int getPostalCode() 
+    public String getPostalCode()
     {
         return postalCode;
     }
 
-    public void setPostalCode(int postalCode) 
+    public void setPostalCode(String postalCode)
     {
         this.postalCode = postalCode;
     }
     
-    public String getCountry() 
+    public Country getCountry()
     {
         return country;
     }
 
-    public void setCountry(String country) 
+    public void setCountry(Country country)
     {
         this.country = country;
     }
     
-    public String getState() 
+    public FLDivision getState()
     {
         return state;
     }
 
-    public void setState(String state) 
+    public void setState(FLDivision state)
     {
         this.state = state;
     }
     
-    public long getPhone() 
+    public String getPhone()
     {
         return phone;
     }
 
-    public void setPhone(long phone) 
+    public void setPhone(String phone)
     {
         this.phone = phone;
     }

@@ -9,17 +9,22 @@ import Model.Clientele;
 import Model.Countries;
 import Model.Country;
 import Model.Customer;
-import Utils.DBConnection;
-import Utils.DBQuery;
+import Model.FLDivision;
+import Model.FLDivisionList;
+import static Model.FLDivisionList.divisionID;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import Utils.DBConnection;
+import Utils.DBQuery;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -47,16 +52,14 @@ public class CustomerDataController implements Initializable
     Stage stage;
     Parent scene;
     private Customer customerRef;
-    private static int generateIDNum;
+    public static int generateIDNum;
 
     @FXML
     private TableView<Customer> customerTableView;
     @FXML
     private TableColumn<Customer, Integer> customerIDCol;
     @FXML
-    private TableColumn<Customer, String> firstNameCol;
-    @FXML
-    private TableColumn<Customer, String> lastNameCol;
+    private TableColumn<Customer, String> nameCol;
     @FXML
     private TableColumn<Customer, String> addressCol;
     @FXML
@@ -80,7 +83,7 @@ public class CustomerDataController implements Initializable
     @FXML
     private ComboBox<Country> countryComboBox;
     @FXML
-    private ComboBox<?> regionComboBox;
+    private ComboBox<FLDivision> regionComboBox;
     @FXML
     private Button addButton;
     @FXML
@@ -100,13 +103,12 @@ public class CustomerDataController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        
+
         customerIDLabel.setText(String.valueOf(generateIDNum));
         customerTableView.setItems(Clientele.getAllCustomers());
-        countryComboBox.setItems(Countries.getAllCountries() );
+        countryComboBox.setItems(Countries.getAllCountries());
         customerIDCol.setCellValueFactory(new PropertyValueFactory<>("customerID"));
-        firstNameCol.setCellValueFactory(new PropertyValueFactory<>("firstName"));  
-        lastNameCol.setCellValueFactory(new PropertyValueFactory<>("lastName")); 
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));   
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));   
         postalCol.setCellValueFactory(new PropertyValueFactory<>("postalCode")); 
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone")); 
@@ -114,9 +116,22 @@ public class CustomerDataController implements Initializable
   
        saveButton.setVisible(false);
     }    
+    
+    @FXML
+    void countryComboSelected(ActionEvent event) 
+    {
+        if(countryComboBox.getValue() == null )
+        {
+            regionComboBox.getSelectionModel().clearSelection();
+        }
+        else
+            {
+                regionComboBox.setItems(FLDivisionList.getAllFLDivisions().filtered(divisionID(countryComboBox.getValue().getCountryID())));
+            }
+    }
 
     @FXML
-    private void addButtonClicked(ActionEvent event) 
+    private void addButtonClicked(ActionEvent event) throws SQLException
     {
        
         if(firstNameText.getText().length() >= 1 && lastNameText.getText().length() >= 1 && addressText.getText().length() >= 1 && Integer.parseInt(postalText.getText()) >= 1 && Integer.parseInt(phoneText.getText()) >= 1)
@@ -124,19 +139,42 @@ public class CustomerDataController implements Initializable
             int customerID = generateIDNum++;
             String customerName = firstNameText.getText()+ " " + lastNameText.getText();
             String address = addressText.getText();
-            int postalCode = Integer.parseInt(postalText.getText());
-            String country = countryComboBox.getSelectionModel().toString();
-            String state = regionComboBox.getSelectionModel().toString();
-            long phone = Integer.parseInt(phoneText.getText());
-        
+            String postalCode = postalText.getText();
+            Country country = countryComboBox.getValue();
+            FLDivision state = regionComboBox.getValue();
+            String phone = phoneText.getText();
+            LocalDateTime createDate = LocalDateTime.now();
+
+            Connection conn = DBConnection.startConnection();
+
+            DBQuery.setStatement(conn);
+            Statement statement = DBQuery.getStatement();
+            String insertStatement = "INSERT INTO customers (Customer_ID,Customer_Name,Address,Postal_Code,Phone,Create_Date,Created_By,Last_Update,Last_Updated_By,Division_ID)"+ "VALUES(" +
+                    "'" + customerID + "'," +
+                    "'" + customerName + "'," +
+                    "'" + address + "'," +
+                    "'" + postalCode + "'," +
+                    "'" + phone + "'," +
+                    "'" + createDate + "'," +
+                    "'" + LoginMenuController.loggedIn + "'," +
+                    "'" + createDate + "'," +
+                    "'" + LoginMenuController.loggedIn + "'," +
+                    "'" + state.getDivisionID()+ "'" +
+                    ")";
+
+            statement.execute(insertStatement);
+
             Clientele.addCustomer(new Customer(customerID, customerName,address,postalCode,country, state, phone));
-        
+
             customerIDLabel.setText(String.valueOf(generateIDNum));
             firstNameText.clear();
             lastNameText.clear();
             addressText.clear();
             postalText.clear();
+            countryComboBox.getSelectionModel().clearSelection();
+            regionComboBox.getSelectionModel().clearSelection();
             phoneText.clear();
+
         }
         
         else
@@ -158,7 +196,8 @@ public class CustomerDataController implements Initializable
         lastNameText.setText(String.valueOf((customerSelect).getLastName()));
         addressText.setText(String.valueOf((customerSelect).getAddress()));
         postalText.setText(String.valueOf((customerSelect).getPostalCode()));
-
+        countryComboBox.setValue(customerSelect.getCountry());
+        regionComboBox.setValue(customerSelect.getState());
         phoneText.setText(String.valueOf((customerSelect).getPhone()));
         customerRef = customerSelect;
         
@@ -170,18 +209,37 @@ public class CustomerDataController implements Initializable
     
     
      @FXML
-    void saveButtonClicked(ActionEvent event) 
-    {
+    void saveButtonClicked(ActionEvent event) throws SQLException
+     {
         Clientele.deleteCustomer(customerRef);
         
         int customerID = Integer.parseInt(customerIDLabel.getText());
         String customerName = firstNameText.getText()+ " " + lastNameText.getText();
         String address = addressText.getText();
-        int postalCode = Integer.parseInt(postalText.getText());
-        String country = countryComboBox.getSelectionModel().toString();
-        String state = regionComboBox.getSelectionModel().toString();
-        long phone = Integer.parseInt(phoneText.getText());
-        
+        String postalCode = postalText.getText();
+        Country country = countryComboBox.getValue();
+        FLDivision state = regionComboBox.getValue();
+        String phone = phoneText.getText();
+         LocalDateTime updateDate = LocalDateTime.now();
+
+        Connection conn = DBConnection.startConnection();
+
+        DBQuery.setStatement(conn);
+        Statement statement = DBQuery.getStatement();
+        String insertStatement = "INSERT INTO customers (Customer_ID,Customer_Name,Address,Postal_Code,Phone,Create_Date,Created_By,Last_Update,Last_Updated_By,Division_ID)"+ "VALUES(" +
+                "'" + customerID + "'," +
+                "'" + customerName + "'," +
+                "'" + address + "'," +
+                "'" + postalCode + "'," +
+                "'" + phone + "'," +
+                "'" + null + "'," +
+                "'" + null + "'," +
+                "'" + updateDate + "'," +
+                "'" + LoginMenuController.loggedIn + "'," +
+                "'" + state.getDivisionID()+ "'" +
+                ")";
+
+        statement.execute(insertStatement);
         Clientele.addCustomer(new Customer(customerID, customerName,address,postalCode,country, state, phone));
         
         
@@ -190,6 +248,8 @@ public class CustomerDataController implements Initializable
         lastNameText.clear();
         addressText.clear();
         postalText.clear();
+        countryComboBox.getSelectionModel().clearSelection();
+        regionComboBox.getSelectionModel().clearSelection();
         phoneText.clear();
         
         addButton.setVisible(true);
@@ -200,10 +260,21 @@ public class CustomerDataController implements Initializable
 
 
     @FXML
-    private void deleteButtonClicked(ActionEvent event) 
+    private void deleteButtonClicked(ActionEvent event) throws SQLException
     {
+        Customer customerSelect = customerTableView.getSelectionModel().getSelectedItem();
+        Connection conn = DBConnection.startConnection();
+
+        DBQuery.setStatement(conn);
+        Statement statement = DBQuery.getStatement();
+        String insertStatement = "DELETE FROM customers WHERE Customer_ID = '" + customerSelect.getCustomerID() +"'";
+
+        statement.execute(insertStatement);
+
+
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("onfirmation Dialog");
+        alert.setTitle("Confirmation Dialog");
         alert.setHeaderText("Selected Part Will Be Deleted");
         alert.setContentText("Are you ok with this?");
 
@@ -222,10 +293,13 @@ public class CustomerDataController implements Initializable
     @FXML
     private void cancelButtonClicked(ActionEvent event) 
     {
+        customerIDLabel.setText(String.valueOf(generateIDNum));
         firstNameText.clear();
         lastNameText.clear();
         addressText.clear();
         postalText.clear();
+        countryComboBox.getSelectionModel().clearSelection();
+        regionComboBox.getSelectionModel().clearSelection();
         phoneText.clear();
     }
 

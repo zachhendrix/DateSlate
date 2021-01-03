@@ -6,24 +6,16 @@
 package Views;
 
 import Model.Appointment;
-import Model.Clientele;
 import Model.Customer;
 import Model.Schedule;
-import static Utils.DBConnection.conn;
 import java.net.URL;
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
-import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -47,7 +39,7 @@ import javafx.util.Duration;
 /**
  * FXML Controller class
  *
- * @author Z
+ * @author Zach Hendrix
  */
 public class ScheduleMenuController implements Initializable 
 {
@@ -138,6 +130,9 @@ public class ScheduleMenuController implements Initializable
     private Button updateButton;
 
     @FXML
+    private Button reportsButton;
+
+    @FXML
     private Label currentTimeLabel;
 
     @FXML
@@ -194,7 +189,7 @@ public class ScheduleMenuController implements Initializable
 
 
     @FXML
-    private void overviewTabClicked(Event event) 
+    private void overviewTabClicked(Event event)
     {
         appointmentTableview.setItems(Schedule.getAllAppointments());
         
@@ -210,7 +205,7 @@ public class ScheduleMenuController implements Initializable
     }
 
     @FXML
-    private void monthTabClicked(Event event) 
+    private void monthTabClicked(Event event)
     {
         appointmentMonthTableview.setItems(Schedule.getAllAppointments());
         monthAppointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
@@ -225,7 +220,7 @@ public class ScheduleMenuController implements Initializable
     }
 
     @FXML
-    private void weekTabClicked(Event event) 
+    private void weekTabClicked(Event event)
     {
         appointmentWeekTableview.setItems(Schedule.getAllAppointments());
         weekAppointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
@@ -291,5 +286,15 @@ public class ScheduleMenuController implements Initializable
         stage.setScene(new Scene(scene));
         stage.show();
     }
-    
+
+    @FXML
+    void reportsButtonClicked(ActionEvent event) throws IOException
+    {
+        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("ReportMenu.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
+    }
+
+
 }

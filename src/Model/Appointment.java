@@ -15,15 +15,16 @@ public class Appointment
 {
     private int appointmentID;  
     private String appTitle;
-    private String appLocation;
     private String appDescription;
-    private Customer appContact ;
+    private String appLocation;
+    private Contact appContact ;
     private String appType;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private Customer appCustomer;
+    private User appUser;
 
-    public Appointment (int appointmentID, String appTitle, String appLocation, String appDescription, Customer appContact, String appType, LocalDateTime startDate, LocalDateTime endDate, Customer appCustomer) 
+    public Appointment (int appointmentID, String appTitle, String appDescription, String appLocation, Contact appContact, String appType, LocalDateTime startDate, LocalDateTime endDate, Customer appCustomer, User appUser)
     {
         this.appointmentID = appointmentID;
         this.appTitle = appTitle ;   
@@ -34,6 +35,7 @@ public class Appointment
         this.startDate = startDate;
         this.endDate = endDate;
         this.appCustomer = appCustomer;
+        this.appUser = appUser;
     }
     
     
@@ -79,12 +81,12 @@ public class Appointment
         this.appDescription = appDescription;
     }
 
-    public Customer getAppContact() 
+    public Contact getAppContact()
     {
         return appContact;
     }
 
-    public void setAppContact(Customer appContact) 
+    public void setAppContact(Contact appContact)
     {
         this.appContact = appContact;
     }
@@ -129,6 +131,17 @@ public class Appointment
         this.appCustomer = appCustomer;
     }
 
-    
-    
+    public User getAppUser()
+    {
+        return appUser;
+    }
+
+    public void setAppUser(User appUser)
+    {
+        this.appUser = appUser;
+    }
+
+
+
+
 }
