@@ -4,9 +4,7 @@ import Model.*;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -95,9 +93,6 @@ public class UpdateAppointmentMenuController implements Initializable
     @FXML
     void saveButtonClicked(ActionEvent event) throws IOException, SQLException
     {
-
-        Schedule.deleteAppointment(appointmentRef);
-        
         int appointmentID = Integer.parseInt(appointmentIDLabel.getText());  
         String appTitle = titleText.getText();  
         String appLocation = locationText.getText(); 
@@ -105,10 +100,13 @@ public class UpdateAppointmentMenuController implements Initializable
         Contact appContact = contactComboBox.getValue();
         String appType = typeText.getText();
         LocalDateTime startDate = startDatePicker.getValue().atTime(Integer.parseInt(startDateHour.getText()), Integer.parseInt(startDateMinute.getText()));
+        Timestamp startTS = Timestamp.valueOf(startDate);
         LocalDateTime endDate = startDatePicker.getValue().atTime(Integer.parseInt(endDateHour.getText()), Integer.parseInt(endDateMinute.getText()));
+        Timestamp endTS = Timestamp.valueOf(endDate);
         Customer appCustomer = customerComboBox.getValue();
         User appUser = userComboBox.getValue();
         LocalDateTime updateDate = LocalDateTime.now();
+        Timestamp updateTS = Timestamp.valueOf(updateDate);
         
         
         if(appTitle.length() >= 1 && appLocation.length() >= 1 && appType.length() >= 1 && (startDate.getHour()>= 8 && startDate.getHour() <= 22) && endDate.isAfter(startDate))
@@ -116,24 +114,30 @@ public class UpdateAppointmentMenuController implements Initializable
             Connection conn = DBConnection.startConnection();
             DBQuery.setStatement(conn);
             Statement statement = DBQuery.getStatement();
-            String insertStatement = "INSERT INTO appointments (Appointment_ID,Title,Description,Location,Type,Start,End,Create_Date,Created_By,Last_Update,Last_Updated_By,Customer_ID,User_ID,Contact_ID)"+ "VALUES(" +
-                    "'" + appointmentID + "'," +
-                    "'" + appTitle + "'," +
-                    "'" + appDescription + "'," +
-                    "'" + appLocation + "'," +
-                    "'" + appType + "'," +
-                    "'" + startDate + "'," +
-                    "'" + endDate + "'," +
-                    "'" + null + "'," +
-                    "'" + null + "'," +
-                    "'" + updateDate + "'," +
-                    "'" + LoginMenuController.loggedIn + "'," +
-                    "'" + appCustomer.getCustomerID() + "'," +
-                    "'" + appUser.getUserID() + "'," +
-                    "'" + appContact.getContactID() +"'" +
-                    ")";
+            String deleteStatement = "DELETE FROM appointments WHERE Appointment_ID = '" + appointmentID +"'";
+            statement.execute(deleteStatement);
 
-            statement.execute(insertStatement);
+            String sql = "INSERT INTO appointments (Appointment_ID,Title,Description,Location,Type,Start,End,Create_Date,Created_By,Last_Update,Last_Updated_By,Customer_ID,User_ID,Contact_ID) Values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setInt(1,appointmentID);
+            ps.setString(2, appTitle);
+            ps.setString(3, appDescription);
+            ps.setString(4,appLocation);
+            ps.setString(5,appType);
+            ps.setTimestamp(6,startTS);
+            ps.setTimestamp(7,endTS);
+            ps.setTimestamp(8,null);
+            ps.setString(9, null);
+            ps.setTimestamp(10,updateTS);
+            ps.setString(11, LoginMenuController.loggedIn);
+            ps.setInt(12, appCustomer.getCustomerID());
+            ps.setInt(13, appUser.getUserID());
+            ps.setInt(14, appContact.getContactID());
+            ps.execute();
+
+            Schedule.deleteAppointment(appointmentRef);
             Schedule.addAppointment(new Appointment(appointmentID, appTitle,appLocation,appDescription,appContact,appType, startDate, endDate, appCustomer,appUser));
 
             //Loads the Main Menu screen.

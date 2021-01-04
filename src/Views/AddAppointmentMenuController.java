@@ -4,9 +4,7 @@ import Model.*;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -84,6 +82,7 @@ public class AddAppointmentMenuController implements Initializable
         appointmentIDLabel.setText(String.valueOf(generateAppIDNum));
         contactComboBox.setItems(ContactList.getAllContacts());
         customerComboBox.setItems(Clientele.getAllCustomers());
+        userComboBox.setItems((UserList.getAllUsers()));
         typeChoiceBox.getItems().setAll(meetingType);
 
 
@@ -102,36 +101,42 @@ public class AddAppointmentMenuController implements Initializable
         Contact appContact = contactComboBox.getValue();
         String appType = typeChoiceBox.getValue();
         LocalDateTime startDate = startDatePicker.getValue().atTime(Integer.parseInt(startDateHour.getText()), Integer.parseInt(startDateMinute.getText()));
+        Timestamp startTS = Timestamp.valueOf(startDate);
         LocalDateTime endDate = startDatePicker.getValue().atTime(Integer.parseInt(endDateHour.getText()), Integer.parseInt(endDateMinute.getText()));
+        Timestamp endTS = Timestamp.valueOf(endDate);
         Customer appCustomer = customerComboBox.getValue();
         User appUser = userComboBox.getValue();
 
         LocalDateTime createDate = LocalDateTime.now();
+        Timestamp createTS = Timestamp.valueOf(createDate);
 
         
         if(appTitle.length() >= 1 && appLocation.length() >= 1 && appType.length() >= 1 && (startDate.getHour()>= 8 && startDate.getHour() <= 22) && endDate.isAfter(startDate))
         {
             Connection conn = DBConnection.startConnection();
-            DBQuery.setStatement(conn);
-            Statement statement = DBQuery.getStatement();
-            String insertStatement = "INSERT INTO appointments (Appointment_ID,Title,Description,Location,Type,Start,End,Create_Date,Created_By,Last_Update,Last_Updated_By,Customer_ID,User_ID,Contact_ID)"+ "VALUES(" +
-                    "'" + appointmentID + "'," +
-                    "'" + appTitle + "'," +
-                    "'" + appDescription + "'," +
-                    "'" + appLocation + "'," +
-                    "'" + appType + "'," +
-                    "'" + startDate + "'," +
-                    "'" + endDate + "'," +
-                    "'" + createDate + "'," +
-                    "'" + LoginMenuController.loggedIn + "'," +
-                    "'" + createDate + "'," +
-                    "'" + LoginMenuController.loggedIn + "'," +
-                    "'" + appCustomer.getCustomerID() + "'," +
-                    "'" + appUser.getUserID() + "'," +
-                    "'" + appContact.getContactID() +"'" +
-                    ")";
 
-            statement.execute(insertStatement);
+            String sql = "INSERT INTO appointments (Appointment_ID,Title,Description,Location,Type,Start,End,Create_Date,Created_By,Last_Update,Last_Updated_By,Customer_ID,User_ID,Contact_ID) Values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setInt(1,appointmentID);
+            ps.setString(2, appTitle);
+            ps.setString(3, appDescription);
+            ps.setString(4,appLocation);
+            ps.setString(5,appType);
+            ps.setTimestamp(6,startTS);
+            ps.setTimestamp(7,endTS);
+            ps.setTimestamp(8,createTS);
+            ps.setString(9, LoginMenuController.loggedIn);
+            ps.setTimestamp(10,createTS);
+            ps.setString(11, LoginMenuController.loggedIn);
+            ps.setInt(12, appCustomer.getCustomerID());
+            ps.setInt(13, appUser.getUserID());
+            ps.setInt(14, appContact.getContactID());
+            ps.execute();
+
+
+
             Schedule.addAppointment(new Appointment(appointmentID, appTitle,appLocation,appDescription,appContact,appType, startDate, endDate, appCustomer,appUser));
 
 

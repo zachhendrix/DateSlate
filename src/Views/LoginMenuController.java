@@ -5,13 +5,11 @@
  */
 package Views;
 import Model.*;
-import static com.mysql.cj.conf.PropertyKey.logger;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
 
 import Utils.DBConnection;
 import javafx.event.ActionEvent;
@@ -24,32 +22,25 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 /**
  * FXML Controller class
  *
- * @author Z
+ * @author Zach Hendrix
  */
 public class LoginMenuController implements Initializable 
 {
-    String username = "zhendrix";
-    String password = "password";
-
     Stage stage;
     Parent scene;
 
      @FXML
     private Label passwordLabel;
-
     @FXML
     private Label userIdLabel;
-
     @FXML
     private TextField passwordTextField;
-
     @FXML
     private TextField userIdTextField;
 
@@ -58,23 +49,18 @@ public class LoginMenuController implements Initializable
 
     @FXML
     private Label locationLabel;
-
     @FXML
     private ImageView flagIconFrance;
-
     @FXML
     private ImageView flagIconUK;
-    
     @FXML
     private Label languageLabel;
-
     @FXML
     private Label languageTextLabel;
 
-    private ResourceBundle rb;
     private ResourceBundle rbRef;
     public static String loggedIn;
-    public static int loggedInt;
+
     /**
      * Initializes the controller class.
      * @param url
@@ -99,17 +85,23 @@ public class LoginMenuController implements Initializable
            flagIconUK.setImage(null);
                    
         }
-        
-        
-    }   
-    
-    
+
+    }
+
+
+    /**
+     *
+     * @param event
+     * @throws IOException
+     * @throws SQLException
+     */
     @FXML
     void loginButtonClicked(ActionEvent event) throws IOException, SQLException
     {
         if(DBConnection.checkUserData(userIdTextField.getText(),passwordTextField.getText()))
         {
             Logging.goodLogin();
+
             loggedIn = userIdTextField.getText();
             stage = (Stage)((Button)event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("ScheduleMenu.fxml"));
@@ -119,14 +111,27 @@ public class LoginMenuController implements Initializable
         
         else
         {
-            
-            //TODO: DIFFERENT ALERT LANGUAGE
-            Logging.badLogin();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Login Warning");
-            alert.setHeaderText("Incorrect Username or Password");
-            alert.setContentText("Try Again");
-            alert.showAndWait();  
+
+            if(rbRef.getLocale().toString().equals("fr"))
+            {
+                Logging.badLogin();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Avertissement de connexion");
+                alert.setHeaderText("Identifiant ou mot de passe incorrect");
+                alert.setContentText("Réessayer");
+                alert.showAndWait();
+            }
+
+            else
+            {
+                Logging.badLogin();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Login Warning");
+                alert.setHeaderText("Incorrect Username or Password");
+                alert.setContentText("Try Again");
+                alert.showAndWait();
+
+            }
                
         }
     }

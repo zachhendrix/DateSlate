@@ -73,7 +73,7 @@ public class ReportMenuController implements Initializable
         private ComboBox<Customer> contactComboBox;
 
         @FXML
-        private Tab busiestLocationTab;
+        private Tab percentTypeTab;
         @FXML
         private PieChart pieChart;
 
@@ -172,7 +172,7 @@ public class ReportMenuController implements Initializable
         }
 
         @FXML
-        void busiestLocationTabClicked(Event event)
+        void percentTypeTabClicked(Event event)
         {
 
         }

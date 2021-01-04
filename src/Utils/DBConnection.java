@@ -8,8 +8,10 @@ package Utils;
 import Model.*;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import Views.AddAppointmentMenuController;
@@ -18,8 +20,7 @@ import Views.LoginMenuController;
 import javafx.collections.ObservableList;
 
 /**
- *
- * @author Z
+ * @author Zach Hendrix
  */
 public class DBConnection 
 {
@@ -63,7 +64,6 @@ public class DBConnection
     public static Boolean checkUserData(String username, String password) throws SQLException
     {
 
-
         Statement statement = DBQuery.getStatement();
         String query = "SELECT * FROM users WHERE User_Name='" + username + "' AND Password='" + password + "'";
         ResultSet rs = statement.executeQuery(query);
@@ -71,6 +71,15 @@ public class DBConnection
         {
             if(rs.getString("User_Name").equals(username) && rs.getString("password").equals(password))
             {
+                //Section B
+                //Simple Lambda expression to show that the Java Application Thread is running (Other Expression is in FLDivisionList
+                Runnable runProcess = () ->
+                {
+                    System.out.println(Thread.currentThread().getName() + " is running");
+                };
+
+                runProcess.run();
+
                 return true;
             }
         }
@@ -138,7 +147,7 @@ public class DBConnection
 
             Clientele.addCustomer(new Customer(customerID, customerName, address, postalCode, country, state, phone));
 
-            CustomerDataController.generateIDNum = ++customerID ;
+            CustomerDataController.generateIDNum = customerID + 1;
         }
     }
 
@@ -203,15 +212,13 @@ public class DBConnection
             String appDescription = rs.getString("Location");
             String appType = rs.getString("Type");
 
-            //TODO: startDate and endDate get loaded in totally empty. Gotta fix
-            Date startDateOnly = rs.getDate("Start");
-            Timestamp startTimestamp = new Timestamp(startDateOnly.getTime());
-            LocalDateTime startDate = startTimestamp.toLocalDateTime();
+            //TODO: startDate and endDate times get loaded in wrong
 
+            LocalDateTime startDate = rs.getTimestamp("Start").toLocalDateTime();
+            System.out.println(startDate);
 
-            Date endDateOnly = rs.getDate("End");
-            Timestamp endTimestamp = new Timestamp(endDateOnly.getTime());
-            LocalDateTime endDate = endTimestamp.toLocalDateTime();
+            LocalDateTime endDate = rs.getTimestamp("End").toLocalDateTime();
+
 
             int appContactInt = rs.getInt("Contact_ID");
             Contact appContact = ContactList.getByID(appContactInt);
@@ -228,6 +235,7 @@ public class DBConnection
             AddAppointmentMenuController.generateAppIDNum = ++appointmentID;
         }
     }
+
 
     public static void closeConnection()throws SQLException
     {

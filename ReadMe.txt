@@ -17,4 +17,7 @@ When you log in you will arrive at the Schedule screen. You can click on the "Cu
 button in the top right to add, modify, or delete customers in the database. You can click
 the "Add", "Delete", or "Modify" buttons on the scheduling screen to manipulate appointments
 on the schedule. You can only delete or modify if you have an appointment selected on the 
-schedule. 
+schedule.
+
+The report that I chose to use in part A3f of this project was a piechart that shows the
+percentages of appointment types, which I have limited to "Business" or "Personal".

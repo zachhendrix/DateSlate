@@ -14,10 +14,7 @@ import Model.FLDivisionList;
 import static Model.FLDivisionList.divisionID;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -144,25 +141,30 @@ public class CustomerDataController implements Initializable
             FLDivision state = regionComboBox.getValue();
             String phone = phoneText.getText();
             LocalDateTime createDate = LocalDateTime.now();
+            Timestamp createTS = Timestamp.valueOf(createDate);
+
 
             Connection conn = DBConnection.startConnection();
 
-            DBQuery.setStatement(conn);
-            Statement statement = DBQuery.getStatement();
-            String insertStatement = "INSERT INTO customers (Customer_ID,Customer_Name,Address,Postal_Code,Phone,Create_Date,Created_By,Last_Update,Last_Updated_By,Division_ID)"+ "VALUES(" +
-                    "'" + customerID + "'," +
-                    "'" + customerName + "'," +
-                    "'" + address + "'," +
-                    "'" + postalCode + "'," +
-                    "'" + phone + "'," +
-                    "'" + createDate + "'," +
-                    "'" + LoginMenuController.loggedIn + "'," +
-                    "'" + createDate + "'," +
-                    "'" + LoginMenuController.loggedIn + "'," +
-                    "'" + state.getDivisionID()+ "'" +
-                    ")";
 
-            statement.execute(insertStatement);
+            String sql = "INSERT INTO customers (Customer_ID,Customer_Name,Address,Postal_Code,Phone,Create_Date,Created_By,Last_Update,Last_Updated_By,Division_ID) Values (?,?,?,?,?,?,?,?,?,?)";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setInt(1, customerID);
+            ps.setString(2, customerName);
+            ps.setString(3, address);
+            ps.setString(4,postalCode);
+            ps.setString(5,phone);
+            ps.setTimestamp(6, createTS);
+            ps.setString(7, LoginMenuController.loggedIn);
+            ps.setTimestamp(8,createTS);
+            ps.setString(9, LoginMenuController.loggedIn);
+            ps.setInt(10, state.getDivisionID());
+
+
+            ps.execute();
+
 
             Clientele.addCustomer(new Customer(customerID, customerName,address,postalCode,country, state, phone));
 
@@ -220,26 +222,31 @@ public class CustomerDataController implements Initializable
         Country country = countryComboBox.getValue();
         FLDivision state = regionComboBox.getValue();
         String phone = phoneText.getText();
-         LocalDateTime updateDate = LocalDateTime.now();
+        LocalDateTime createDate = LocalDateTime.now();
+        Timestamp createTS = Timestamp.valueOf(createDate);
+
 
         Connection conn = DBConnection.startConnection();
 
-        DBQuery.setStatement(conn);
-        Statement statement = DBQuery.getStatement();
-        String insertStatement = "INSERT INTO customers (Customer_ID,Customer_Name,Address,Postal_Code,Phone,Create_Date,Created_By,Last_Update,Last_Updated_By,Division_ID)"+ "VALUES(" +
-                "'" + customerID + "'," +
-                "'" + customerName + "'," +
-                "'" + address + "'," +
-                "'" + postalCode + "'," +
-                "'" + phone + "'," +
-                "'" + null + "'," +
-                "'" + null + "'," +
-                "'" + updateDate + "'," +
-                "'" + LoginMenuController.loggedIn + "'," +
-                "'" + state.getDivisionID()+ "'" +
-                ")";
 
-        statement.execute(insertStatement);
+        String sql = "INSERT INTO customers (Customer_ID,Customer_Name,Address,Postal_Code,Phone,Create_Date,Created_By,Last_Update,Last_Updated_By,Division_ID) Values (?,?,?,?,?,?,?,?,?,?)";
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+
+        ps.setInt(1, customerID);
+        ps.setString(2, customerName);
+        ps.setString(3, address);
+        ps.setString(4,postalCode);
+        ps.setString(5,phone);
+        ps.setTimestamp(6, createTS);
+        ps.setString(7, LoginMenuController.loggedIn);
+        ps.setTimestamp(8,createTS);
+        ps.setString(9, LoginMenuController.loggedIn);
+        ps.setInt(10, state.getDivisionID());
+
+
+        ps.execute();
+
         Clientele.addCustomer(new Customer(customerID, customerName,address,postalCode,country, state, phone));
         
         
@@ -263,15 +270,6 @@ public class CustomerDataController implements Initializable
     private void deleteButtonClicked(ActionEvent event) throws SQLException
     {
         Customer customerSelect = customerTableView.getSelectionModel().getSelectedItem();
-        Connection conn = DBConnection.startConnection();
-
-        DBQuery.setStatement(conn);
-        Statement statement = DBQuery.getStatement();
-        String insertStatement = "DELETE FROM customers WHERE Customer_ID = '" + customerSelect.getCustomerID() +"'";
-
-        statement.execute(insertStatement);
-
-
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
@@ -282,11 +280,32 @@ public class CustomerDataController implements Initializable
         
         if (result.get() == ButtonType.OK)
         {
-            Customer customer = customerTableView.getSelectionModel().getSelectedItem();
-            Clientele.deleteCustomer(customer);
-            
-            customerIDLabel.setText(String.valueOf(generateIDNum));
-        } 
+            try {
+                Connection conn = DBConnection.startConnection();
+                DBQuery.setStatement(conn);
+                Statement statement = DBQuery.getStatement();
+                String insertStatement = "DELETE FROM customers WHERE Customer_ID = '" + customerSelect.getCustomerID() +"'";
+                statement.execute(insertStatement);
+
+                Customer customer = customerTableView.getSelectionModel().getSelectedItem();
+                Clientele.deleteCustomer(customer);
+
+                customerIDLabel.setText(String.valueOf(generateIDNum));
+
+            }
+
+            catch (SQLException se)
+            {
+                Alert alertSE = new Alert(Alert.AlertType.WARNING);
+                alertSE.setTitle("ERROR");
+                alertSE.setHeaderText("Cannot Delete Customer Without First Deleting Associated Appointments");
+                alertSE.setContentText("Continue?");
+                alertSE.show();
+            }
+
+
+        }
+
         
     }
 

@@ -13,6 +13,9 @@ package Model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.time.LocalDateTime;
+import java.util.function.Predicate;
+
 public class Schedule 
 {
     private static ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
@@ -52,6 +55,7 @@ public class Schedule
         appointmentIDCount = allAppointments.size();
         return appointmentIDCount;
     }
-    
+
+
     
 }

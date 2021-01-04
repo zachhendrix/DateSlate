@@ -10,12 +10,19 @@ import Model.Customer;
 import Model.Schedule;
 import java.net.URL;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAmount;
+import java.time.temporal.TemporalUnit;
+import java.util.*;
+
+import Utils.DBConnection;
+import Utils.DBQuery;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -46,6 +53,8 @@ public class ScheduleMenuController implements Initializable
 
     Stage stage;
     Parent scene;
+    private static Integer numberUpcoming = 0;
+    private static boolean isChecked;
 
     
     @FXML
@@ -139,7 +148,9 @@ public class ScheduleMenuController implements Initializable
     private Label currentDateLabel;
 
     /**
-     * Initializes the controller class.
+     * Initializes the controller class, checks to see if there are any upcoming appointments one time and initializes the clock display
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) 
@@ -155,13 +166,23 @@ public class ScheduleMenuController implements Initializable
         startDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate")); 
         endDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
         customerIDCol.setCellValueFactory(new PropertyValueFactory<>("appCustomer"));
-        
-        
+
+        if(!isChecked)
+        {
+
+            appointmentNumber();
+
+            isChecked = true;
+        }
+
         dateAndTimeDisplay();
 
 
-   }   
-    
+   }
+
+    /**
+     * Uses a timeline to continuously update the clock and date on the Scheduling screen
+     */
     public void dateAndTimeDisplay() 
     {
         Timeline timeline = new Timeline();
@@ -185,53 +206,126 @@ public class ScheduleMenuController implements Initializable
      
     }
 
+    /**
+     * Checks the amount of appointments that are upcoming within 15 minutes, if there is at least one it warns
+     * you with a dialogue box saying there is one, if not it tells you there isnt one.
+     */
+    public void appointmentNumber()
+    {
+        for (Appointment appointment : appointmentTableview.getItems())
+        {
+            LocalTime appTime = appointment.getStartDate().toLocalTime();
+            LocalTime timeFrame = LocalTime.now().plusMinutes(15);
 
+            if(appTime.until(timeFrame, ChronoUnit.MINUTES) <= 15 && appTime.until(timeFrame, ChronoUnit.MINUTES) >= 0)
+            {
+                numberUpcoming = numberUpcoming + 1;
 
+            }
 
+        }
+
+        if(numberUpcoming >= 1)
+        {
+            Alert alertSE = new Alert(Alert.AlertType.WARNING);
+            alertSE.setTitle("Appointment Reminder!");
+            alertSE.setHeaderText("You Have an Appointment in less than 15 minutes!");
+            alertSE.setContentText("Good Luck");
+            alertSE.show();
+
+        }
+
+        else
+        {
+            Alert alertSE = new Alert(Alert.AlertType.INFORMATION);
+            alertSE.setTitle("Appointment Update");
+            alertSE.setHeaderText("You Have no Appointments within 15 minutes");
+            alertSE.setContentText("Have a Good Day!");
+            alertSE.show();
+        }
+
+    }
+
+    /**
+     * If you click the overview tab it shows you all of the appointments that are scheduled with no filter
+     * @param event
+     */
     @FXML
     private void overviewTabClicked(Event event)
     {
         appointmentTableview.setItems(Schedule.getAllAppointments());
-        
+
         appointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
-        titleCol.setCellValueFactory(new PropertyValueFactory<>("appTitle"));  
-        descriptionCol.setCellValueFactory(new PropertyValueFactory<>("appLocation")); 
-        locationCol.setCellValueFactory(new PropertyValueFactory<>("appDescription"));   
-        contactCol.setCellValueFactory(new PropertyValueFactory<>("appContact")); 
-        typeCol.setCellValueFactory(new PropertyValueFactory<>("appType")); 
-        startDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate")); 
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("appTitle"));
+        descriptionCol.setCellValueFactory(new PropertyValueFactory<>("appLocation"));
+        locationCol.setCellValueFactory(new PropertyValueFactory<>("appDescription"));
+        contactCol.setCellValueFactory(new PropertyValueFactory<>("appContact"));
+        typeCol.setCellValueFactory(new PropertyValueFactory<>("appType"));
+        startDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         endDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
         customerIDCol.setCellValueFactory(new PropertyValueFactory<>("appCustomer"));
+
+
     }
 
+    /**
+     * If you click the month tab it reloads the table with only appointments that are scheduled within the calendar month
+     * @param event
+     */
     @FXML
     private void monthTabClicked(Event event)
     {
         appointmentMonthTableview.setItems(Schedule.getAllAppointments());
-        monthAppointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
-        monthTitleCol.setCellValueFactory(new PropertyValueFactory<>("appTitle"));  
-        monthDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("appLocation")); 
-        monthLocationCol.setCellValueFactory(new PropertyValueFactory<>("appDescription"));   
-        monthContactCol.setCellValueFactory(new PropertyValueFactory<>("appContact")); 
-        monthTypeCol.setCellValueFactory(new PropertyValueFactory<>("appType")); 
-        monthStartDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate")); 
-        monthEndDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
-        monthCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("appCustomer"));
+
+        for (Appointment appointment : appointmentTableview.getItems())
+        {
+            int month = Calendar.getInstance().get(Calendar.MONTH);
+
+            if(appointment.getStartDate().getMonthValue() == month)
+            {
+                monthAppointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+                monthTitleCol.setCellValueFactory(new PropertyValueFactory<>("appTitle"));
+                monthDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("appLocation"));
+                monthLocationCol.setCellValueFactory(new PropertyValueFactory<>("appDescription"));
+                monthContactCol.setCellValueFactory(new PropertyValueFactory<>("appContact"));
+                monthTypeCol.setCellValueFactory(new PropertyValueFactory<>("appType"));
+                monthStartDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+                monthEndDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+                monthCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("appCustomer"));
+
+            }
+
+        }
     }
 
+    /**
+     * If you click the week tab it reloads the table with appointments that are scheduled within the next 7 days.
+     * @param event
+     */
     @FXML
     private void weekTabClicked(Event event)
     {
         appointmentWeekTableview.setItems(Schedule.getAllAppointments());
-        weekAppointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
-        weekTitleCol.setCellValueFactory(new PropertyValueFactory<>("appTitle"));  
-        weekDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("appLocation")); 
-        weekLocationCol.setCellValueFactory(new PropertyValueFactory<>("appDescription"));   
-        weekContactCol.setCellValueFactory(new PropertyValueFactory<>("appContact")); 
-        weekTypeCol.setCellValueFactory(new PropertyValueFactory<>("appType")); 
-        weekStartDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate")); 
-        weekEndDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
-        weekCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("appCustomer"));
+
+        for (Appointment appointment : appointmentTableview.getItems())
+        {
+            LocalDateTime week = LocalDateTime.now().plusDays(7);
+
+            if(appointment.getStartDate().isBefore(week))
+            {
+                weekAppointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+                weekTitleCol.setCellValueFactory(new PropertyValueFactory<>("appTitle"));
+                weekDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("appLocation"));
+                weekLocationCol.setCellValueFactory(new PropertyValueFactory<>("appDescription"));
+                weekContactCol.setCellValueFactory(new PropertyValueFactory<>("appContact"));
+                weekTypeCol.setCellValueFactory(new PropertyValueFactory<>("appType"));
+                weekStartDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+                weekEndDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+                weekCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("appCustomer"));
+
+            }
+
+        }
     }
 
     @FXML
@@ -253,9 +347,11 @@ public class ScheduleMenuController implements Initializable
     }
 
     @FXML
-    private void deleteButtonClicked(ActionEvent event)
+    private void deleteButtonClicked(ActionEvent event) throws SQLException
     {
         Appointment appointment = appointmentTableview.getSelectionModel().getSelectedItem();
+
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText(" You are about to delete appointment " + appointment.getAppointmentID() + " of type " + appointment.getAppType());
@@ -265,6 +361,12 @@ public class ScheduleMenuController implements Initializable
         
         if (result.get() == ButtonType.OK)
         {
+            Connection conn = DBConnection.startConnection();
+            DBQuery.setStatement(conn);
+            Statement statement = DBQuery.getStatement();
+            String insertStatement = "DELETE FROM appointments WHERE Appointment_ID = '" + appointment.getAppointmentID() +"'";
+            statement.execute(insertStatement);
+
             Schedule.deleteAppointment(appointment);
 
         } 
