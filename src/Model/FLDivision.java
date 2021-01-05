@@ -6,7 +6,8 @@
 package Model;
 
 /**
- *
+ *Sets up the class of FLDivision which is a generic term for what countries are split into.
+ * A
  * @author Z
  */
 public class FLDivision 

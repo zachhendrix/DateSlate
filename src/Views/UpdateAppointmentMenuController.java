@@ -19,20 +19,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DateCell;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 public class UpdateAppointmentMenuController implements Initializable
 {
     Stage stage;
     Parent scene;
+    String[] meetingType = {"Business","Personal"};
     private Appointment appointmentRef;
     
     @FXML
@@ -51,7 +45,7 @@ public class UpdateAppointmentMenuController implements Initializable
     private TextField locationText;
 
     @FXML
-    private TextField typeText;
+    private ChoiceBox<String> typeChoiceBox;
 
     @FXML
     private ComboBox<Contact> contactComboBox;
@@ -86,6 +80,7 @@ public class UpdateAppointmentMenuController implements Initializable
         contactComboBox.setItems(ContactList.getAllContacts());
         customerComboBox.setItems(Clientele.getAllCustomers());
         userComboBox.setItems(UserList.getAllUsers());
+        typeChoiceBox.getItems().setAll(meetingType);
 
     }
     
@@ -98,7 +93,7 @@ public class UpdateAppointmentMenuController implements Initializable
         String appLocation = locationText.getText(); 
         String appDescription = descriptionText.getText();  
         Contact appContact = contactComboBox.getValue();
-        String appType = typeText.getText();
+        String appType = typeChoiceBox.getValue();
         LocalDateTime startDate = startDatePicker.getValue().atTime(Integer.parseInt(startDateHour.getText()), Integer.parseInt(startDateMinute.getText()));
         Timestamp startTS = Timestamp.valueOf(startDate);
         LocalDateTime endDate = startDatePicker.getValue().atTime(Integer.parseInt(endDateHour.getText()), Integer.parseInt(endDateMinute.getText()));
@@ -117,7 +112,7 @@ public class UpdateAppointmentMenuController implements Initializable
             String deleteStatement = "DELETE FROM appointments WHERE Appointment_ID = '" + appointmentID +"'";
             statement.execute(deleteStatement);
 
-            String sql = "INSERT INTO appointments (Appointment_ID,Title,Description,Location,Type,Start,End,Create_Date,Created_By,Last_Update,Last_Updated_By,Customer_ID,User_ID,Contact_ID) Values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO appointments (Appointment_ID,Title,Description,Location,Type,Start,End,Last_Update,Last_Updated_By,Customer_ID,User_ID,Contact_ID) Values (?,?,?,?,?,?,?,?,?,?,?,?)";
 
             PreparedStatement ps = conn.prepareStatement(sql);
 
@@ -128,13 +123,11 @@ public class UpdateAppointmentMenuController implements Initializable
             ps.setString(5,appType);
             ps.setTimestamp(6,startTS);
             ps.setTimestamp(7,endTS);
-            ps.setTimestamp(8,null);
-            ps.setString(9, null);
-            ps.setTimestamp(10,updateTS);
-            ps.setString(11, LoginMenuController.loggedIn);
-            ps.setInt(12, appCustomer.getCustomerID());
-            ps.setInt(13, appUser.getUserID());
-            ps.setInt(14, appContact.getContactID());
+            ps.setTimestamp(8,updateTS);
+            ps.setString(9, LoginMenuController.loggedIn);
+            ps.setInt(10, appCustomer.getCustomerID());
+            ps.setInt(11, appUser.getUserID());
+            ps.setInt(12, appContact.getContactID());
             ps.execute();
 
             Schedule.deleteAppointment(appointmentRef);
@@ -188,7 +181,7 @@ public class UpdateAppointmentMenuController implements Initializable
         titleText.setText(String.valueOf(appointment.getAppTitle()));
         locationText.setText(String.valueOf((appointment).getAppLocation()));
         descriptionText.setText(String.valueOf((appointment).getAppDescription()));
-        typeText.setText(String.valueOf((appointment).getAppType()));
+        typeChoiceBox.setValue(appointment.getAppType());
         contactComboBox.setValue(appointment.getAppContact());
         startDatePicker.setValue((appointment).getStartDate().toLocalDate());
         startDateHour.setText(String.valueOf((appointment).getStartDate().getHour()));

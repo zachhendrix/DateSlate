@@ -3,12 +3,21 @@ package Model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+
+/**
+ * @author Zach Hendrix
+ * A Class that has an ObservableList in which the User class object is saved to.
+ * The class also contains add and get all functions
+ */
 public class UserList
 {
 
     private static ObservableList<User> allUsers = FXCollections.observableArrayList();
 
-    //Adds a new part or Product to their respective Observable List
+    /**
+     * Used to add an object into the "allUsers" list
+     * @param newUser
+     */
     public static void addUser(User newUser)
     {
         allUsers.add(newUser);

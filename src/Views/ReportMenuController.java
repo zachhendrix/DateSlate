@@ -100,7 +100,6 @@ public class ReportMenuController implements Initializable
     {
 
         dateAndTimeDisplay();
-        setBarChart();
 
     }
 
@@ -128,11 +127,31 @@ public class ReportMenuController implements Initializable
 
 
 
-        public void setBarChart()
-        {
+        public void setBarChart() throws SQLException {
             ObservableList<XYChart.Data<String, Integer>> appointmentByMonth = FXCollections.observableArrayList();
             XYChart.Series<String, Integer> series = new XYChart.Series<>();
 
+            Connection conn = DBConnection.startConnection();
+            DBQuery.setStatement(conn);
+            Statement statement = DBQuery.getStatement();
+            String selectStatement = "SELECT appointments.type,  COUNT(*) From appointments Group By Start";
+            statement.execute(selectStatement);
+            ResultSet rs = statement.getResultSet();
+
+
+            ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+
+            while (rs.next())
+            {
+
+                int number = rs.getInt("COUNT(*)");
+                String typeName = rs.getString("type");
+                pieChartData.add(new PieChart.Data(typeName, number));
+
+
+            }
+            pieChart.setData(pieChartData);
             series.getData().addAll(appointmentByMonth);
             barChart.getData().add(series);
 
@@ -170,20 +189,20 @@ public class ReportMenuController implements Initializable
 
 
     @FXML
-    void individualTabClicked(Event event)
+    void individualTabClicked(Event event) throws SQLException
     {
-
+        setBarChart();
     }
 
     @FXML
-    void percentTypeClicked(Event event) throws SQLException {
+    void percentTypeClicked(Event event) throws SQLException
+    {
         setPieChart();
-
-
     }
 
     @FXML
-    void totalTabClicked(Event event) {
+    void totalTabClicked(Event event)
+    {
 
     }
 

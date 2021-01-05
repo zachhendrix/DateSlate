@@ -13,25 +13,31 @@ package Model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.time.LocalDateTime;
-import java.util.function.Predicate;
 
+/**
+ * @author Zach Hendrix
+ * A Class that has an ObservableList in which the Appointment class object is saved to.
+ * The class also contains add and get all functions
+ */
 public class Schedule 
 {
     private static ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
-    
-    
-    //Declares variables that are used in the setting of the Part or Product ID number when creating new parts or products
-    private static int appointmentIDCount = 0;
-    
-    
-    
-    //Adds a new part or Product to their respective Observable List
+
+
+    /**
+     * Used to add an object into the "allAppointments" list
+     * @param newAppointment
+     */
     public static void addAppointment(Appointment newAppointment)
     {
         allAppointments.add(newAppointment);
     }
 
+    /**
+     *
+     * @param index
+     * @param selectedAppointment
+     */
     public static void updateAppointment(int index, Appointment selectedAppointment)
     {
         allAppointments.set(index, selectedAppointment);
@@ -49,12 +55,6 @@ public class Schedule
         return allAppointments;
     }
 
-    //Methods used to set the Part or Product ID number when creating new parts or products
-    public static int getAppointmentIDCount()
-    {
-        appointmentIDCount = allAppointments.size();
-        return appointmentIDCount;
-    }
 
 
     

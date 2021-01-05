@@ -212,7 +212,6 @@ public class DBConnection
             String appDescription = rs.getString("Location");
             String appType = rs.getString("Type");
 
-            //TODO: startDate and endDate times get loaded in wrong
 
             LocalDateTime startDate = rs.getTimestamp("Start").toLocalDateTime();
             System.out.println(startDate);
