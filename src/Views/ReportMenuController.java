@@ -4,6 +4,7 @@ package Views;
 import Model.Appointment;
 import Model.Customer;
 import Model.Schedule;
+import Utils.DBConnection;
 import Utils.DBQuery;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -42,8 +43,6 @@ public class ReportMenuController implements Initializable
 
     Stage stage;
     Parent scene;
-    private Integer businessAmount;
-    private Integer personalAmount;
 
 
     @FXML
@@ -103,7 +102,6 @@ public class ReportMenuController implements Initializable
         dateAndTimeDisplay();
         setBarChart();
 
-
     }
 
     public void dateAndTimeDisplay()
@@ -140,45 +138,52 @@ public class ReportMenuController implements Initializable
 
         }
 
+        public void setPieChart() throws SQLException {
+
+            Connection conn = DBConnection.startConnection();
+
+            DBQuery.setStatement(conn);
+            Statement statement = DBQuery.getStatement();
+            String selectStatement = "SELECT appointments.type,  COUNT(*) From appointments Group By type";
+            statement.execute(selectStatement);
+            ResultSet rs = statement.getResultSet();
 
 
+            ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
 
 
-    @FXML
-    void individualTabClicked(ActionEvent event)
-    {
-
-    }
-
-    @FXML
-    void percentTypeClicked(ActionEvent event)
-    {
-        String business = "Business";
-        String personal = "Personal";
-
-        for(Appointment a : Schedule.getAllAppointments())
-        {
-            if(a.getAppType() == "Business")
+            while (rs.next())
             {
-                businessAmount++;
-            }
-            if(a.getAppType() == "Personal")
-            {
-                personalAmount++;
-            }
+
+                int number = rs.getInt("COUNT(*)");
+                String typeName = rs.getString("type");
+                pieChartData.add(new PieChart.Data(typeName, number));
 
 
+            }
+            pieChart.setData(pieChartData);
         }
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data(business, businessAmount),
-                new PieChart.Data(personal, personalAmount));
 
-        pieChart.setData(pieChartData);
+
+
+
+
+
+    @FXML
+    void individualTabClicked(Event event)
+    {
 
     }
 
     @FXML
-    void totalTabClicked(ActionEvent event) {
+    void percentTypeClicked(Event event) throws SQLException {
+        setPieChart();
+
+
+    }
+
+    @FXML
+    void totalTabClicked(Event event) {
 
     }
 
