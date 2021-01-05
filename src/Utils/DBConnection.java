@@ -1,26 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Utils;
 
 import Model.*;
-
-import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-
 import Views.AddAppointmentMenuController;
 import Views.CustomerDataController;
-import Views.LoginMenuController;
 import javafx.collections.ObservableList;
 
+import java.sql.*;
+import java.time.LocalDateTime;
+
 /**
- * @author Zach Hendrix
+ * The DBConnection Class specifies the inputs for the connection whenever connecting to the database
+ * as well as what drivers to use.
  */
 public class DBConnection 
 {
@@ -35,10 +25,12 @@ public class DBConnection
     
     private static final String username = "U06u79";
     private static String password = "53688873417";
-    private static ObservableList<Customer> countries;
-    private static ObservableList<Customer> firstLevelDivision;
-    
-    
+
+
+    /**
+     *  The startConnection Connection uses the specified inputs and get the appropriate connection from them.
+     * @return
+     */
     public static Connection startConnection()
     {
         try
@@ -60,7 +52,17 @@ public class DBConnection
         
         return conn;
     }
-    
+
+
+    /**
+     * The checkUserData Boolean checks the username and password strings and makes
+     * sure that they are used in conjunction in the database and then authorizes the
+     * User to use the program if they both return true.
+     * @param username
+     * @param password
+     * @return
+     * @throws SQLException
+     */
     public static Boolean checkUserData(String username, String password) throws SQLException
     {
 
@@ -85,7 +87,12 @@ public class DBConnection
         }
         return false;
     }
-    
+
+    /**
+     * Uses the connection to the database to access the tables and sets the data in the tables to variables
+     * that are then used to create a Country Object in the allCountries Observable List.
+     * @throws SQLException
+     */
     public static void loadCountryData() throws SQLException
     {
         DBQuery.setStatement(conn);
@@ -102,7 +109,12 @@ public class DBConnection
             
         }
     }
-    
+
+    /**
+     * Uses the connection to the database to access the tables and sets the data in the tables to variables
+     * that are then used to create a FLDivision Object in the allFLDivisions Observable List.
+     * @throws SQLException
+     */
     public static void loadFirstLevelData() throws SQLException
     {
         DBQuery.setStatement(conn);
@@ -121,6 +133,11 @@ public class DBConnection
         }
     }
 
+    /**
+     * Uses the connection to the database to access the tables and sets the data in the tables to variables
+     * that are then used to create a Customer Object in the allCustomers Observable List.
+     * @throws SQLException
+     */
     public static void loadCustomerData() throws SQLException
     {
         DBQuery.setStatement(conn);
@@ -151,7 +168,11 @@ public class DBConnection
         }
     }
 
-
+    /**
+     * Uses the connection to the database to access the tables and sets the data in the tables to variables
+     * that are then used to create a Contact Object in the allContacts Observable List.
+     * @throws SQLException
+     */
     public static void loadContactData() throws SQLException
     {
         DBQuery.setStatement(conn);
@@ -173,6 +194,11 @@ public class DBConnection
         }
     }
 
+    /**
+     * Uses the connection to the database to access the tables and sets the data in the tables to variables
+     * that are then used to create a User Object in the allUsers Observable List.
+     * @throws SQLException
+     */
     public static void loadUserData() throws SQLException
     {
         DBQuery.setStatement(conn);
@@ -195,7 +221,11 @@ public class DBConnection
         }
     }
 
-
+    /**
+     * Uses the connection to the database to access the tables and sets the data in the tables to variables
+     * that are then used to create a Appointment Object in the allAppointments Observable List.
+     * @throws SQLException
+     */
     public static void loadAppointmentData() throws SQLException
     {
         DBQuery.setStatement(conn);
@@ -235,7 +265,10 @@ public class DBConnection
         }
     }
 
-
+    /**
+     * Closes the connection created.
+     * @throws SQLException
+     */
     public static void closeConnection()throws SQLException
     {
         try

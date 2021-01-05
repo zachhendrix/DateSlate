@@ -1,14 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model;
 
 import java.time.LocalDateTime;
 
 /**
- *
+ * Sets up the Appointment class.
+ * The Appointment Object is used to show Appointment Data to the User.
  * @author Zach Hendrix
  */
 public class Appointment 
@@ -25,7 +21,7 @@ public class Appointment
     private User appUser;
 
     /**
-     *
+     * A constructor used to create an Appointment object
      * @param appointmentID
      * @param appTitle
      * @param appDescription
@@ -53,7 +49,7 @@ public class Appointment
 
 
     /**
-     *
+     * Returns the appointmentID Integer from the Appointment Object
      * @return
      */
     public int getAppointmentID() 
@@ -62,16 +58,7 @@ public class Appointment
     }
 
     /**
-     *
-     * @param appointmentID
-     */
-    public void setAppointmentID(int appointmentID) 
-    {
-        this.appointmentID = appointmentID;
-    }
-
-    /**
-     *
+     * Returns the appTitle String from the Appointment Object
      * @return
      */
     public String getAppTitle() 
@@ -80,16 +67,7 @@ public class Appointment
     }
 
     /**
-     *
-     * @param appTitle
-     */
-    public void setAppTitle(String appTitle) 
-    {
-        this.appTitle = appTitle;
-    }
-
-    /**
-     *
+     * Returns the appLocation String from the Appointment Object
      * @return
      */
     public String getAppLocation() 
@@ -98,16 +76,7 @@ public class Appointment
     }
 
     /**
-     *
-     * @param appLocation
-     */
-    public void setAppLocation(String appLocation) 
-    {
-        this.appLocation = appLocation;
-    }
-
-    /**
-     *
+     *Returns the appDescription String from the Appointment Object
      * @return
      */
     public String getAppDescription() 
@@ -116,16 +85,7 @@ public class Appointment
     }
 
     /**
-     *
-     * @param appDescription
-     */
-    public void setAppDescription(String appDescription) 
-    {
-        this.appDescription = appDescription;
-    }
-
-    /**
-     *
+     * Returns the appContact Object from the Appointment Object
      * @return
      */
     public Contact getAppContact()
@@ -134,16 +94,7 @@ public class Appointment
     }
 
     /**
-     *
-     * @param appContact
-     */
-    public void setAppContact(Contact appContact)
-    {
-        this.appContact = appContact;
-    }
-
-    /**
-     *
+     *Returns the appType String from the Appointment Object
      * @return
      */
     public String getAppType()
@@ -152,16 +103,7 @@ public class Appointment
     }
 
     /**
-     *
-     * @param appContact
-     */
-    public void setAppType(String appContact) 
-    {
-        this.appType = appType;
-    }
-
-    /**
-     *
+     * Returns the startDate LocalDateTime from the Appointment Object
      * @return
      */
     public LocalDateTime getStartDate() 
@@ -170,16 +112,7 @@ public class Appointment
     }
 
     /**
-     *
-     * @param startDate
-     */
-    public void setStartDate(LocalDateTime startDate) 
-    {
-        this.startDate = startDate;
-    }
-
-    /**
-     *
+     * Returns the endDate LocalDateTime from the Appointment Object
      * @return
      */
     public LocalDateTime getEndDate() 
@@ -188,33 +121,23 @@ public class Appointment
     }
 
     /**
-     *
-     * @param endDate
+     * Returns the appCustomer Object from the Appointment Object
+     * @return
      */
-    public void setEndDate(LocalDateTime endDate) 
-    {
-        this.endDate = endDate;
-    }
-    
     public Customer getAppCustomer() 
     {
         return appCustomer;
     }
 
-    public void setAppCustomer(Customer appCustomer) 
-    {
-        this.appCustomer = appCustomer;
-    }
-
+    /**
+     * Returns the appUser Object from the Appointment Object
+     * @return
+     */
     public User getAppUser()
     {
         return appUser;
     }
 
-    public void setAppUser(User appUser)
-    {
-        this.appUser = appUser;
-    }
 
 
 

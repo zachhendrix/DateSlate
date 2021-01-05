@@ -1,14 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model;
-
-/*
- *
- * @author zach.hendrix
- */
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -34,22 +24,19 @@ public class Schedule
     }
 
     /**
-     *
-     * @param index
+     * Used to delete an object from the "allAppointments" list at selected value in table
      * @param selectedAppointment
+     * @return
      */
-    public static void updateAppointment(int index, Appointment selectedAppointment)
-    {
-        allAppointments.set(index, selectedAppointment);
-    }
-    
-    //Deletes a Part or Product to their respective Observable List
     public static boolean deleteAppointment(Appointment selectedAppointment)
     {
         return getAllAppointments().remove(selectedAppointment);
     }
 
-    //Returns all Parts or Products from their respective lists
+    /**
+     * Returns all customers in the "allAppointments" ObservableList.
+     * @return
+     */
     public static ObservableList<Appointment> getAllAppointments()
     {
         return allAppointments;

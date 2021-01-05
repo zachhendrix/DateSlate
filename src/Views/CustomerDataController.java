@@ -5,12 +5,8 @@
  */
 package Views;
 
-import Model.Clientele;
-import Model.Countries;
-import Model.Country;
-import Model.Customer;
-import Model.FLDivision;
-import Model.FLDivisionList;
+import Model.*;
+
 import static Model.FLDivisionList.divisionPredicate;
 import java.io.IOException;
 import java.net.URL;
@@ -95,7 +91,7 @@ public class CustomerDataController implements Initializable
     private Button backButton;
 
     /**
-     * Initializes the controller class.
+     * Initializes the CustomerDataController controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -112,8 +108,12 @@ public class CustomerDataController implements Initializable
         
   
        saveButton.setVisible(false);
-    }    
-    
+    }
+
+    /**
+     * 
+     * @param event
+     */
     @FXML
     void countryComboSelected(ActionEvent event) 
     {
@@ -192,6 +192,7 @@ public class CustomerDataController implements Initializable
     @FXML
     void modifyButtonClicked(ActionEvent event) 
     {
+
         Customer customerSelect = customerTableView.getSelectionModel().getSelectedItem();
         customerIDLabel.setText(String.valueOf(customerSelect.getCustomerID()));
         firstNameText.setText(String.valueOf((customerSelect).getFirstName()));
@@ -213,6 +214,7 @@ public class CustomerDataController implements Initializable
      @FXML
     void saveButtonClicked(ActionEvent event) throws SQLException
      {
+         //TODO: Problem with editing customer when associated appointment.
         Clientele.deleteCustomer(customerRef);
         
         int customerID = Integer.parseInt(customerIDLabel.getText());
@@ -226,7 +228,8 @@ public class CustomerDataController implements Initializable
         Timestamp createTS = Timestamp.valueOf(createDate);
 
 
-        Connection conn = DBConnection.startConnection();
+         Connection conn = DBConnection.startConnection();
+         DBQuery.setStatement(conn);
 
 
         String sql = "INSERT INTO customers (Customer_ID,Customer_Name,Address,Postal_Code,Phone,Create_Date,Created_By,Last_Update,Last_Updated_By,Division_ID) Values (?,?,?,?,?,?,?,?,?,?)";

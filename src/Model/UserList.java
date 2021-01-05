@@ -23,11 +23,21 @@ public class UserList
         allUsers.add(newUser);
     }
 
+    /**
+     * Returns all customers in the "allUsers" ObservableList.
+     * @return
+     */
     public static ObservableList<User> getAllUsers()
     {
         return allUsers;
     }
 
+    /**
+     * Returns a Country in the "allCountries" ObservableList by its Integer. Used to specify associated
+     * object when loading in the Appointments from the server
+     * @param userID
+     * @return
+     */
     public static User getByID(int userID)
     {
         for(User u : allUsers)

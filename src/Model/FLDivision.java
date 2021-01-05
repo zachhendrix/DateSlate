@@ -1,21 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model;
 
 /**
- *Sets up the class of FLDivision which is a generic term for what countries are split into.
- * A
- * @author Z
+ * Sets up the FLDivision class which is a generic term for what countries are split into.
+ * The FLDivision Object is used in the Customer Object.
+ * @author Zach Hendrix
  */
 public class FLDivision 
 {
     private int divisionID;  
     private String divisionName;
     private int countryID;
-    
+
+    /**
+     * A constructor used to create an FLDivision object
+     * @param divisionID
+     * @param divisionName
+     * @param countryID
+     */
     public FLDivision(int divisionID, String divisionName, int countryID)
     {
         this.divisionID = divisionID;
@@ -23,42 +24,39 @@ public class FLDivision
         this.countryID = countryID;
         
     }
-    
+
+    /**
+     * Returns the divisionID Integer from the FLDivision Object
+     * @return
+     */
     public int getDivisionID()
     {
         return divisionID;
     }
-    
-    public void setDivisionID(int divisionID)
-    {
-        this.divisionID = divisionID;
-    }
-    
+
+    /**
+     * Returns the divisionName String from the FLDivision Object
+     * @return
+     */
     public String getDivisionName()
     {
         return divisionName;
     }
-    
-    public void setDivisionName(String divisionName)
-    {
-        this.divisionName = divisionName;
-    }
-    
-    
+
+    /**
+     * Returns the countryID Integer from the FLDivision Object
+     * @return
+     */
     public int getCountryID()
     {
         return countryID;
     }
-    
-    public void setCountryID(int countryID)
-    {
-        this.countryID = countryID;
-    }
-    
-   
-    
-    
-    
+
+
+    /**
+     * Returns the indexed FLDivision Objects name for proper ComboBox usage
+     * @return
+     */
     @Override
     public String toString()
     {

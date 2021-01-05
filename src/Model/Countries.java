@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model;
 
 import javafx.collections.FXCollections;
@@ -28,7 +23,7 @@ public class Countries
 
 
     /**
-     * 
+     * Returns all Countries in the "allCountries" ObservableList
      * @return
      */
     public static ObservableList<Country> getAllCountries()
@@ -37,6 +32,12 @@ public class Countries
     }
 
 
+    /**
+     * Returns a Country in the "allCountries" ObservableList by its Integer. Used to specify associated
+     * object when loading in the Appointments from the server
+     * @param countryID
+     * @return
+     */
     public static Country getByID(int countryID)
     {
         for(Country c : allCountries)

@@ -1,6 +1,10 @@
-
 package Model;
 
+/**
+ * Sets up the Customer class.
+ * The Customer Object is used in the Appointment Object.
+ * @author Zach Hendrix
+ */
 public class Customer 
 {
     
@@ -12,6 +16,16 @@ public class Customer
     private FLDivision state;
     private String phone;
 
+    /**
+     * A constructor used to create an Customer object
+     * @param customerID
+     * @param customerName
+     * @param address
+     * @param postalCode
+     * @param country
+     * @param state
+     * @param phone
+     */
     public Customer(int customerID, String customerName, String address,String postalCode, Country country, FLDivision state, String phone)
     {
         this.customerID = customerID ;   
@@ -22,96 +36,97 @@ public class Customer
         this.state = state;
         this.phone = phone;
     }
-    
-    
-    
 
+
+    /**
+     * Returns the customerID Integer from the Customer Object
+     * @return
+     */
     public int getCustomerID() 
     {
         return customerID;
     }
 
-    public void setCustomerID(int customerID) 
-    {
-        this.customerID = customerID;
-    }
-
+    /**
+     * Returns the customerName String from the Customer Object
+     * @return
+     */
     public String getCustomerName() 
     {
         return customerName;
     }
 
-    public void setCustomerName(String customerName) 
-    {
-        this.customerName = customerName;
-    }
-    
+    /**
+     * Returns the address String from the Customer Object
+     * @return
+     */
     public String getAddress() 
     {
         return address;
     }
 
-    public void setAddress(String address) 
-    {
-        this.address = address;
-    }
-
+    /**
+     * Returns the postalCode String from the Customer Object
+     * @return
+     */
     public String getPostalCode()
     {
         return postalCode;
     }
 
-    public void setPostalCode(String postalCode)
-    {
-        this.postalCode = postalCode;
-    }
-    
+    /**
+     * Returns the country Object from the Customer Object
+     * @return
+     */
     public Country getCountry()
     {
         return country;
     }
 
-    public void setCountry(Country country)
-    {
-        this.country = country;
-    }
-    
+    /**
+     * Returns the state (FLDivison) Object from the Customer Object
+     * @return
+     */
     public FLDivision getState()
     {
         return state;
     }
 
-    public void setState(FLDivision state)
-    {
-        this.state = state;
-    }
-    
+    /**
+     * Returns the phone String from the Customer Object
+     * @return
+     */
     public String getPhone()
     {
         return phone;
     }
 
-    public void setPhone(String phone)
-    {
-        this.phone = phone;
-    }
-
-    
+    /**
+     * Returns only the first name from the customerName String on the Customer Object
+     * @return
+     */
     public String getFirstName()
     {
         int firstSpace = customerName.indexOf(" ");
         String firstName = customerName.substring(0, firstSpace);
         return firstName;
     }
-    
+
+    /**
+     * Returns only the last name from the customerName String on the Customer Object
+     * @return
+     */
     public String getLastName()
     {
         int firstSpace = customerName.indexOf(" ");
         String lastName = customerName.substring(firstSpace).trim();
         return lastName;
     }
-   
 
+    /**
+     * Returns the indexed Customer Objects name for proper ComboBox usage
+     * @return
+     */
     @Override
     public String toString()
     {
