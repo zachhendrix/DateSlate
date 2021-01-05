@@ -181,7 +181,7 @@ public class ScheduleMenuController implements Initializable
    }
 
     /**
-     * Uses a timeline to continuously update the clock and date on the Scheduling screen
+     * Uses a timeline to continuously update the clock and date on the Scheduling screen. Lambda expression used
      */
     public void dateAndTimeDisplay() 
     {
@@ -328,6 +328,11 @@ public class ScheduleMenuController implements Initializable
         }
     }
 
+    /**
+     * When you click the customer button it sends you to the Customer Data screen
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void customerButtonClicked(ActionEvent event) throws IOException 
     {
@@ -337,6 +342,11 @@ public class ScheduleMenuController implements Initializable
         stage.show();
     }
 
+    /**
+     * When you click the add button it sends you to the Add Appointment Menu
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void addButtonClicked(ActionEvent event) throws IOException 
     {
@@ -346,6 +356,11 @@ public class ScheduleMenuController implements Initializable
         stage.show();
     }
 
+    /**
+     * When you click the delete button it gets the selected object in the table and ask for a confirmation and shows the ID and type
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     private void deleteButtonClicked(ActionEvent event) throws SQLException
     {
@@ -372,6 +387,12 @@ public class ScheduleMenuController implements Initializable
         } 
     }
 
+    /**
+     * When you click the update button it sends you to the Update Appointment menu and sends the data from the screen to the
+     * next screen using ".sendModData"
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void updateButtonClicked(ActionEvent event) throws IOException 
     {
@@ -389,6 +410,11 @@ public class ScheduleMenuController implements Initializable
         stage.show();
     }
 
+    /**
+     * When you click the report button it sends you to the Report menu
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void reportsButtonClicked(ActionEvent event) throws IOException
     {

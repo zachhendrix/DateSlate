@@ -50,7 +50,7 @@
                               </AnchorPane>
                            </content>
                         </Tab>
-                        <Tab fx:id="individualScheduleTab" onSelectionChanged="#individualScheduleTabClicked" text="Individual Schedule">
+                        <Tab fx:id="individualScheduleTab" onSelectionChanged="#individualTabClicked" text="Individual Schedule">
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
@@ -82,7 +82,7 @@
                               </AnchorPane>
                            </content>
                         </Tab>
-                        <Tab fx:id="percentTypeTab" onSelectionChanged="#percentTypeTabClicked" text="Percent Type">
+                        <Tab fx:id="percentTypeTab" onSelectionChanged="#percentTypeClicked" text="Percent Type">
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>

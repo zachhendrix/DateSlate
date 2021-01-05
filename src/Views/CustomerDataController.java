@@ -11,7 +11,7 @@ import Model.Country;
 import Model.Customer;
 import Model.FLDivision;
 import Model.FLDivisionList;
-import static Model.FLDivisionList.divisionID;
+import static Model.FLDivisionList.divisionPredicate;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
@@ -123,7 +123,7 @@ public class CustomerDataController implements Initializable
         }
         else
             {
-                regionComboBox.setItems(FLDivisionList.getAllFLDivisions().filtered(divisionID(countryComboBox.getValue().getCountryID())));
+                regionComboBox.setItems(FLDivisionList.getAllFLDivisions().filtered(divisionPredicate(countryComboBox.getValue().getCountryID())));
             }
     }
 

@@ -4,8 +4,11 @@ package Views;
 import Model.Appointment;
 import Model.Customer;
 import Model.Schedule;
+import Utils.DBQuery;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -20,162 +23,165 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+
+
 public class ReportMenuController implements Initializable
 {
 
-        Stage stage;
-        Parent scene;
-
-        @FXML
-        private Tab totalTab;
-        @FXML
-        private BarChart<String, Integer> barChart;
-        @FXML
-        private CategoryAxis monthAxis;
-        @FXML
-        private NumberAxis numberAxis;
-
-        @FXML
-        private Tab individualScheduleTab;
-        @FXML
-        private TableView<Appointment> contactScheduleTableview;
-        @FXML
-        private TableColumn<Appointment, Integer> appointmentIDCol;
-        @FXML
-        private TableColumn<Appointment, String> titleCol;
-        @FXML
-        private TableColumn<Appointment, String> descriptionCol;
-        @FXML
-        private TableColumn<Appointment, String> locationCol;
-        @FXML
-        private TableColumn<Appointment, Customer> contactCol;
-        @FXML
-        private TableColumn<Appointment, String> typeCol;
-        @FXML
-        private TableColumn<Appointment, Date> startDateCol;
-        @FXML
-        private TableColumn<Appointment, Date> endDateCol;
-        @FXML
-        private TableColumn<Appointment, Customer> customerIDCol;
-        @FXML
-        private ComboBox<Customer> contactComboBox;
-
-        @FXML
-        private Tab percentTypeTab;
-        @FXML
-        private PieChart pieChart;
+    Stage stage;
+    Parent scene;
+    private Integer businessAmount;
+    private Integer personalAmount;
 
 
-        @FXML
-        private Button backButton;
+    @FXML
+    private Tab totalTab;
+    @FXML
+    private BarChart<String, Integer> barChart;
+    @FXML
+    private CategoryAxis monthAxis;
+    @FXML
+    private NumberAxis numberAxis;
 
-        @FXML
-        private Label currentTimeLabel;
-        @FXML
-        private Label currentDateLabel;
+    @FXML
+    private Tab individualScheduleTab;
+    @FXML
+    private TableView<Appointment> contactScheduleTableview;
+    @FXML
+    private TableColumn<Appointment, Integer> appointmentIDCol;
+    @FXML
+    private TableColumn<Appointment, String> titleCol;
+    @FXML
+    private TableColumn<Appointment, String> descriptionCol;
+    @FXML
+    private TableColumn<Appointment, String> locationCol;
+    @FXML
+    private TableColumn<Appointment, Customer> contactCol;
+    @FXML
+    private TableColumn<Appointment, String> typeCol;
+    @FXML
+    private TableColumn<Appointment, Date> startDateCol;
+    @FXML
+    private TableColumn<Appointment, Date> endDateCol;
+    @FXML
+    private TableColumn<Appointment, Customer> customerIDCol;
+    @FXML
+    private ComboBox<Customer> contactComboBox;
+
+    @FXML
+    private Tab percentTypeTab;
+    @FXML
+    private PieChart pieChart;
+
+
+    @FXML
+    private Button backButton;
+
+    @FXML
+    private Label currentTimeLabel;
+    @FXML
+    private Label currentDateLabel;
 
 
 
-        @Override
-        public void initialize(URL url, ResourceBundle rb)
+    @Override
+    public void initialize(URL url, ResourceBundle rb)
+    {
+
+        dateAndTimeDisplay();
+        setBarChart();
+
+
+    }
+
+    public void dateAndTimeDisplay()
+    {
+        Timeline timeline = new Timeline();
+        timeline.getKeyFrames().add(new KeyFrame(Duration.ZERO, event ->
         {
+            LocalDateTime localDateTime = LocalDateTime.now();
+            int hour = localDateTime.getHour();
+            int minute = localDateTime.getMinute();
 
-                dateAndTimeDisplay();
+            String currentTime = String.format("%02d:%02d", hour, minute);
+            currentTimeLabel.setText(currentTime);
 
+            DateTimeFormatter dateFormatted = DateTimeFormatter.ofPattern("MM-dd-yyyy", Locale.ENGLISH);
+            String dateFormatStr = dateFormatted.format(localDateTime);
+            currentDateLabel.setText(dateFormatStr);
+        }));
+        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1)));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
 
         }
 
-        public void dateAndTimeDisplay()
+
+
+        public void setBarChart()
         {
-                Timeline timeline = new Timeline();
-                timeline.getKeyFrames().add(new KeyFrame(Duration.ZERO, event ->
-                {
-                        LocalDateTime localDateTime = LocalDateTime.now();
+            ObservableList<XYChart.Data<String, Integer>> appointmentByMonth = FXCollections.observableArrayList();
+            XYChart.Series<String, Integer> series = new XYChart.Series<>();
 
-                        int hour = localDateTime.getHour();
-                        int minute = localDateTime.getMinute();
-
-                        String currentTime = String.format("%02d:%02d", hour, minute);
-                        currentTimeLabel.setText(currentTime);
-
-                        DateTimeFormatter dateFormatted = DateTimeFormatter.ofPattern("MM-dd-yyyy", Locale.ENGLISH);
-                        String dateFormatStr = dateFormatted.format(localDateTime);
-                        currentDateLabel.setText(dateFormatStr);
-                }));
-                timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1)));
-                timeline.setCycleCount(Timeline.INDEFINITE);
-                timeline.play();
+            series.getData().addAll(appointmentByMonth);
+            barChart.getData().add(series);
 
         }
 
 
 
-        @FXML
-        void totalTabClicked(Event event)
+
+
+    @FXML
+    void individualTabClicked(ActionEvent event)
+    {
+
+    }
+
+    @FXML
+    void percentTypeClicked(ActionEvent event)
+    {
+        String business = "Business";
+        String personal = "Personal";
+
+        for(Appointment a : Schedule.getAllAppointments())
         {
-                XYChart.Series<String, Number> series1 = new XYChart.Series<>();
-                series1.setName("January");
-                series1.getData().add(new XYChart.Data<String,Number>());
-
-                XYChart.Series<String, Number> series2 = new XYChart.Series<>();
-                series1.setName("February");
-
-                XYChart.Series<String, Number> series3 = new XYChart.Series<>();
-                series1.setName("March");
-
-                XYChart.Series<String, Number> series4 = new XYChart.Series<>();
-                series1.setName("April");
-
-                XYChart.Series<String, Number> series5 = new XYChart.Series<>();
-                series1.setName("May");
-
-                XYChart.Series<String, Number> series6 = new XYChart.Series<>();
-                series1.setName("June");
-
-                XYChart.Series<String, Number> series7 = new XYChart.Series<>();
-                series1.setName("July");
-
-                XYChart.Series<String, Number> series8 = new XYChart.Series<>();
-                series1.setName("August");
-
-                XYChart.Series<String, Number> series9 = new XYChart.Series<>();
-                series1.setName("September");
-
-                XYChart.Series<String, Number> series10 = new XYChart.Series<>();
-                series1.setName("October");
-
-                XYChart.Series<String, Number> series11 = new XYChart.Series<>();
-                series1.setName("November");
-
-                XYChart.Series<String, Number> series12 = new XYChart.Series<>();
-                series1.setName("December");
+            if(a.getAppType() == "Business")
+            {
+                businessAmount++;
+            }
+            if(a.getAppType() == "Personal")
+            {
+                personalAmount++;
+            }
 
 
         }
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                new PieChart.Data(business, businessAmount),
+                new PieChart.Data(personal, personalAmount));
 
-        @FXML
-        void individualScheduleTabClicked(Event event)
-        {
+        pieChart.setData(pieChartData);
 
-        }
+    }
 
-        @FXML
-        void percentTypeTabClicked(Event event)
-        {
+    @FXML
+    void totalTabClicked(ActionEvent event) {
 
-        }
+    }
+
 
         @FXML
         void backButtonClicked(ActionEvent event) throws IOException

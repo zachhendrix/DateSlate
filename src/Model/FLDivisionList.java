@@ -7,7 +7,8 @@ import javafx.collections.ObservableList;
 
 /**
  * @author Zach Hendrix
- *
+ * A Class that has an ObservableList in which the FLDivision class object is saved to.
+ * The class also contains add and get all functions
  */
 public class FLDivisionList 
 {
@@ -15,7 +16,7 @@ public class FLDivisionList
 
 
     /**
-     *
+     * Used to add an object into the "allFLDivisions" list
      * @param newFLDivision
      */
     public static void addFLDivision(FLDivision newFLDivision)
@@ -24,7 +25,7 @@ public class FLDivisionList
     }
 
     /**
-     *
+     *Returns all of the FLDivision objects within the "allFLDivisions" Observable List
      * @return
      */
     public static ObservableList<FLDivision> getAllFLDivisions()
@@ -33,19 +34,19 @@ public class FLDivisionList
     }
 
     /**
-     *
+     * Simple Lambda expression that returns FLDivisions that have a Country ID specified. Used to filter the FLDivisions by their
+     * country ID so that the ComboBoxes on the CustomerDataController show only those associated with their country.
+     * (Other Expressions in DBConnect and ScheduleMenuController
      * @param division
      * @return
      */
-    //Section B
-    //Simple Lambda expression to show that the Java Application Thread is running (Other Expression is in DBConnection
-    public static Predicate<FLDivision> divisionID(Integer division)
+    public static Predicate<FLDivision> divisionPredicate(Integer division)
     {
         return FLDivision -> FLDivision.getCountryID() == division;
     }
 
     /**
-     *
+     *Converts the Integer given by the customer table in the database to a String of the divisions name for storing cached customers
      * @param divisionID
      * @return
      */

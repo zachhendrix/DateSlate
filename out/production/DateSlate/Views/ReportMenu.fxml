@@ -50,7 +50,7 @@
                               </AnchorPane>
                            </content>
                         </Tab>
-                        <Tab fx:id="individualScheduleTab" onSelectionChanged="#individualScheduleTabClicked" text="Individual Schedule">
+                        <Tab fx:id="individualScheduleTab" onSelectionChanged="#individualTabClicked" text="Individual Schedule">
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
@@ -82,11 +82,11 @@
                               </AnchorPane>
                            </content>
                         </Tab>
-                        <Tab fx:id="busiestLocationTab" onSelectionChanged="#busiestLocationTabClicked" text="Busiest Location">
+                        <Tab fx:id="percentTypeTab" onSelectionChanged="#percentTypeClicked" text="Percent Type">
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <PieChart fx:id="pieChart" legendSide="LEFT" prefHeight="452.0" prefWidth="900.0" title="Appointment Share by Location" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <PieChart fx:id="pieChart" legendSide="LEFT" prefHeight="452.0" prefWidth="900.0" title="Most Prominent Appointment Type " AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                            </content>
