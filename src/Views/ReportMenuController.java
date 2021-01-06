@@ -67,7 +67,7 @@ public class ReportMenuController implements Initializable
     @FXML
     private TableColumn<Appointment, Integer> personalCol;
     @FXML
-    private ComboBox<String> monthChoiceBox;
+    private ComboBox<String> monthComboBox;
 
     @FXML
     private Tab individualScheduleTab;
@@ -130,7 +130,7 @@ public class ReportMenuController implements Initializable
         endDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
         customerIDCol.setCellValueFactory(new PropertyValueFactory<>("appCustomer"));
 
-        monthChoiceBox.getItems().setAll(monthName);
+        monthComboBox.getItems().setAll(monthName);
 
         dateAndTimeDisplay();
 
@@ -173,21 +173,31 @@ public class ReportMenuController implements Initializable
             else
             {
                 contactScheduleTableview.setItems(Schedule.getAllAppointments().filtered(contactSchedulePredicate(contactComboBox.getValue())));
-
             }
 
 
 
         }
 
-
-
-
-    private void monthComboSelected() throws SQLException
+        void monthComboSelected() throws SQLException
         {
             String[] monthName = {"January","February","March","April","May","June","July","August","September", "October","November", "December"};
-            Integer monthInt = null;
-            String monthNameSelected;
+            String selectedMonth = monthComboBox.getValue();
+            int monthInt = Arrays.asList(monthName).indexOf(selectedMonth);
+
+            Connection conn = DBConnection.startConnection();
+            DBQuery.setStatement(conn);
+            Statement statement = DBQuery.getStatement();
+            String selectStatement = "SELECT MonthName(Start) AS monthName , Type AS typeName, COUNT(*) AS amount FROM appointments GROUP BY MONTHNAME(Start), Type\n";
+            statement.execute(selectStatement);
+            ResultSet rs = statement.getResultSet();
+
+
+
+
+            }
+
+
 
 
         }
