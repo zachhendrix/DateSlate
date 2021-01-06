@@ -55,6 +55,9 @@ public class ReportMenuController implements Initializable
 
     private static int monthInt;
     String[] monthName = {"January","February","March","April","May","June","July","August","September", "October","November", "December"};
+    private ObservableList<AppointmentReport> apptList;
+
+    //https://github.com/RBertoCases/C195-Software-II/blob/master/SchedulingApp/src/rcases/model/AppointmentReport.java
 
 
 
@@ -192,6 +195,15 @@ public class ReportMenuController implements Initializable
             statement.execute(selectStatement);
             ResultSet rs = statement.getResultSet();
 
+            while (rs.next()) {
+
+                String month = rs.getString("Month");
+
+                String type = rs.getString("Type");
+
+                String amount = rs.getString("Amount");
+
+                apptList.add(new AppointmentReport(month, type, amount));
 
 
 
@@ -199,8 +211,8 @@ public class ReportMenuController implements Initializable
 
 
 
-
         }
+
 
     /**
      * Sets the PieChart with data from the server tables.
