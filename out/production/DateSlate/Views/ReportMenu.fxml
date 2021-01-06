@@ -34,22 +34,6 @@
                <children>
                   <TabPane prefHeight="481.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE">
                      <tabs>
-                        <Tab fx:id="totalTab" onSelectionChanged="#totalTabClicked" text="Total Appointments">
-                           <content>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="387.0" prefWidth="778.0">
-                                 <children>
-                                    <BarChart fx:id="barChart" barGap="2.0" layoutX="127.0" layoutY="26.0" prefHeight="400.0" prefWidth="776.0" title="Appointment By Month and Type" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                      <xAxis>
-                                        <CategoryAxis fx:id="monthAxis" label="Month" prefHeight="32.0" prefWidth="419.0" side="BOTTOM" />
-                                      </xAxis>
-                                      <yAxis>
-                                        <NumberAxis fx:id="numberAxis" label="Number of Meetings" side="LEFT" tickLabelFill="HOTPINK" tickLabelGap="5.0" tickLength="10.0" upperBound="50.0" />
-                                      </yAxis>
-                                    </BarChart>
-                                 </children>
-                              </AnchorPane>
-                           </content>
-                        </Tab>
                         <Tab fx:id="individualScheduleTab" onSelectionChanged="#individualTabClicked" text="Individual Schedule">
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -82,11 +66,27 @@
                               </AnchorPane>
                            </content>
                         </Tab>
+                        <Tab fx:id="totalTab" onSelectionChanged="#totalTabClicked" text="Total Appointments">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="387.0" prefWidth="778.0">
+                                 <children>
+                                    <BarChart fx:id="barChart" barGap="2.0" layoutX="127.0" layoutY="26.0" prefHeight="400.0" prefWidth="776.0" style="-fx-background-color: whitesmoke;" title="Appointment By Month and Type" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                      <xAxis>
+                                        <CategoryAxis fx:id="monthAxis" animated="false" label="Month" prefHeight="32.0" prefWidth="419.0" side="BOTTOM" />
+                                      </xAxis>
+                                      <yAxis>
+                                        <NumberAxis fx:id="numberAxis" label="Number of Meetings" side="LEFT" tickLabelFill="HOTPINK" tickLabelGap="5.0" tickLength="10.0" upperBound="50.0" />
+                                      </yAxis>
+                                    </BarChart>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
                         <Tab fx:id="percentTypeTab" onSelectionChanged="#percentTypeClicked" text="Percent Type">
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <PieChart fx:id="pieChart" legendSide="LEFT" prefHeight="452.0" prefWidth="900.0" title="Most Prominent Appointment Type " AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <PieChart fx:id="pieChart" legendSide="LEFT" prefHeight="452.0" prefWidth="900.0" style="-fx-background-color: whitesmoke;" title="Most Prominent Appointment Type " AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                            </content>

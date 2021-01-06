@@ -1,13 +1,13 @@
 package Views;
 
-import Model.Appointment;
-import Model.Customer;
+import Model.*;
 import Utils.DBConnection;
 import Utils.DBQuery;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -17,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -44,6 +45,8 @@ public class ReportMenuController implements Initializable
 
     Stage stage;
     Parent scene;
+    private boolean barIsLoaded;
+    private boolean pieIsLoaded;
 
 
     @FXML
@@ -68,7 +71,7 @@ public class ReportMenuController implements Initializable
     @FXML
     private TableColumn<Appointment, String> locationCol;
     @FXML
-    private TableColumn<Appointment, Customer> contactCol;
+    private TableColumn<Appointment, Contact> contactCol;
     @FXML
     private TableColumn<Appointment, String> typeCol;
     @FXML
@@ -78,7 +81,7 @@ public class ReportMenuController implements Initializable
     @FXML
     private TableColumn<Appointment, Customer> customerIDCol;
     @FXML
-    private ComboBox<Customer> contactComboBox;
+    private ComboBox<Contact> contactComboBox;
 
     @FXML
     private Tab percentTypeTab;
@@ -103,6 +106,18 @@ public class ReportMenuController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+
+        contactComboBox.setItems(ContactList.getAllContacts());
+        contactScheduleTableview.setItems(Schedule.getAllAppointments());
+        appointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("appTitle"));
+        descriptionCol.setCellValueFactory(new PropertyValueFactory<>("appLocation"));
+        locationCol.setCellValueFactory(new PropertyValueFactory<>("appDescription"));
+        contactCol.setCellValueFactory(new PropertyValueFactory<>("appContact"));
+        typeCol.setCellValueFactory(new PropertyValueFactory<>("appType"));
+        startDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        endDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        customerIDCol.setCellValueFactory(new PropertyValueFactory<>("appCustomer"));
 
         dateAndTimeDisplay();
 
@@ -139,54 +154,67 @@ public class ReportMenuController implements Initializable
 
         private void setBarChart() throws SQLException
         {
-            //TODO: Figure This out
-            ObservableList<XYChart.Data<String, Integer>> appointmentByMonth = FXCollections.observableArrayList();
-            XYChart.Series<String, Integer> series = new XYChart.Series<>();
+
+            /*
+        String[] monthName = {"January","February","March","April","May","June","July","August","September", "October","November", "December"};
             Integer monthInt = null;
+            monthAxis.setLabel("Month");
+            numberAxis.setLabel("Amount");
 
-            Connection conn = DBConnection.startConnection();
-            DBQuery.setStatement(conn);
-            Statement statement = DBQuery.getStatement();
-            String selectStatement = "SELECT Type,  COUNT(*) as typeCount From appointments Where Month(Start) =" + monthInt + "Group By Type;";
-            statement.execute(selectStatement);
-            ResultSet rs = statement.getResultSet();
+            for(monthInt = 0; monthInt<12; monthInt++)
+            {
+                Connection conn = DBConnection.startConnection();
+                DBQuery.setStatement(conn);
+                Statement statement = DBQuery.getStatement();
+                String selectStatement = "SELECT Type,  COUNT(*) as typeCount From appointments Where Month(Start) =" + monthInt + " Group By Type";
+                statement.execute(selectStatement);
+                ResultSet rs = statement.getResultSet();
 
-
-
+                while(rs.next())
+                {
+                    String type = rs.getString("Type");
+                    int typeCount = rs.getInt("typeCount");
+                    XYChart.Series<String, Integer> series = new XYChart.Series<>();
+                    series.setName(type);
+                    series.getData().add(new XYChart.Data<String, Integer>(monthName[monthInt],typeCount));
+                    barChart.getData().add(series);
+                }
+            }
+            barIsLoaded = true;
+             */
         }
 
     /**
      * Sets the PieChart with data from the server tables.
      * @throws SQLException
      */
-    private void setPieChart() throws SQLException {
+    private void setPieChart() throws SQLException
+    {
 
-            Connection conn = DBConnection.startConnection();
+        Connection conn = DBConnection.startConnection();
 
-            DBQuery.setStatement(conn);
-            Statement statement = DBQuery.getStatement();
-            String selectStatement = "SELECT appointments.type,  COUNT(*) From appointments Group By type";
-            statement.execute(selectStatement);
-            ResultSet rs = statement.getResultSet();
-
-
-            ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+        DBQuery.setStatement(conn);
+        Statement statement = DBQuery.getStatement();
+        String selectStatement = "SELECT appointments.type,  COUNT(*) From appointments Group By type";
+        statement.execute(selectStatement);
+        ResultSet rs = statement.getResultSet();
 
 
-            while (rs.next())
-            {
-
-                int number = rs.getInt("COUNT(*)");
-                String typeName = rs.getString("type");
-                pieChartData.add(new PieChart.Data(typeName, number));
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
 
 
-            }
-            pieChart.setData(pieChartData);
+        while (rs.next())
+        {
+
+            int number = rs.getInt("COUNT(*)");
+            String typeName = rs.getString("type");
+            pieChartData.add(new PieChart.Data(typeName, number));
+
+
         }
-
-        public
-
+        pieChart.setData(pieChartData);
+        pieIsLoaded = true;
+    }
 
 
 
@@ -201,8 +229,10 @@ public class ReportMenuController implements Initializable
     @FXML
     void totalTabClicked(Event event) throws SQLException
     {
-
-
+        if(!barIsLoaded)
+        {
+            setBarChart();
+        }
     }
 
     /**
@@ -213,7 +243,10 @@ public class ReportMenuController implements Initializable
     @FXML
     void percentTypeClicked(Event event) throws SQLException
     {
-        setPieChart();
+        if(!pieIsLoaded)
+        {
+            setPieChart();
+        }
     }
 
 
