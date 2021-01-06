@@ -1,16 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Views;
-import Model.*;
-import java.io.IOException;
-import java.net.URL;
-import java.sql.SQLException;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
+import Model.Logging;
 import Utils.DBConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,10 +15,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 /**
- * FXML Controller class
  *
+ * The LoginMenuController is a controller for the LoginMenu.fxml
  * @author Zach Hendrix
+ *
  */
 public class LoginMenuController implements Initializable 
 {
@@ -62,7 +59,9 @@ public class LoginMenuController implements Initializable
     public static String loggedIn;
 
     /**
-     * Initializes the controller class.
+     * On Initialize the ResourceBundle is checked and the labels are set to the appropriate language.The picture of
+     * the UK flag symbolizing the English language is set to null if the language is French which shows a French flag
+     * instead.
      * @param url
      * @param rb
      */
@@ -90,7 +89,9 @@ public class LoginMenuController implements Initializable
 
 
     /**
-     *
+     * When the Login button is clicked the userIDTextField and the passwordTextField are checked on the database tables
+     * using the "checkUserData" method. If they match the tables the user is sent to the Schedule Menu. Else they are met with a warning label.
+     * The resulting bad or good login is appended in the login_activity.txt
      * @param event
      * @throws IOException
      * @throws SQLException

@@ -1,30 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Views;
 
 import Model.Appointment;
 import Model.Customer;
 import Model.Schedule;
-import java.net.URL;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAmount;
-import java.time.temporal.TemporalUnit;
-import java.util.*;
-
 import Utils.DBConnection;
 import Utils.DBQuery;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -32,21 +15,27 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+
 /**
- * FXML Controller class
  *
+ * The ScheduleMenuController is a controller for the ScheduleMenu.fxml
  * @author Zach Hendrix
+ *
  */
 public class ScheduleMenuController implements Initializable 
 {
@@ -275,27 +264,7 @@ public class ScheduleMenuController implements Initializable
     @FXML
     private void monthTabClicked(Event event)
     {
-        appointmentMonthTableview.setItems(Schedule.getAllAppointments());
 
-        for (Appointment appointment : appointmentTableview.getItems())
-        {
-            int month = Calendar.getInstance().get(Calendar.MONTH);
-
-            if(appointment.getStartDate().getMonthValue() == month)
-            {
-                monthAppointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
-                monthTitleCol.setCellValueFactory(new PropertyValueFactory<>("appTitle"));
-                monthDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("appLocation"));
-                monthLocationCol.setCellValueFactory(new PropertyValueFactory<>("appDescription"));
-                monthContactCol.setCellValueFactory(new PropertyValueFactory<>("appContact"));
-                monthTypeCol.setCellValueFactory(new PropertyValueFactory<>("appType"));
-                monthStartDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
-                monthEndDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
-                monthCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("appCustomer"));
-
-            }
-
-        }
     }
 
     /**
@@ -306,30 +275,32 @@ public class ScheduleMenuController implements Initializable
     private void weekTabClicked(Event event)
     {
         appointmentWeekTableview.setItems(Schedule.getAllAppointments());
+        weekAppointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+        weekTitleCol.setCellValueFactory(new PropertyValueFactory<>("appTitle"));
+        weekDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("appLocation"));
+        weekLocationCol.setCellValueFactory(new PropertyValueFactory<>("appDescription"));
+        weekContactCol.setCellValueFactory(new PropertyValueFactory<>("appContact"));
+        weekTypeCol.setCellValueFactory(new PropertyValueFactory<>("appType"));
+        weekStartDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        weekEndDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        weekCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("appCustomer"));
 
-        for (Appointment appointment : appointmentTableview.getItems())
-        {
-            LocalDateTime week = LocalDateTime.now().plusDays(7);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime nowPlus7 = now.plusDays(7);
+        FilteredList<Appointment> filteredData = new FilteredList<>(Schedule.getAllAppointments());
+        filteredData.setPredicate(row -> {
 
-            if(appointment.getStartDate().isBefore(week))
-            {
-                weekAppointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
-                weekTitleCol.setCellValueFactory(new PropertyValueFactory<>("appTitle"));
-                weekDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("appLocation"));
-                weekLocationCol.setCellValueFactory(new PropertyValueFactory<>("appDescription"));
-                weekContactCol.setCellValueFactory(new PropertyValueFactory<>("appContact"));
-                weekTypeCol.setCellValueFactory(new PropertyValueFactory<>("appType"));
-                weekStartDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
-                weekEndDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
-                weekCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("appCustomer"));
+            LocalDateTime rowDate = row.getStartDate();
 
-            }
-
-        }
+            return rowDate.isAfter(now) && rowDate.isBefore(nowPlus7);
+        });
+        appointmentWeekTableview.setItems(filteredData);
     }
 
+
+
     /**
-     * When you click the customer button it sends you to the Customer Data screen
+     * When the Customer button is clicked it sends the user to the Customer Data Menu
      * @param event
      * @throws IOException
      */
@@ -343,7 +314,7 @@ public class ScheduleMenuController implements Initializable
     }
 
     /**
-     * When you click the add button it sends you to the Add Appointment Menu
+     * When the Add button is clicked it sends the user to the Add Appointment Menu
      * @param event
      * @throws IOException
      */
@@ -357,7 +328,7 @@ public class ScheduleMenuController implements Initializable
     }
 
     /**
-     * When you click the delete button it gets the selected object in the table and ask for a confirmation and shows the ID and type
+     * When the Delete button it clicked it gets the selected object in the table and ask for a confirmation and shows the ID and type
      * @param event
      * @throws SQLException
      */
@@ -388,8 +359,8 @@ public class ScheduleMenuController implements Initializable
     }
 
     /**
-     * When you click the update button it sends you to the Update Appointment menu and sends the data from the screen to the
-     * next screen using ".sendModData"
+     * When the Update button is clicked it sends the user to the Update Appointment menu and sends the data from the screen to the
+     * next screen using "sendModData"
      * @param event
      * @throws IOException
      */
@@ -411,7 +382,7 @@ public class ScheduleMenuController implements Initializable
     }
 
     /**
-     * When you click the report button it sends you to the Report menu
+     * When the Report button is clicked it sends the user to the Report Menu.
      * @param event
      * @throws IOException
      */

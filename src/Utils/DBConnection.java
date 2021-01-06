@@ -3,7 +3,6 @@ package Utils;
 import Model.*;
 import Views.AddAppointmentMenuController;
 import Views.CustomerDataController;
-import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.time.LocalDateTime;

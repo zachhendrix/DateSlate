@@ -1,18 +1,7 @@
 package Views;
 
 import Model.*;
-
-import java.io.IOException;
-import java.net.URL;
-import java.sql.*;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ResourceBundle;
-import java.util.Optional;
-
 import Utils.DBConnection;
-import Utils.DBQuery;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +11,22 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.ResourceBundle;
+
+/**
+ *
+ * The AddAppointmentMenuController is a controller for the AddAppointmentMenu.fxml
+ * @author Zach Hendrix
+ *
+ */
 public class AddAppointmentMenuController implements Initializable
 {
     Stage stage;
@@ -74,7 +79,12 @@ public class AddAppointmentMenuController implements Initializable
     @FXML
     private TextField endDateMinute;
 
-
+    /**
+     * On Initialize the appointmentIDLabel is set to the generatedAppIDNum
+     * contact, customer, user, and type Comboboxes are loaded with data.
+     * @param url
+     * @param rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
@@ -89,8 +99,15 @@ public class AddAppointmentMenuController implements Initializable
 
     }
 
-    
-    
+
+    /**
+     * When the Add button is clicked the values from the data fields are sent to variables. If the values of the variables
+     * are acceptable the data is used to Insert into the database. The Appointment object is then added to the allAppointments
+     * Observable List and the user is sent back to the ScheduleMenu
+     * @param event
+     * @throws IOException
+     * @throws SQLException
+     */
     @FXML
     void addButtonClicked(ActionEvent event) throws IOException, SQLException
     {
@@ -159,6 +176,12 @@ public class AddAppointmentMenuController implements Initializable
         }
     }
 
+    /**
+     * When the Cancel Button is clicked the user is given a warning alert. If the answer is "OK" the user is sent back
+     * to the Schedule Menu
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void cancelButtonClicked(ActionEvent event) throws IOException 
     {

@@ -1,16 +1,6 @@
 package Views;
 
 import Model.*;
-
-import java.io.IOException;
-import java.net.URL;
-import java.sql.*;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.ResourceBundle;
-
 import Utils.DBConnection;
 import Utils.DBQuery;
 import javafx.event.ActionEvent;
@@ -22,6 +12,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.net.URL;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.ResourceBundle;
+
+/**
+ *
+ * The UpdateAppointmentMenuController is a controller for the UpdateAppointmentMenu.fxml
+ * @author Zach Hendrix
+ *
+ */
 public class UpdateAppointmentMenuController implements Initializable
 {
     Stage stage;
@@ -73,7 +76,13 @@ public class UpdateAppointmentMenuController implements Initializable
 
     @FXML
     private TextField endDateMinute;
-    
+
+    /**
+     * On Initialize the contact, customer, user and type ComboBoxes are all set with their
+     * respective data types.
+     * @param url
+     * @param rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
@@ -83,8 +92,16 @@ public class UpdateAppointmentMenuController implements Initializable
         typeChoiceBox.getItems().setAll(meetingType);
 
     }
-    
-    
+
+    /**
+     * When the Save button is clicked the data in the fields are set to variables. If the variables are acceptable the original
+     * Appointment is deleted and then the data is used to Insert a new Appointment using the values changed in the same appointmentID
+     * location. The Appointment object in the local allAppointments ObservableList is the deleted, added with new values and
+     * the user is sent back to the ScheduleMenu
+     * @param event
+     * @throws IOException
+     * @throws SQLException
+     */
     @FXML
     void saveButtonClicked(ActionEvent event) throws IOException, SQLException
     {
@@ -153,6 +170,12 @@ public class UpdateAppointmentMenuController implements Initializable
 
     }
 
+    /**
+     * When the Cancel button is clicked a warning alert will be shown, if the answer is "OK" user is sent
+     * back to the ScheduleMenu
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void cancelButtonClicked(ActionEvent event) throws IOException 
     {
@@ -174,6 +197,10 @@ public class UpdateAppointmentMenuController implements Initializable
 
     }
 
+    /**
+     * The data is sent from the previous Appointment Table to populate the data fields in the current screen.
+     * @param appointment
+     */
     void sendModData(Appointment appointment) 
     {
         appointmentRef = appointment;

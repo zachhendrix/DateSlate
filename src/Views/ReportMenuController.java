@@ -1,9 +1,7 @@
-
 package Views;
 
 import Model.Appointment;
 import Model.Customer;
-import Model.Schedule;
 import Utils.DBConnection;
 import Utils.DBQuery;
 import javafx.animation.KeyFrame;
@@ -18,18 +16,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -37,7 +33,12 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 
-
+/**
+ *
+ * The ReportMenuController is a controller for the ReportMenu.fxml
+ * @author Zach Hendrix
+ *
+ */
 public class ReportMenuController implements Initializable
 {
 
@@ -94,7 +95,11 @@ public class ReportMenuController implements Initializable
     private Label currentDateLabel;
 
 
-
+    /**
+     *
+     * @param url
+     * @param rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
@@ -103,6 +108,11 @@ public class ReportMenuController implements Initializable
 
     }
 
+
+    /**
+     *
+     * Uses a timeline to continuously update the clock and date on the Scheduling screen. Lambda expression used
+     */
     public void dateAndTimeDisplay()
     {
         Timeline timeline = new Timeline();
@@ -127,37 +137,29 @@ public class ReportMenuController implements Initializable
 
 
 
-        public void setBarChart() throws SQLException {
+        private void setBarChart() throws SQLException
+        {
+            //TODO: Figure This out
             ObservableList<XYChart.Data<String, Integer>> appointmentByMonth = FXCollections.observableArrayList();
             XYChart.Series<String, Integer> series = new XYChart.Series<>();
+            Integer monthInt = null;
 
             Connection conn = DBConnection.startConnection();
             DBQuery.setStatement(conn);
             Statement statement = DBQuery.getStatement();
-            String selectStatement = "SELECT appointments.type,  COUNT(*) From appointments Group By Start";
+            String selectStatement = "SELECT Type,  COUNT(*) as typeCount From appointments Where Month(Start) =" + monthInt + "Group By Type;";
             statement.execute(selectStatement);
             ResultSet rs = statement.getResultSet();
 
 
-            ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
-
-
-            while (rs.next())
-            {
-
-                int number = rs.getInt("COUNT(*)");
-                String typeName = rs.getString("type");
-                pieChartData.add(new PieChart.Data(typeName, number));
-
-
-            }
-            pieChart.setData(pieChartData);
-            series.getData().addAll(appointmentByMonth);
-            barChart.getData().add(series);
 
         }
 
-        public void setPieChart() throws SQLException {
+    /**
+     * Sets the PieChart with data from the server tables.
+     * @throws SQLException
+     */
+    private void setPieChart() throws SQLException {
 
             Connection conn = DBConnection.startConnection();
 
@@ -183,6 +185,8 @@ public class ReportMenuController implements Initializable
             pieChart.setData(pieChartData);
         }
 
+        public
+
 
 
 
@@ -191,30 +195,41 @@ public class ReportMenuController implements Initializable
     @FXML
     void individualTabClicked(Event event) throws SQLException
     {
-        setBarChart();
+
     }
 
+    @FXML
+    void totalTabClicked(Event event) throws SQLException
+    {
+
+
+    }
+
+    /**
+     * When the Percent Type tab is clicked it runs the "setPieChart" method.
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     void percentTypeClicked(Event event) throws SQLException
     {
         setPieChart();
     }
 
+
+    /**
+     * When the Back button is clicked it returns the user to the Schedule Menu.
+     * @param event
+     * @throws IOException
+     */
     @FXML
-    void totalTabClicked(Event event)
+    void backButtonClicked(ActionEvent event) throws IOException
     {
-
+        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("ScheduleMenu.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
     }
-
-
-        @FXML
-        void backButtonClicked(ActionEvent event) throws IOException
-        {
-                stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-                scene = FXMLLoader.load(getClass().getResource("ScheduleMenu.fxml"));
-                stage.setScene(new Scene(scene));
-                stage.show();
-        }
 
 }
 
