@@ -1,6 +1,7 @@
 package Model;
 
 import java.time.LocalDateTime;
+import java.util.function.Predicate;
 
 /**
  * Sets up the Appointment class.
@@ -136,6 +137,11 @@ public class Appointment
     public User getAppUser()
     {
         return appUser;
+    }
+
+    public static Predicate<Appointment> divisionPredicate(Integer monthValue)
+    {
+        return Appointment -> Appointment.getStartDate().getMonthValue() == monthValue;
     }
 
 

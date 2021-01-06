@@ -2,6 +2,7 @@ package Views;
 
 import Model.Appointment;
 import Model.Customer;
+import Model.FLDivision;
 import Model.Schedule;
 import Utils.DBConnection;
 import Utils.DBQuery;
@@ -27,9 +28,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.function.Predicate;
+
+import static Model.Appointment.divisionPredicate;
 
 /**
  *
@@ -264,6 +269,20 @@ public class ScheduleMenuController implements Initializable
     @FXML
     private void monthTabClicked(Event event)
     {
+        appointmentMonthTableview.setItems(Schedule.getAllAppointments());
+        monthAppointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+        monthTitleCol.setCellValueFactory(new PropertyValueFactory<>("appTitle"));
+        monthDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("appLocation"));
+        monthLocationCol.setCellValueFactory(new PropertyValueFactory<>("appDescription"));
+        monthContactCol.setCellValueFactory(new PropertyValueFactory<>("appContact"));
+        monthTypeCol.setCellValueFactory(new PropertyValueFactory<>("appType"));
+        monthStartDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        monthEndDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        monthCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("appCustomer"));
+
+        int monthInt = LocalDateTime.now().getMonthValue();
+
+        appointmentMonthTableview.setItems(Schedule.getAllAppointments().filtered(divisionPredicate(monthInt)));
 
     }
 
@@ -344,18 +363,19 @@ public class ScheduleMenuController implements Initializable
         alert.setContentText("Are you ok with this?");
 
         Optional<ButtonType> result = alert.showAndWait();
-        
+
         if (result.get() == ButtonType.OK)
         {
             Connection conn = DBConnection.startConnection();
             DBQuery.setStatement(conn);
             Statement statement = DBQuery.getStatement();
-            String insertStatement = "DELETE FROM appointments WHERE Appointment_ID = '" + appointment.getAppointmentID() +"'";
+            String insertStatement = "DELETE FROM appointments WHERE Appointment_ID = '" + appointment.getAppointmentID() + "'";
             statement.execute(insertStatement);
 
             Schedule.deleteAppointment(appointment);
 
-        } 
+        }
+
     }
 
     /**
@@ -367,18 +387,20 @@ public class ScheduleMenuController implements Initializable
     @FXML
     private void updateButtonClicked(ActionEvent event) throws IOException 
     {
+
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("UpdateAppointmentMenu.fxml"));
         loader.load();
-        
+
         UpdateAppointmentMenuController UAMController = loader.getController();
         UAMController.sendModData(appointmentTableview.getSelectionModel().getSelectedItem());
 
 
-        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         Parent scene = loader.getRoot();
         stage.setScene(new Scene(scene));
         stage.show();
+
     }
 
     /**

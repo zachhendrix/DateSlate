@@ -48,6 +48,10 @@ public class ReportMenuController implements Initializable
     private boolean barIsLoaded;
     private boolean pieIsLoaded;
 
+    private static int monthInt;
+    private String[] monthName = {"January","February","March","April","May","June","July","August","September", "October","November", "December"};
+
+
 
     @FXML
     private Tab totalTab;
@@ -155,8 +159,7 @@ public class ReportMenuController implements Initializable
         private void setBarChart() throws SQLException
         {
 
-            /*
-        String[] monthName = {"January","February","March","April","May","June","July","August","September", "October","November", "December"};
+            String[] monthName = {"January","February","March","April","May","June","July","August","September", "October","November", "December"};
             Integer monthInt = null;
             monthAxis.setLabel("Month");
             numberAxis.setLabel("Amount");
@@ -181,7 +184,7 @@ public class ReportMenuController implements Initializable
                 }
             }
             barIsLoaded = true;
-             */
+
         }
 
     /**
