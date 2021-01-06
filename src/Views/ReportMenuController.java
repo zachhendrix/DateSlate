@@ -28,10 +28,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
+import static Model.Appointment.appointmentDateIntPredicate;
+import static Model.Contact.contactSchedulePredicate;
 
 
 /**
@@ -49,18 +54,20 @@ public class ReportMenuController implements Initializable
     private boolean pieIsLoaded;
 
     private static int monthInt;
-    private String[] monthName = {"January","February","March","April","May","June","July","August","September", "October","November", "December"};
+    String[] monthName = {"January","February","March","April","May","June","July","August","September", "October","November", "December"};
 
 
 
     @FXML
     private Tab totalTab;
     @FXML
-    private BarChart<String, Integer> barChart;
+    private TableView<Appointment> monthTypeTableview;
     @FXML
-    private CategoryAxis monthAxis;
+    private TableColumn<Appointment, Integer> businessCol;
     @FXML
-    private NumberAxis numberAxis;
+    private TableColumn<Appointment, Integer> personalCol;
+    @FXML
+    private ComboBox<String> monthChoiceBox;
 
     @FXML
     private Tab individualScheduleTab;
@@ -123,6 +130,8 @@ public class ReportMenuController implements Initializable
         endDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
         customerIDCol.setCellValueFactory(new PropertyValueFactory<>("appCustomer"));
 
+        monthChoiceBox.getItems().setAll(monthName);
+
         dateAndTimeDisplay();
 
     }
@@ -152,38 +161,34 @@ public class ReportMenuController implements Initializable
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
 
+    }
+
+        @FXML
+        void contactComboSelected(ActionEvent event)
+        {
+            if(contactComboBox.getValue() == null )
+            {
+                contactScheduleTableview.getSelectionModel().clearSelection();
+            }
+            else
+            {
+                contactScheduleTableview.setItems(Schedule.getAllAppointments().filtered(contactSchedulePredicate(contactComboBox.getValue())));
+
+            }
+
+
+
         }
 
 
 
-        private void setBarChart() throws SQLException
-        {
 
+    private void monthComboSelected() throws SQLException
+        {
             String[] monthName = {"January","February","March","April","May","June","July","August","September", "October","November", "December"};
             Integer monthInt = null;
-            monthAxis.setLabel("Month");
-            numberAxis.setLabel("Amount");
+            String monthNameSelected;
 
-            for(monthInt = 0; monthInt<12; monthInt++)
-            {
-                Connection conn = DBConnection.startConnection();
-                DBQuery.setStatement(conn);
-                Statement statement = DBQuery.getStatement();
-                String selectStatement = "SELECT Type,  COUNT(*) as typeCount From appointments Where Month(Start) =" + monthInt + " Group By Type";
-                statement.execute(selectStatement);
-                ResultSet rs = statement.getResultSet();
-
-                while(rs.next())
-                {
-                    String type = rs.getString("Type");
-                    int typeCount = rs.getInt("typeCount");
-                    XYChart.Series<String, Integer> series = new XYChart.Series<>();
-                    series.setName(type);
-                    series.getData().add(new XYChart.Data<String, Integer>(monthName[monthInt],typeCount));
-                    barChart.getData().add(series);
-                }
-            }
-            barIsLoaded = true;
 
         }
 
@@ -220,9 +225,6 @@ public class ReportMenuController implements Initializable
     }
 
 
-
-
-
     @FXML
     void individualTabClicked(Event event) throws SQLException
     {
@@ -232,10 +234,7 @@ public class ReportMenuController implements Initializable
     @FXML
     void totalTabClicked(Event event) throws SQLException
     {
-        if(!barIsLoaded)
-        {
-            setBarChart();
-        }
+
     }
 
     /**

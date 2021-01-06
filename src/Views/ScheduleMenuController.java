@@ -34,7 +34,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.Predicate;
 
-import static Model.Appointment.divisionPredicate;
+import static Model.Appointment.appointmentDateIntPredicate;
 
 /**
  *
@@ -282,7 +282,7 @@ public class ScheduleMenuController implements Initializable
 
         int monthInt = LocalDateTime.now().getMonthValue();
 
-        appointmentMonthTableview.setItems(Schedule.getAllAppointments().filtered(divisionPredicate(monthInt)));
+        appointmentMonthTableview.setItems(Schedule.getAllAppointments().filtered(appointmentDateIntPredicate(monthInt)));
 
     }
 

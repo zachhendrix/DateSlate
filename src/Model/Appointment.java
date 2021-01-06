@@ -139,8 +139,9 @@ public class Appointment
         return appUser;
     }
 
-    public static Predicate<Appointment> divisionPredicate(Integer monthValue)
+    public static Predicate<Appointment> appointmentDateIntPredicate(Integer monthValue)
     {
+
         return Appointment -> Appointment.getStartDate().getMonthValue() == monthValue;
     }
 

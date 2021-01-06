@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.function.Predicate;
+
 /**
  * Sets up the Contact class.
  * The Contact Object is used in the Appointment Object.
@@ -59,6 +61,11 @@ public class Contact
     public String toString()
     {
         return(contactName);
+    }
+
+    public static Predicate<Appointment> contactSchedulePredicate(Contact contactValue)
+    {
+        return Appointment -> Appointment.getAppContact() == contactValue;
     }
 
 
