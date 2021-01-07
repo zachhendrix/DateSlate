@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.function.Predicate;
+
 /**
  * Sets up the Customer class.
  * The Customer Object is used in the Appointment Object.
@@ -132,5 +134,5 @@ public class Customer
     {
         return(customerName);
     }
-    
+
 }

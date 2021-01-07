@@ -31,7 +31,9 @@ public class UpdateAppointmentMenuController implements Initializable
     Parent scene;
     String[] meetingType = {"Business","Personal"};
     private Appointment appointmentRef;
-    
+    private boolean isOverlapping;
+
+
     @FXML
     private Button saveButton;
 
@@ -119,9 +121,34 @@ public class UpdateAppointmentMenuController implements Initializable
         User appUser = userComboBox.getValue();
         LocalDateTime updateDate = LocalDateTime.now();
         Timestamp updateTS = Timestamp.valueOf(updateDate);
+
+        for (Appointment a: Schedule.getAllAppointments())
+        {
+
+            if ((startDate.isAfter(a.getStartDate()) && startDate.isBefore(a.getEndDate())) ||
+                    (startDate.isBefore(a.getStartDate()) && endDate.isAfter(a.getStartDate())) ||
+                    (startDate.isAfter(a.getStartDate()) && endDate.isBefore(a.getEndDate())) ||
+                    (startDate.isBefore(a.getStartDate()) && endDate.isAfter(a.getEndDate())))
+            {
+                isOverlapping = true;
+
+            }
+
+            else if (startDate.equals(a.getStartDate())||
+                    startDate.equals(a.getEndDate()) ||
+                    endDate.equals(a.getStartDate()) ||
+                    endDate.equals(a.getEndDate()))
+            {
+                isOverlapping = true;
+
+            }
+            else
+            {
+                isOverlapping = false;
+            }
+        }
         
-        
-        if(appTitle.length() >= 1 && appLocation.length() >= 1 && appType.length() >= 1 && (startDate.getHour()>= 8 && startDate.getHour() <= 22) && endDate.isAfter(startDate))
+        if(appTitle.length() >= 1 && appLocation.length() >= 1 && appType.length() >= 1 && (startDate.getHour()>= 8 && startDate.getHour() <= 22) && endDate.isAfter(startDate) && isOverlapping == false)
         {
             Connection conn = DBConnection.startConnection();
             DBQuery.setStatement(conn);
@@ -196,6 +223,9 @@ public class UpdateAppointmentMenuController implements Initializable
         
 
     }
+
+
+
 
     /**
      * The data is sent from the previous Appointment Table to populate the data fields in the current screen.

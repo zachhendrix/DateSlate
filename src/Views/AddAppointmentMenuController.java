@@ -33,6 +33,7 @@ public class AddAppointmentMenuController implements Initializable
     Parent scene;
     String[] meetingType = {"Business","Personal"};
     public static int generateAppIDNum;
+    private boolean isOverlapping;
 
     @FXML
     private Button addButton;
@@ -127,8 +128,35 @@ public class AddAppointmentMenuController implements Initializable
         LocalDateTime createDate = LocalDateTime.now();
         Timestamp createTS = Timestamp.valueOf(createDate);
 
+
+        for (Appointment a : Schedule.getAllAppointments())
+        {
+            if ((startDate.isAfter(a.getStartDate()) && startDate.isBefore(a.getEndDate())) ||
+                    (startDate.isBefore(a.getStartDate()) && endDate.isAfter(a.getStartDate())) ||
+                    (startDate.isAfter(a.getStartDate()) && endDate.isBefore(a.getEndDate())) ||
+                    (startDate.isBefore(a.getStartDate()) && endDate.isAfter(a.getEndDate())))
+            {
+                isOverlapping = true;
+
+            }
+            else if (startDate.equals(a.getStartDate())||
+                    startDate.equals(a.getEndDate()) ||
+                    endDate.equals(a.getStartDate()) ||
+                    endDate.equals(a.getEndDate()))
+            {
+                isOverlapping = true;
+
+            }
+            else
+                {
+                    isOverlapping = false;
+                }
+        }
+
+
+
         
-        if(appTitle.length() >= 1 && appLocation.length() >= 1 && appType.length() >= 1 && (startDate.getHour()>= 8 && startDate.getHour() <= 22) && endDate.isAfter(startDate))
+        if(appTitle.length() >= 1 && appLocation.length() >= 1 && appType.length() >= 1 && (startDate.getHour()>= 8 && startDate.getHour() <= 22) && endDate.isAfter(startDate) && isOverlapping == false)
         {
             Connection conn = DBConnection.startConnection();
 

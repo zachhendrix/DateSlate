@@ -50,27 +50,28 @@ public class ReportMenuController implements Initializable
 
     Stage stage;
     Parent scene;
-    private boolean barIsLoaded;
+
+
     private boolean pieIsLoaded;
-
-    private static int monthInt;
     String[] monthName = {"January","February","March","April","May","June","July","August","September", "October","November", "December"};
-    private ObservableList<AppointmentReport> apptList;
-
-    //https://github.com/RBertoCases/C195-Software-II/blob/master/SchedulingApp/src/rcases/model/AppointmentReport.java
+    private ObservableList<Report> appReport;
 
 
 
     @FXML
     private Tab totalTab;
     @FXML
-    private TableView<Appointment> monthTypeTableview;
+    private TableView<Report> monthTypeTableview;
+
     @FXML
-    private TableColumn<Appointment, Integer> businessCol;
+    private TableColumn<Report, String> monthCol;
+
     @FXML
-    private TableColumn<Appointment, Integer> personalCol;
+    private TableColumn<Report, String> monthTypeCol;
+
     @FXML
-    private ComboBox<String> monthComboBox;
+    private TableColumn<Report, String> amountCol;
+
 
     @FXML
     private Tab individualScheduleTab;
@@ -113,13 +114,14 @@ public class ReportMenuController implements Initializable
 
 
     /**
-     *
+     * Initializes the controller class, sets values to the first table shown and runs the date and time method to start the clock.
      * @param url
      * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+
 
         contactComboBox.setItems(ContactList.getAllContacts());
         contactScheduleTableview.setItems(Schedule.getAllAppointments());
@@ -133,7 +135,8 @@ public class ReportMenuController implements Initializable
         endDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
         customerIDCol.setCellValueFactory(new PropertyValueFactory<>("appCustomer"));
 
-        monthComboBox.getItems().setAll(monthName);
+
+
 
         dateAndTimeDisplay();
 
@@ -141,7 +144,6 @@ public class ReportMenuController implements Initializable
 
 
     /**
-     *
      * Uses a timeline to continuously update the clock and date on the Scheduling screen. Lambda expression used
      */
     public void dateAndTimeDisplay()
@@ -166,6 +168,12 @@ public class ReportMenuController implements Initializable
 
     }
 
+
+    /**
+     * When the value is changed in the Contact Combobox it sets the value to a Lambda expression to check which appointments
+     * that particular Contact has.
+     * @param event
+     */
         @FXML
         void contactComboSelected(ActionEvent event)
         {
@@ -176,37 +184,6 @@ public class ReportMenuController implements Initializable
             else
             {
                 contactScheduleTableview.setItems(Schedule.getAllAppointments().filtered(contactSchedulePredicate(contactComboBox.getValue())));
-            }
-
-
-
-        }
-
-        void monthComboSelected() throws SQLException
-        {
-            String[] monthName = {"January","February","March","April","May","June","July","August","September", "October","November", "December"};
-            String selectedMonth = monthComboBox.getValue();
-            int monthInt = Arrays.asList(monthName).indexOf(selectedMonth);
-
-            Connection conn = DBConnection.startConnection();
-            DBQuery.setStatement(conn);
-            Statement statement = DBQuery.getStatement();
-            String selectStatement = "SELECT MonthName(Start) AS monthName , Type AS typeName, COUNT(*) AS amount FROM appointments GROUP BY MONTHNAME(Start), Type\n";
-            statement.execute(selectStatement);
-            ResultSet rs = statement.getResultSet();
-
-            while (rs.next()) {
-
-                String month = rs.getString("Month");
-
-                String type = rs.getString("Type");
-
-                String amount = rs.getString("Amount");
-
-                apptList.add(new AppointmentReport(month, type, amount));
-
-
-
             }
 
 
@@ -246,16 +223,41 @@ public class ReportMenuController implements Initializable
         pieIsLoaded = true;
     }
 
-
-    @FXML
-    void individualTabClicked(Event event) throws SQLException
-    {
-
-    }
-
+    /**
+     * When the total tab is clicked a table is called from the database that aggregates the number of similar types of appointments
+     * and sets them equal to variables. The rows are then added as a Report object into the observable list.
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     void totalTabClicked(Event event) throws SQLException
     {
+        appReport = FXCollections.observableArrayList();
+        Connection conn = DBConnection.startConnection();
+        DBQuery.setStatement(conn);
+        Statement statement = DBQuery.getStatement();
+        String selectStatement = "SELECT MonthName(Start) AS monthName , Type AS typeName, COUNT(*) AS amount FROM appointments GROUP BY MONTHNAME(Start), Type";
+        statement.execute(selectStatement);
+        ResultSet rs = statement.getResultSet();
+
+        while (rs.next())
+        {
+
+            String month = rs.getString("monthName");
+
+            String type = rs.getString("typeName");
+
+            String amount = rs.getString("amount");
+
+            appReport.add(new Report(month, type, amount));
+
+
+        }
+        monthCol.setCellValueFactory(new PropertyValueFactory<>("month"));
+        monthTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        amountCol.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        monthTypeTableview.getItems().setAll(appReport);
+
 
     }
 

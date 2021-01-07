@@ -31,7 +31,7 @@
                <children>
                   <TabPane prefHeight="481.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE">
                      <tabs>
-                        <Tab fx:id="individualScheduleTab" onSelectionChanged="#individualTabClicked" text="Individual Schedule">
+                        <Tab fx:id="individualScheduleTab" text="Individual Schedule">
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
@@ -67,19 +67,14 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="387.0" prefWidth="778.0">
                                  <children>
-                                    <TableView fx:id="monthTypeTableview" layoutY="108.0" prefHeight="344.0" prefWidth="900.0" style="-fx-background-color: dimgrey;">
+                                    <TableView fx:id="monthTypeTableview" layoutY="49.0" prefHeight="403.0" prefWidth="900.0" style="-fx-background-color: dimgrey;">
                                        <columns>
-                                          <TableColumn fx:id="businessCol" prefWidth="114.0" text="Business" />
-                                          <TableColumn fx:id="personalCol" prefWidth="125.0" text="Personal" />
+                                          <TableColumn fx:id="monthCol" prefWidth="114.0" text="Month" />
+                                          <TableColumn fx:id="monthTypeCol" prefWidth="125.0" text="Type" />
+                                          <TableColumn fx:id="amountCol" prefWidth="125.0" text="Amount" />
                                        </columns>
                                     </TableView>
-                                    <ComboBox fx:id="monthComboBox" layoutX="10.0" layoutY="30.0" onAction="#monthComboSelected" prefWidth="150.0" />
-                                    <Label layoutX="10.0" prefHeight="36.0" prefWidth="116.0" style="-fx-text-fill: White;" text="Month:" textFill="WHITE" AnchorPane.leftAnchor="10.0">
-                                       <font>
-                                          <Font name="System Bold" size="18.0" />
-                                       </font>
-                                    </Label>
-                                    <Label layoutX="10.0" layoutY="72.0" prefHeight="36.0" prefWidth="282.0" style="-fx-text-fill: White;" text="Amount During Month By Type:" textFill="WHITE">
+                                    <Label layoutX="8.0" layoutY="8.0" prefHeight="36.0" prefWidth="282.0" style="-fx-text-fill: White;" text="Amount During Month By Type:" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold" size="18.0" />
                                        </font>
