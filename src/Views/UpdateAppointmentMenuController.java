@@ -16,8 +16,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 /**
  *
@@ -122,23 +125,30 @@ public class UpdateAppointmentMenuController implements Initializable
         LocalDateTime updateDate = LocalDateTime.now();
         Timestamp updateTS = Timestamp.valueOf(updateDate);
 
+
+        ZoneId zoneID = TimeZone.getDefault().toZoneId();
+        ZonedDateTime startZD = ZonedDateTime.of(startDate, zoneID);
+        ZonedDateTime endZD = ZonedDateTime.of(endDate,zoneID);
+
+        Schedule.deleteAppointment(appointmentRef);
+
         for (Appointment a: Schedule.getAllAppointments())
         {
 
-            if ((startDate.isAfter(a.getStartDate()) && startDate.isBefore(a.getEndDate())) ||
-                    (endDate.isAfter(a.getStartDate()) && endDate.isBefore(a.getEndDate())) ||
-                    (startDate.isAfter(a.getStartDate()) && endDate.isBefore(a.getEndDate())) ||
-                    (startDate.isBefore(a.getStartDate()) && endDate.isAfter(a.getEndDate())) ||
-                    (startDate.equals(a.getStartDate()) && endDate.equals(a.getEndDate())))
+            if ((startZD.isAfter(a.getStartDate().atZone(zoneID)) && startZD.isBefore(a.getEndDate().atZone(zoneID))) ||
+                    (endZD.isAfter(a.getStartDate().atZone(zoneID)) && endZD.isBefore(a.getEndDate().atZone(zoneID))) ||
+                    (startZD.isBefore(a.getStartDate().atZone(zoneID)) && endZD.isAfter(a.getStartDate().atZone(zoneID))) ||
+
+                    (startZD.equals(a.getStartDate().atZone(zoneID)) && endZD.equals(a.getEndDate().atZone(zoneID))))
             {
                 isOverlapping = true;
 
             }
 
-            else if (startDate.equals(a.getStartDate())||
-                    startDate.equals(a.getEndDate()) ||
-                    endDate.equals(a.getStartDate()) ||
-                    endDate.equals(a.getEndDate()))
+            else if (startZD.equals(a.getStartDate().atZone(zoneID))||
+                    startZD.equals(a.getEndDate().atZone(zoneID)) ||
+                    endZD.equals(a.getStartDate().atZone(zoneID)) ||
+                    endZD.equals(a.getEndDate().atZone(zoneID)))
             {
                 isOverlapping = true;
 
@@ -175,7 +185,7 @@ public class UpdateAppointmentMenuController implements Initializable
             ps.setInt(12, appContact.getContactID());
             ps.execute();
 
-            Schedule.deleteAppointment(appointmentRef);
+
             Schedule.addAppointment(new Appointment(appointmentID, appTitle,appLocation,appDescription,appContact,appType, startDate, endDate, appCustomer,appUser));
 
             //Loads the Main Menu screen.
@@ -216,6 +226,17 @@ public class UpdateAppointmentMenuController implements Initializable
         
         if (result.get() == ButtonType.OK)
         {
+            Schedule.addAppointment(new Appointment(
+                    appointmentRef.getAppointmentID(),
+                    appointmentRef.getAppTitle(),
+                    appointmentRef.getAppLocation(),
+                    appointmentRef.getAppDescription(),
+                    appointmentRef.getAppContact(),
+                    appointmentRef.getAppType(),
+                    appointmentRef.getStartDate(),
+                    appointmentRef.getEndDate(),
+                    appointmentRef.getAppCustomer(),
+                    appointmentRef.getAppUser()));
             stage = (Stage)((Button)event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("ScheduleMenu.fxml"));
             stage.setScene(new Scene(scene));

@@ -56,7 +56,7 @@ public class DBConnection
     /**
      * The checkUserData Boolean checks the username and password strings and makes
      * sure that they are used in conjunction in the database and then authorizes the
-     * User to use the program if they both return true.
+     * User to use the program if they both return true. Contains a simple Lambda which checks if the app is running
      * @param username
      * @param password
      * @return
@@ -72,8 +72,7 @@ public class DBConnection
         {
             if(rs.getString("User_Name").equals(username) && rs.getString("password").equals(password))
             {
-                //Section B
-                //Simple Lambda expression to show that the Java Application Thread is running (Other Expression is in FLDivisionList
+
                 Runnable runProcess = () ->
                 {
                     System.out.println(Thread.currentThread().getName() + " is running");

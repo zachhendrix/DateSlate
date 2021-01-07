@@ -139,6 +139,13 @@ public class Appointment
         return appUser;
     }
 
+
+    /**
+     * Lambda expression used to get all of the appointments from a given month by its Integer value.
+     * Used to sort Appointments by current month.
+     * @param monthValue
+     * @return
+     */
     public static Predicate<Appointment> appointmentDateIntPredicate(Integer monthValue)
     {
 

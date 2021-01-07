@@ -35,7 +35,7 @@ public class FLDivisionList
     /**
      * Simple Lambda expression that returns FLDivisions that have a Country ID specified. Used to filter the FLDivisions by their
      * country ID so that the ComboBoxes on the CustomerDataController show only those associated with their country.
-     * (Other Expressions in DBConnect and ScheduleMenuController
+     * (Other Expressions in DBConnect and ScheduleMenuController)
      * @param division
      * @return
      */

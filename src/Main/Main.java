@@ -26,15 +26,17 @@ public class Main extends Application
 {
 
     /**
-     *
+     * Initializes the Main class
      * @param primaryStage
      * @throws Exception
      */
     @Override
     public void start(Stage primaryStage) throws Exception
     {        
-        System.out.println(Locale.getDefault());
+        Locale locale = (Locale.getDefault());
+        Locale.setDefault(new Locale(locale.toString()));
         ResourceBundle bundle = ResourceBundle.getBundle("Main/Lang_fr", Locale.getDefault());
+
 
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Views/LoginMenu.fxml"),bundle);
 
@@ -47,6 +49,7 @@ public class Main extends Application
     }
 
     /**
+     * Calls the methods set in the DBConnection that sets information from the database into the local Observable Lists
      * @param args the command line arguments
      */
     public static void main(String[] args) throws SQLException 

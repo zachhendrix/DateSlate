@@ -63,6 +63,12 @@ public class Contact
         return(contactName);
     }
 
+    /**
+     * Lambda expression used to get all of the appointments from a given contact. Used to sort Appointments by Contact
+     * objects on the Report screen.
+     * @param contactValue
+     * @return
+     */
     public static Predicate<Appointment> contactSchedulePredicate(Contact contactValue)
     {
         return Appointment -> Appointment.getAppContact() == contactValue;

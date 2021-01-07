@@ -55,8 +55,8 @@ public class LoginMenuController implements Initializable
     @FXML
     private Label languageTextLabel;
 
-    private ResourceBundle rbRef;
     public static String loggedIn;
+    private ResourceBundle rb;
 
     /**
      * On Initialize the ResourceBundle is checked and the labels are set to the appropriate language.The picture of
@@ -69,21 +69,18 @@ public class LoginMenuController implements Initializable
     public void initialize(URL url, ResourceBundle rb) 
     {
         Locale locale = rb.getLocale();
-        rbRef = rb;
         System.out.println(locale);
-        
-        if(rb.getLocale().toString().equals("fr"))
-        {
-           System.out.println("FRENCH");
-           passwordLabel.setText(rb.getString("password")+ ":");
-           userIdLabel.setText(rb.getString("username")+ ":");
-           locationLabel.setText(rb.getString("france"));
-           languageTextLabel.setText(rb.getString("language") + ":");
-           languageLabel.setText(rb.getString("french"));
-           loginButton.setText(rb.getString("login"));
-           flagIconUK.setImage(null);
-                   
-        }
+        this.rb = rb;
+        System.out.println(Locale.getDefault());
+
+        passwordLabel.setText(rb.getString("password")+ ":");
+        userIdLabel.setText(rb.getString("username")+ ":");
+        locationLabel.setText(rb.getString("france"));
+        languageTextLabel.setText(rb.getString("language") + ":");
+        languageLabel.setText(rb.getString("french"));
+        loginButton.setText(rb.getString("login"));
+        flagIconUK.setImage(null);
+
 
     }
 
@@ -112,27 +109,13 @@ public class LoginMenuController implements Initializable
         
         else
         {
-
-            if(rbRef.getLocale().toString().equals("fr"))
-            {
                 Logging.badLogin();
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Avertissement de connexion");
-                alert.setHeaderText("Identifiant ou mot de passe incorrect");
-                alert.setContentText("Réessayer");
-                alert.showAndWait();
-            }
-
-            else
-            {
-                Logging.badLogin();
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Login Warning");
-                alert.setHeaderText("Incorrect Username or Password");
-                alert.setContentText("Try Again");
+                alert.setTitle(rb.getString("LoginWarning"));
+                alert.setHeaderText(rb.getString("IncorrectUsernamePassword"));
+                alert.setContentText(rb.getString("TryAgain"));
                 alert.showAndWait();
 
-            }
                
         }
     }
