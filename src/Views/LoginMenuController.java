@@ -18,6 +18,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -72,15 +74,20 @@ public class LoginMenuController implements Initializable
         System.out.println(locale);
         this.rb = rb;
         System.out.println(Locale.getDefault());
+        ZoneId id = ZoneId.systemDefault();
+
 
         passwordLabel.setText(rb.getString("password")+ ":");
         userIdLabel.setText(rb.getString("username")+ ":");
-        locationLabel.setText(rb.getString("france"));
+        locationLabel.setText(id.toString());
         languageTextLabel.setText(rb.getString("language") + ":");
-        languageLabel.setText(rb.getString("french"));
+        languageLabel.setText(rb.getString("detectedLanguage"));
         loginButton.setText(rb.getString("login"));
-        flagIconUK.setImage(null);
 
+        if (Locale.getDefault()== Locale.FRANCE)
+        {
+            flagIconUK.setImage(null);
+        }
 
     }
 

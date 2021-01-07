@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 public class Main extends Application 
 {
 
+
     /**
      * Initializes the Main class
      * @param primaryStage
@@ -32,15 +33,10 @@ public class Main extends Application
      */
     @Override
     public void start(Stage primaryStage) throws Exception
-    {        
-        Locale locale = (Locale.getDefault());
-        Locale.setDefault(new Locale(locale.toString()));
-        ResourceBundle bundle = ResourceBundle.getBundle("Main/Lang_fr", Locale.getDefault());
+    {
+        ResourceBundle rb = ResourceBundle.getBundle("Main/Lang", Locale.getDefault());
 
-
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Views/LoginMenu.fxml"),bundle);
-
-
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Views/LoginMenu.fxml"),rb);
         Scene scene = new Scene(root);
         scene.setRoot(root);
 

@@ -39,6 +39,7 @@ public class FLDivisionList
      * @param division
      * @return
      */
+
     public static Predicate<FLDivision> divisionPredicate(Integer division)
     {
         return FLDivision -> FLDivision.getCountryID() == division;

@@ -44,7 +44,7 @@
       </AnchorPane>
       <AnchorPane layoutY="370.0" prefHeight="6.0" prefWidth="600.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <Label fx:id="locationLabel" layoutX="115.0" layoutY="7.0" prefHeight="21.0" prefWidth="75.0" text="USA" AnchorPane.bottomAnchor="3.0" AnchorPane.topAnchor="7.0">
+            <Label fx:id="locationLabel" layoutX="115.0" layoutY="7.0" prefHeight="21.0" prefWidth="290.0" text="USA" AnchorPane.bottomAnchor="3.0" AnchorPane.topAnchor="7.0">
                <font>
                   <Font size="13.0" />
                </font>

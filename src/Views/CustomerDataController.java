@@ -221,7 +221,6 @@ public class CustomerDataController implements Initializable
      @FXML
     void saveButtonClicked(ActionEvent event) throws SQLException
      {
-        try {
             int customerID = Integer.parseInt(customerIDLabel.getText());
             String customerName = firstNameText.getText() + " " + lastNameText.getText();
             String address = addressText.getText();
@@ -233,6 +232,7 @@ public class CustomerDataController implements Initializable
             Timestamp createTS = Timestamp.valueOf(createDate);
 
 
+            Clientele.deleteCustomer(customerRef);
             Connection conn = DBConnection.startConnection();
             DBQuery.setStatement(conn);
 
@@ -255,7 +255,6 @@ public class CustomerDataController implements Initializable
 
             ps.execute();
 
-            Clientele.deleteCustomer(customerRef);
             Clientele.addCustomer(new Customer(customerID, customerName, address, postalCode, country, state, phone));
 
 
@@ -271,15 +270,22 @@ public class CustomerDataController implements Initializable
             addButton.setVisible(true);
             deleteButton.setVisible(true);
             saveButton.setVisible(false);
-        }
-        catch (SQLException se)
-         {
+
+
+             Clientele.addCustomer(new Customer(
+                     customerRef.getCustomerID(),
+                     customerRef.getCustomerName(),
+                     customerRef.getAddress(),
+                     customerRef.getPostalCode(),
+                     customerRef.getCountry(),
+                     customerRef.getState(),
+                     customerRef.getPhone()));
              Alert alertSE = new Alert(Alert.AlertType.WARNING);
              alertSE.setTitle("ERROR");
              alertSE.setHeaderText("Cannot Update Customer Without First Deleting Associated Appointments");
              alertSE.setContentText("Continue?");
              alertSE.show();
-         }
+
 
         
     }
