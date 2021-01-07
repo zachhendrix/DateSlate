@@ -132,9 +132,10 @@ public class AddAppointmentMenuController implements Initializable
         for (Appointment a : Schedule.getAllAppointments())
         {
             if ((startDate.isAfter(a.getStartDate()) && startDate.isBefore(a.getEndDate())) ||
-                    (startDate.isBefore(a.getStartDate()) && endDate.isAfter(a.getStartDate())) ||
+                    (endDate.isAfter(a.getStartDate()) && endDate.isBefore(a.getEndDate())) ||
                     (startDate.isAfter(a.getStartDate()) && endDate.isBefore(a.getEndDate())) ||
-                    (startDate.isBefore(a.getStartDate()) && endDate.isAfter(a.getEndDate())))
+                    (startDate.isBefore(a.getStartDate()) && endDate.isAfter(a.getEndDate())) ||
+                    (startDate.equals(a.getStartDate()) && endDate.equals(a.getEndDate())))
             {
                 isOverlapping = true;
 

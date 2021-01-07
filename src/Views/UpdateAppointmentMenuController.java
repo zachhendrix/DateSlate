@@ -126,9 +126,10 @@ public class UpdateAppointmentMenuController implements Initializable
         {
 
             if ((startDate.isAfter(a.getStartDate()) && startDate.isBefore(a.getEndDate())) ||
-                    (startDate.isBefore(a.getStartDate()) && endDate.isAfter(a.getStartDate())) ||
+                    (endDate.isAfter(a.getStartDate()) && endDate.isBefore(a.getEndDate())) ||
                     (startDate.isAfter(a.getStartDate()) && endDate.isBefore(a.getEndDate())) ||
-                    (startDate.isBefore(a.getStartDate()) && endDate.isAfter(a.getEndDate())))
+                    (startDate.isBefore(a.getStartDate()) && endDate.isAfter(a.getEndDate())) ||
+                    (startDate.equals(a.getStartDate()) && endDate.equals(a.getEndDate())))
             {
                 isOverlapping = true;
 
