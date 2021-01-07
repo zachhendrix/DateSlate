@@ -26,6 +26,8 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
@@ -49,6 +51,11 @@ public class ScheduleMenuController implements Initializable
     Parent scene;
     private static Integer numberUpcoming = 0;
     private static boolean isChecked;
+    private int appIDRef;
+    private String appTitleRef;
+    private LocalDateTime appLDRef;
+    private LocalTime appTimeRef;
+    private LocalDate appDateRef;
 
     
     @FXML
@@ -210,11 +217,15 @@ public class ScheduleMenuController implements Initializable
         {
             LocalTime appTime = appointment.getStartDate().toLocalTime();
             LocalTime timeFrame = LocalTime.now().plusMinutes(15);
+            appIDRef = appointment.getAppointmentID();
+            appTitleRef = appointment.getAppTitle();
+            appLDRef = appointment.getStartDate();
+            appTimeRef = appLDRef.toLocalTime();
+            appDateRef = appLDRef.toLocalDate();
 
             if(appTime.until(timeFrame, ChronoUnit.MINUTES) <= 15 && appTime.until(timeFrame, ChronoUnit.MINUTES) >= 0)
             {
                 numberUpcoming = numberUpcoming + 1;
-
             }
 
         }
@@ -223,7 +234,7 @@ public class ScheduleMenuController implements Initializable
         {
             Alert alertSE = new Alert(Alert.AlertType.WARNING);
             alertSE.setTitle("Appointment Reminder!");
-            alertSE.setHeaderText("You Have an Appointment in less than 15 minutes!");
+            alertSE.setHeaderText("You Have Appointment: "+ appIDRef + " " + "'" + appTitleRef + "'" + " in less than 15 minutes!" + "\nAt time: " + appTimeRef + "\nToday: " + appDateRef);
             alertSE.setContentText("Good Luck");
             alertSE.show();
 
