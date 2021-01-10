@@ -22,6 +22,4 @@ public class DBQuery
         return statement;
     }
 
-
-    
 }

@@ -73,7 +73,4 @@ public class Contact
     {
         return Appointment -> Appointment.getAppContact() == contactValue;
     }
-
-
-
 }

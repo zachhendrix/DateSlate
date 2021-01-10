@@ -151,9 +151,4 @@ public class Appointment
 
         return Appointment -> Appointment.getStartDate().getMonthValue() == monthValue;
     }
-
-
-
-
-
 }

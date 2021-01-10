@@ -327,8 +327,6 @@ public class ScheduleMenuController implements Initializable
         appointmentWeekTableview.setItems(filteredData);
     }
 
-
-
     /**
      * When the Customer button is clicked it sends the user to the Customer Data Menu
      * @param event
@@ -428,6 +426,4 @@ public class ScheduleMenuController implements Initializable
         stage.setScene(new Scene(scene));
         stage.show();
     }
-
-
 }

@@ -59,13 +59,8 @@ public class Main extends Application
         DBConnection.loadUserData();
         DBConnection.loadAppointmentData();
 
-
-        
-        
         launch(args);
         DBConnection.closeConnection();
     }
 
-    
-    
 }

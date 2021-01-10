@@ -32,7 +32,5 @@ public class Report
         return amount;
     }
 
-
-
 }
 

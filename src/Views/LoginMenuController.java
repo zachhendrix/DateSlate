@@ -126,6 +126,4 @@ public class LoginMenuController implements Initializable
                
         }
     }
-
-
 }

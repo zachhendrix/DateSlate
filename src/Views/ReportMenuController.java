@@ -185,9 +185,6 @@ public class ReportMenuController implements Initializable
             {
                 contactScheduleTableview.setItems(Schedule.getAllAppointments().filtered(contactSchedulePredicate(contactComboBox.getValue())));
             }
-
-
-
         }
 
 
@@ -206,9 +203,7 @@ public class ReportMenuController implements Initializable
         statement.execute(selectStatement);
         ResultSet rs = statement.getResultSet();
 
-
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
-
 
         while (rs.next())
         {
@@ -258,7 +253,6 @@ public class ReportMenuController implements Initializable
         amountCol.setCellValueFactory(new PropertyValueFactory<>("amount"));
         monthTypeTableview.getItems().setAll(appReport);
 
-
     }
 
     /**
@@ -289,8 +283,4 @@ public class ReportMenuController implements Initializable
         stage.setScene(new Scene(scene));
         stage.show();
     }
-
 }
-
-
-

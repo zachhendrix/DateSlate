@@ -272,6 +272,4 @@ public class UpdateAppointmentMenuController implements Initializable
         
         
     }
-
-
 }

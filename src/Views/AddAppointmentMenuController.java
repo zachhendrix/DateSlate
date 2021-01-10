@@ -230,8 +230,4 @@ public class AddAppointmentMenuController implements Initializable
         }
 
     }
-
-    
-
-
 }
